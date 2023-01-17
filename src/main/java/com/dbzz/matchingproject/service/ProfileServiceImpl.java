@@ -77,7 +77,12 @@ public class ProfileServiceImpl implements ProfileService {
         Profile profile = profileRepository.findByUserId(userId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 프로필입니다.")
         );
-        profile.update(requestDto);
+        // Dto 의 image 값이 null 이면 이미지를 제외하고 객체 생성
+        if (requestDto.getImage() == null) {
+            profile.updateWithoutImage(requestDto);
+        } else {
+            profile.updateWithImage(requestDto);
+        }
         return new ProfileResponseDto(userId, profile);
     }
 }

@@ -50,9 +50,15 @@ public class Profile {
         this.item = item;
     }
 
-    public void update(ProfileRequestDto requestDto) {
+    public void updateWithImage(ProfileRequestDto requestDto) {
         this.nickname = requestDto.getNickname();
         this.image = requestDto.getImage();
+        this.intro = requestDto.getIntro();
+        this.item = requestDto.getItem();
+    }
+
+    public void updateWithoutImage(ProfileRequestDto requestDto) {
+        this.nickname = requestDto.getNickname();
         this.intro = requestDto.getIntro();
         this.item = requestDto.getItem();
     }
