@@ -85,9 +85,9 @@ public class JwtUtil {
     public AuthenticatedUserInfoDto validateAndGetUserInfo(String token) {
         if (this.validateToken(token)) {
             Claims claims = this.getUserInfoFromToken(token);
-            String username = claims.getSubject();
+            String userId = claims.getSubject();
             UserRoleEnum role = UserRoleEnum.valueOf(claims.get("auth").toString());
-            return new AuthenticatedUserInfoDto(role, username);
+            return new AuthenticatedUserInfoDto(role, userId);
         } else {
             throw new IllegalArgumentException("Token Error");
         }
