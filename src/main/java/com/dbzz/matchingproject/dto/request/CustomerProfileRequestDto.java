@@ -4,6 +4,6 @@ import lombok.Getter;
 
 @Getter
 public class CustomerProfileRequestDto {
-    String nickname;
-    String image;
+    private String nickname;
+    private String image;
 }

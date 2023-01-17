@@ -1,15 +1,16 @@
 package com.dbzz.matchingproject.service;
 
 import com.dbzz.matchingproject.dto.request.CustomerProfileRequestDto;
+import com.dbzz.matchingproject.dto.request.ProfileRequestDto;
+import com.dbzz.matchingproject.dto.response.CustomerProfileResponseDto;
 import com.dbzz.matchingproject.dto.response.ProfileResponseDto;
-import com.dbzz.matchingproject.enums.UserRoleEnum;
 
 public interface ProfileService {
-    void createCustomerProfile(String userId, CustomerProfileRequestDto requestDto);
+    CustomerProfileResponseDto createCustomerProfile(String userId, CustomerProfileRequestDto requestDto);
 
-    ProfileResponseDto getProfileByUserId(String userId);
+    CustomerProfileResponseDto getCustomerProfileByUserId(String userId);
 
-    void getSellerProfileByUserId();
+    ProfileResponseDto getSellerProfileByUserId(String userId);
 
-    void updateProfile();
+    ProfileResponseDto updateProfile(String userId, ProfileRequestDto requestDto);
 }

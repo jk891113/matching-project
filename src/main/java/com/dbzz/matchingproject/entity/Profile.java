@@ -1,5 +1,6 @@
 package com.dbzz.matchingproject.entity;
 
+import com.dbzz.matchingproject.dto.request.ProfileRequestDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -17,7 +18,7 @@ public class Profile {
     @Column(nullable = false)
     private String nickname;
 
-    private String image;
+    private String image = "기본 프로필 사진";
 
     private String intro;
 
@@ -47,5 +48,12 @@ public class Profile {
         this.image = image;
         this.intro = intro;
         this.item = item;
+    }
+
+    public void update(ProfileRequestDto requestDto) {
+        this.nickname = requestDto.getNickname();
+        this.image = requestDto.getImage();
+        this.intro = requestDto.getIntro();
+        this.item = requestDto.getItem();
     }
 }
