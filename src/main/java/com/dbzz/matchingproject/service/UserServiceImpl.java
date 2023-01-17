@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public AuthenticatedUserInfoDto login(LoginRequestDto requestDto) {
+    public AuthenticatedUserInfoDto signin(LoginRequestDto requestDto) {
         User user = userRepository.findByUserId(requestDto.getUserId()).orElseThrow(
                 () -> new IllegalArgumentException("등록된 아이디가 없습니다.")
         );
@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void logout() {
+    public void signout() {
 
     }
 }
