@@ -33,9 +33,11 @@ public class ProductController {
 
     //판매상품 등록
     @PostMapping("/products/{userId}")
-    public void createProductPage(@PathVariable String userId, @RequestBody CreateProductRequestDto requestDto, HttpServletRequest request) {
+    public ResponseEntity<StatusResponseDto> createProductPage(@PathVariable String userId, @RequestBody CreateProductRequestDto requestDto, HttpServletRequest request) {
+        StatusResponseDto responseDto = new StatusResponseDto(StatusEnum.OK, "상품 등록 완료");
         String token = jwtUtil.resolveToken(request);
         jwtUtil.validateAndGetUserInfo(token);
         productService.createProductPage(userId, requestDto);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 }
