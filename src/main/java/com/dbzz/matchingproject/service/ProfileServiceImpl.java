@@ -1,6 +1,7 @@
 package com.dbzz.matchingproject.service;
 
 import com.dbzz.matchingproject.dto.request.CustomerProfileRequestDto;
+import com.dbzz.matchingproject.dto.response.ProfileResponseDto;
 import com.dbzz.matchingproject.entity.Profile;
 import com.dbzz.matchingproject.entity.User;
 import com.dbzz.matchingproject.repository.ProfileRepository;
@@ -26,8 +27,11 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public void getProfileByUserId() {
-
+    public ProfileResponseDto getProfileByUserId(String userId) {
+        Profile profile = profileRepository.findByUserId(userId).orElseThrow(
+                () -> new IllegalArgumentException("프로플을 작성해 주세요.")
+        );
+        return new ProfileResponseDto(userId, profile);
     }
 
     @Override
