@@ -1,6 +1,7 @@
 package com.dbzz.matchingproject.controller;
 
 import com.dbzz.matchingproject.dto.request.CreateProductRequestDto;
+import com.dbzz.matchingproject.dto.response.ProductResponseDto;
 import com.dbzz.matchingproject.dto.response.StatusResponseDto;
 import com.dbzz.matchingproject.enums.StatusEnum;
 import com.dbzz.matchingproject.jwt.JwtUtil;
@@ -10,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -26,5 +29,13 @@ public class ProductController {
         jwtUtil.validateAndGetUserInfo(token);
         productService.createProductPage(userId, requestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+    //나의 판매상품 조회
+    @GetMapping("/products/{userId}")
+    public List<ProductResponseDto> getAllProductByUserId(@PathVariable String userId, HttpServletRequest request) {
+        String token = jwtUtil.resolveToken(request);
+        jwtUtil.validateAndGetUserInfo(token);
+        return productService.getAllProductByUserId(userId);
     }
 }
