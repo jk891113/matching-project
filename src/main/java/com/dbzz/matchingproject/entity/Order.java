@@ -14,7 +14,7 @@ public class Order extends Timestamp{
     private long orderId;
 
     @Column(nullable = false)
-    private long customerId;
+    private String customerId;
 
     @Column(nullable = false)
     private int totalAmount = 0;
@@ -23,7 +23,7 @@ public class Order extends Timestamp{
     @Enumerated(value = EnumType.STRING)
     private ShippingStatusEnum shippingStatus;
 
-    public Order(long orderId, long customerId, int totalAmount, ShippingStatusEnum shippingStatus) {
+    public Order(long orderId, String customerId, int totalAmount, ShippingStatusEnum shippingStatus) {
         this.orderId = orderId;
         this.customerId = customerId;
         this.totalAmount = totalAmount;

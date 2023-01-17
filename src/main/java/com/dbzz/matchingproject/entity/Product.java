@@ -1,9 +1,6 @@
 package com.dbzz.matchingproject.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -15,17 +12,20 @@ public class Product extends Timestamp {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long productId;
 
-    private String sellerId;
+    @Column(nullable = false)
+    private String userId;
 
+    @Column(nullable = false)
     private String productName;
 
+    @Column(nullable = false)
     private int price;
 
+    @Column(nullable = false)
     private String productInfo;
 
-    public Product(long productId, String sellerId, String productName, int price, String productInfo) {
-        this.productId = productId;
-        this.sellerId = sellerId;
+    public Product(String userId, String productName, int price, String productInfo) {
+        this.userId =userId;
         this.productName = productName;
         this.price = price;
         this.productInfo = productInfo;
