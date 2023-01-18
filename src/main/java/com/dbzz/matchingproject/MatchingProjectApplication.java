@@ -1,8 +1,12 @@
 package com.dbzz.matchingproject;
 
+import com.dbzz.matchingproject.entity.Form;
+import com.dbzz.matchingproject.entity.Product;
 import com.dbzz.matchingproject.entity.Profile;
 import com.dbzz.matchingproject.entity.User;
 import com.dbzz.matchingproject.enums.UserRoleEnum;
+import com.dbzz.matchingproject.repository.FormRepository;
+import com.dbzz.matchingproject.repository.ProductRepository;
 import com.dbzz.matchingproject.repository.ProfileRepository;
 import com.dbzz.matchingproject.repository.UserRepository;
 import com.dbzz.matchingproject.service.UserService;
@@ -23,6 +27,8 @@ public class MatchingProjectApplication {
     @Bean
     public CommandLineRunner test(UserRepository userRepository,
                                   ProfileRepository profileRepository,
+                                  ProductRepository productRepository,
+                                  FormRepository formRepository,
                                   UserService userService) {
 
         return (args) -> {
@@ -48,6 +54,27 @@ public class MatchingProjectApplication {
             profileRepository.save(new Profile("seller3", "판매자3", "판매자3입니다.", "아동복"));
             profileRepository.save(new Profile("seller4", "판매자4", "판매자4입니다.", "스포츠"));
             profileRepository.save(new Profile("seller5", "판매자5", "판매자5입니다.", "캐주얼"));
+
+            productRepository.save(new Product("seller1", "블라우스", 20000, "블라우스 입니다."));
+            productRepository.save(new Product("seller1", "치마", 30000, "치마 입니다."));
+            productRepository.save(new Product("seller1", "바지", 30000, "바지 입니다."));
+            productRepository.save(new Product("seller1", "자켓", 40000, "자켓 입니다."));
+            productRepository.save(new Product("seller1", "레깅스", 20000, "레깅스 입니다."));
+            productRepository.save(new Product("seller2", "셔츠", 20000, "셔츠 입니다."));
+            productRepository.save(new Product("seller2", "바지", 20000, "바지 입니다."));
+            productRepository.save(new Product("seller2", "재킷", 20000, "재킷 입니다."));
+            productRepository.save(new Product("seller3", "패딩", 20000, "패딩 입니다."));
+            productRepository.save(new Product("seller3", "후드티", 20000, "후드티 입니다."));
+            productRepository.save(new Product("seller3", "후드집업", 20000, "후드집업 입니다."));
+            productRepository.save(new Product("seller4", "니트", 20000, "니트 입니다."));
+            productRepository.save(new Product("seller4", "목도리", 20000, "목도리 입니다."));
+            productRepository.save(new Product("seller4", "스웨터", 20000, "스웨터 입니다."));
+            productRepository.save(new Product("seller5", "코트", 20000, "코트 입니다."));
+            productRepository.save(new Product("seller5", "양말", 20000, "양말 입니다."));
+            productRepository.save(new Product("seller5", "남방", 20000, "남방 입니다."));
+
+            formRepository.save(new Form("customer1", "고객1", "악세사리"));
+            formRepository.save(new Form("customer2", "고객2", "잡화"));
         };
     }
 
