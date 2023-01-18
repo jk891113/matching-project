@@ -1,8 +1,6 @@
 package com.dbzz.matchingproject.dto.response;
 
 import com.dbzz.matchingproject.entity.Form;
-import com.dbzz.matchingproject.entity.User;
-import com.dbzz.matchingproject.enums.UserRoleEnum;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,10 +16,6 @@ public class PermissionResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-
-    public PermissionResponseDto(String userId) {
-        this.userId = userId;
-    }
 
     public PermissionResponseDto(Form form) {
         this.userId = form.getUserId();

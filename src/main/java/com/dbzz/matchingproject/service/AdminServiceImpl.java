@@ -12,7 +12,6 @@ import com.dbzz.matchingproject.repository.ProfileRepository;
 import com.dbzz.matchingproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +30,7 @@ public class AdminServiceImpl implements AdminService{
     @Transactional(readOnly = true)
     public List<UserResponseDto> getAllCustomers() {
         List<User> userList = userRepository.findAllByOrderByCreatedAtDesc();
+        if (userList.isEmpty()) throw new IllegalArgumentException("회원 목록이 없습니다.");
         List<UserResponseDto> customerList = new ArrayList<>();
             for(User user : userList){
                 customerList.add(new UserResponseDto(user));
@@ -47,6 +47,7 @@ public class AdminServiceImpl implements AdminService{
             userIdList.add(user.getUserId());
         }
         List<Profile> profileList = profileRepository.findAllByUserIdIn(userIdList);
+        if (profileList.isEmpty()) throw new IllegalArgumentException("판매자 목록이 없습니다.");
         List<SellerListResponseDto> sellerList = new ArrayList<>();
         for(Profile profile : profileList){
             sellerList.add(new SellerListResponseDto(profile));
@@ -58,6 +59,7 @@ public class AdminServiceImpl implements AdminService{
     @Transactional(readOnly = true)
     public List<PermissionResponseDto> getPermissionRequestForms() {
         List<Form> formList = formRepository.findAll();
+        if (formList.isEmpty()) throw new IllegalArgumentException("판매자 권한 요청 목록이 없습니다.");
         List<PermissionResponseDto> permitList = new ArrayList<>();
             for(Form form : formList){
                 permitList.add(new PermissionResponseDto(form));
