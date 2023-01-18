@@ -23,8 +23,7 @@ public class Order extends Timestamp{
     @Enumerated(value = EnumType.STRING)
     private ShippingStatusEnum shippingStatus;
 
-    public Order(long orderId, String customerId, int totalAmount, ShippingStatusEnum shippingStatus) {
-        this.orderId = orderId;
+    public Order(String customerId, int totalAmount, ShippingStatusEnum shippingStatus) {
         this.customerId = customerId;
         this.totalAmount = totalAmount;
         this.shippingStatus = shippingStatus;

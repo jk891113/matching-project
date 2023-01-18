@@ -2,6 +2,7 @@ package com.dbzz.matchingproject.controller;
 
 import com.dbzz.matchingproject.dto.request.LoginRequestDto;
 import com.dbzz.matchingproject.dto.request.SignupRequestDto;
+import com.dbzz.matchingproject.dto.response.ProfileResponseDto;
 import com.dbzz.matchingproject.dto.response.StatusResponseDto;
 import com.dbzz.matchingproject.enums.StatusEnum;
 import com.dbzz.matchingproject.jwt.AuthenticatedUserInfoDto;
@@ -14,11 +15,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.nio.charset.Charset;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -44,4 +47,11 @@ public class UserController {
         response.addHeader(jwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(userInfoDto.getUsername(), userInfoDto.getRole()));
         return new ResponseEntity<>(responseDto, headers, HttpStatus.OK);
     }
+
+//    @GetMapping("/users/sellerlist")
+//    public List<ProfileResponseDto> getAllSellerList(HttpServletRequest request) {
+//        String token = jwtUtil.resolveToken(request);
+//        jwtUtil.validateAndGetUserInfo(token);
+//        return userService.getAllSellerList();
+//    }
 }

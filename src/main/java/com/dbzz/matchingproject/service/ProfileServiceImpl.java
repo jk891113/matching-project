@@ -2,11 +2,14 @@ package com.dbzz.matchingproject.service;
 
 import com.dbzz.matchingproject.dto.request.CustomerProfileRequestDto;
 import com.dbzz.matchingproject.dto.request.ProfileRequestDto;
+import com.dbzz.matchingproject.dto.request.SellerProfileRequestDto;
 import com.dbzz.matchingproject.dto.response.CustomerProfileResponseDto;
 import com.dbzz.matchingproject.dto.response.ProfileResponseDto;
+import com.dbzz.matchingproject.entity.Form;
 import com.dbzz.matchingproject.entity.Profile;
 import com.dbzz.matchingproject.entity.User;
 import com.dbzz.matchingproject.enums.UserRoleEnum;
+import com.dbzz.matchingproject.repository.FormRepository;
 import com.dbzz.matchingproject.repository.ProfileRepository;
 import com.dbzz.matchingproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +26,7 @@ import java.util.Optional;
 public class ProfileServiceImpl implements ProfileService {
     private final UserRepository userRepository;
     private final ProfileRepository profileRepository;
+    private final FormRepository formRepository;
 
     @Override
     public CustomerProfileResponseDto createCustomerProfile(String userId, CustomerProfileRequestDto requestDto) {
@@ -42,6 +46,17 @@ public class ProfileServiceImpl implements ProfileService {
         }
         profileRepository.save(profile);
         return new CustomerProfileResponseDto(userId, profile);
+    }
+
+    @Override
+    public void createSellerProfile(String userId, SellerProfileRequestDto requestDto) {
+        userRepository.findByUserId(userId).orElseThrow(
+                () -> new IllegalArgumentException("존재하지 않는 회원입니다.")
+        );
+        Optional<Profile> found = profileRepository.findByUserId(userId);
+        if (found.isEmpty()) throw new IllegalArgumentException("고객 프로필부터 작성해 주세요.");
+        Form form = new Form(userId, requestDto);
+        formRepository.save(form);
     }
 
     @Override
