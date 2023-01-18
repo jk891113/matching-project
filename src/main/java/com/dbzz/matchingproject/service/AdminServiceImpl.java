@@ -40,12 +40,17 @@ public class AdminServiceImpl implements AdminService{
     @Override
     @Transactional(readOnly = true)
     public List<SellerListResponseDto> getAllSellers() {
-        List<Profile> profileList = profileRepository.findAll();
+        List<User> userList = userRepository.findAllByRole(UserRoleEnum.SELLER);
+        List<String> userIdList = new ArrayList<>();
+        for(User user : userList){
+            userIdList.add(user.getUserId());
+        }
+        List<Profile> profileList = profileRepository.findAllByUserIdIn(userIdList);
         List<SellerListResponseDto> sellerList = new ArrayList<>();
-            for(Profile profile : profileList){
-                sellerList.add(new SellerListResponseDto(profile));
-            }
-            return sellerList;
+        for(Profile profile : profileList){
+            sellerList.add(new SellerListResponseDto(profile));
+        }
+        return sellerList;
     }
 
     @Override
