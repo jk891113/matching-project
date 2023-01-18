@@ -1,6 +1,5 @@
 package com.dbzz.matchingproject.entity;
 
-import com.dbzz.matchingproject.dto.request.PermissionRequestDto;
 import com.dbzz.matchingproject.enums.UserRoleEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -27,11 +26,11 @@ public class User extends Timestamp{
         this.role = role;
     }
 
-    public void changeSeller(User user) {
+    public void changeSeller(UserRoleEnum role) {
         this.role = UserRoleEnum.SELLER;
     }
 
-    public void removeSeller(User user) {
+    public void removeSeller(UserRoleEnum role) {
         this.role = UserRoleEnum.CUSTOMER;
     }
 }

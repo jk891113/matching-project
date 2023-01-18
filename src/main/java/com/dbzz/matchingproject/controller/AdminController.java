@@ -1,8 +1,6 @@
 package com.dbzz.matchingproject.controller;
 
-import com.dbzz.matchingproject.dto.request.PermissionRequestDto;
 import com.dbzz.matchingproject.dto.response.PermissionResponseDto;
-import com.dbzz.matchingproject.dto.response.ProfileResponseDto;
 import com.dbzz.matchingproject.dto.response.SellerListResponseDto;
 import com.dbzz.matchingproject.dto.response.UserResponseDto;
 import com.dbzz.matchingproject.jwt.JwtUtil;
@@ -20,14 +18,14 @@ public class AdminController {
     private final AdminService adminService;
     private final JwtUtil jwtUtil;
 
-    @GetMapping("/admin/customerList")
+    @GetMapping("/admin/customer-list")
     public List<UserResponseDto> getAllCustomers(HttpServletRequest request) {
         String token = jwtUtil.resolveToken(request);
         jwtUtil.validateAndGetUserInfo(token);
         return adminService.getAllCustomers();
     }
 
-    @GetMapping("/admin/sellerList")
+    @GetMapping("/admin/seller-list")
     public List<SellerListResponseDto> getAllSellers(HttpServletRequest request) {
         String token = jwtUtil.resolveToken(request);
         jwtUtil.validateAndGetUserInfo(token);
@@ -42,16 +40,16 @@ public class AdminController {
     }
 
     @PutMapping("/admin/users/{userId}/permission")
-    public PermissionResponseDto permitAuth(@PathVariable String userId, @RequestBody PermissionRequestDto requestDto, HttpServletRequest request){
+    public PermissionResponseDto permitAuth(@PathVariable String userId, HttpServletRequest request){
         String token = jwtUtil.resolveToken(request);
         jwtUtil.validateAndGetUserInfo(token);
-        return adminService.permitAuth(userId, requestDto);
+        return adminService.permitAuth(userId);
     }
 
     @PutMapping("/admin/sellers/{userId}/permission")
-    public PermissionResponseDto removeAuth(@PathVariable String userId, @RequestBody PermissionRequestDto requestDto, HttpServletRequest request){
+    public PermissionResponseDto removeAuth(@PathVariable String userId, HttpServletRequest request){
         String token = jwtUtil.resolveToken(request);
         jwtUtil.validateAndGetUserInfo(token);
-        return adminService.removeAuth(userId, requestDto);
+        return adminService.removeAuth(userId);
     }
 }
