@@ -2,6 +2,7 @@ package com.dbzz.matchingproject.controller;
 
 import com.dbzz.matchingproject.dto.request.CustomerProfileRequestDto;
 import com.dbzz.matchingproject.dto.request.ProfileRequestDto;
+import com.dbzz.matchingproject.dto.request.SellerProfileRequestDto;
 import com.dbzz.matchingproject.dto.response.CustomerProfileResponseDto;
 import com.dbzz.matchingproject.dto.response.ProfileResponseDto;
 import com.dbzz.matchingproject.jwt.JwtUtil;
@@ -21,6 +22,13 @@ public class ProfileController {
         String token = jwtUtil.resolveToken(request);
         jwtUtil.validateAndGetUserInfo(token);
         return profileService.createCustomerProfile(userId, requestDto);
+    }
+
+    @PostMapping("/profiles/sellers/{userId}")
+    public void createSellerProfile(@PathVariable String userId, @RequestBody SellerProfileRequestDto requestDto, HttpServletRequest request) {
+        String token = jwtUtil.resolveToken(request);
+        jwtUtil.validateAndGetUserInfo(token);
+        profileService.createSellerProfile(userId, requestDto);
     }
 
     @GetMapping("/profiles/customers/{userId}")

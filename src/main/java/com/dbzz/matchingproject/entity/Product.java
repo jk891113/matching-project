@@ -23,8 +23,7 @@ public class Product extends Timestamp {
 
     private String productInfo;
 
-    public Product(long productId, String sellerId, String productName, int price, String productInfo) {
-        this.productId = productId;
+    public Product(String sellerId, String productName, int price, String productInfo) {
         this.sellerId = sellerId;
         this.productName = productName;
         this.price = price;
