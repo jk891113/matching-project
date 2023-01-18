@@ -17,12 +17,10 @@ public class PermissionResponseDto {
     private String item;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
-    private UserRoleEnum role;
 
 
-    public PermissionResponseDto(String userId, User user) {
+    public PermissionResponseDto(String userId) {
         this.userId = userId;
-        this.role = user.getRole();
     }
 
     public PermissionResponseDto(Form form) {

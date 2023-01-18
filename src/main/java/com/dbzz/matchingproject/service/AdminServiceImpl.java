@@ -12,6 +12,7 @@ import com.dbzz.matchingproject.repository.ProfileRepository;
 import com.dbzz.matchingproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -65,25 +66,24 @@ public class AdminServiceImpl implements AdminService{
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public PermissionResponseDto permitAuth(String userId) {
-        User user = userRepository.findByUserId(userId).orElseThrow(
+    public void permitAuth(String userId) {
+        Form form = formRepository.findByUserId(userId).get();
+        User user = userRepository.findByUserId(form.getUserId()).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 회원입니다.")
         );
-        user.changeSeller(user.getRole());
-        return new PermissionResponseDto(userId, user);
+        user.changeRole(UserRoleEnum.SELLER);
+        userRepository.save(user);
+        formRepository.delete(form);
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public PermissionResponseDto removeAuth(String userId) {
+    public void removeAuth(String userId) {
         User user = userRepository.findByUserId(userId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 회원입니다.")
         );
         if (user.getRole() != UserRoleEnum.SELLER)
             throw new IllegalArgumentException("해당 유저는 판매자가 아닙니다.");
-        user.removeSeller(user.getRole());
-        return new PermissionResponseDto(userId, user);
-
+        user.changeRole(UserRoleEnum.CUSTOMER);
+        userRepository.save(user);
     }
 }

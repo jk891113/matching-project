@@ -7,6 +7,7 @@ import com.dbzz.matchingproject.jwt.JwtUtil;
 import com.dbzz.matchingproject.service.AdminService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,16 +41,18 @@ public class AdminController {
     }
 
     @PutMapping("/admin/users/{userId}/permission")
-    public PermissionResponseDto permitAuth(@PathVariable String userId, HttpServletRequest request){
+    public ResponseEntity<Void> permitAuth(@PathVariable String userId, HttpServletRequest request){
         String token = jwtUtil.resolveToken(request);
         jwtUtil.validateAndGetUserInfo(token);
-        return adminService.permitAuth(userId);
+        adminService.permitAuth(userId);
+        return ResponseEntity.status(201).build();
     }
 
     @PutMapping("/admin/sellers/{userId}/permission")
-    public PermissionResponseDto removeAuth(@PathVariable String userId, HttpServletRequest request){
+    public ResponseEntity<Void> removeAuth(@PathVariable String userId, HttpServletRequest request){
         String token = jwtUtil.resolveToken(request);
         jwtUtil.validateAndGetUserInfo(token);
-        return adminService.removeAuth(userId);
+        adminService.removeAuth(userId);
+        return ResponseEntity.status(200).build();
     }
 }
