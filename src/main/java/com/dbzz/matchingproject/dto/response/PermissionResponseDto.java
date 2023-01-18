@@ -13,7 +13,8 @@ import java.time.LocalDateTime;
 public class PermissionResponseDto {
 
     private String userId;
-    private String content;
+    private String info;
+    private String item;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private UserRoleEnum role;
@@ -26,7 +27,8 @@ public class PermissionResponseDto {
 
     public PermissionResponseDto(Form form) {
         this.userId = form.getUserId();
-        this.content = form.getContent();
+        this.info = form.getInfo();
+        this.item = form.getItem();
         this.createdAt = form.getCreatedAt();
         this.modifiedAt = form.getModifiedAt();
     }
