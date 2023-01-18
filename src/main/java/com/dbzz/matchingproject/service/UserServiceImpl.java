@@ -2,23 +2,37 @@ package com.dbzz.matchingproject.service;
 
 import com.dbzz.matchingproject.dto.request.LoginRequestDto;
 import com.dbzz.matchingproject.dto.request.SignupRequestDto;
+import com.dbzz.matchingproject.dto.response.ProfileResponseDto;
+import com.dbzz.matchingproject.entity.Profile;
 import com.dbzz.matchingproject.entity.User;
 import com.dbzz.matchingproject.enums.UserRoleEnum;
 import com.dbzz.matchingproject.jwt.AuthenticatedUserInfoDto;
+import com.dbzz.matchingproject.repository.ProfileRepository;
 import com.dbzz.matchingproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final ProfileRepository profileRepository;
+    private final PasswordEncoder passwordEncoder;
 
     private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
     @Override
     public void signup(SignupRequestDto requestDto) {
+//        String userId = requestDto.getUserId();
+//        String password = passwordEncoder.encode(requestDto.getPassword());
+
+        String userId = requestDto.getUserId();
+        String password = requestDto.getPassword();
+
         Optional<User> found = userRepository.findByUserId(requestDto.getUserId());
         if (found.isPresent()) {
             throw new IllegalArgumentException("중복된 아이디가 존재합니다.");
@@ -30,7 +44,7 @@ public class UserServiceImpl implements UserService {
             }
             role = UserRoleEnum.ADMIN;
         }
-        User user = new User(requestDto.getUserId(), requestDto.getPassword(), role);
+        User user = new User(userId, password, role);
         userRepository.save(user);
     }
 
@@ -42,8 +56,24 @@ public class UserServiceImpl implements UserService {
         if (!user.getPassword().equals(requestDto.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
+//        if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
+//            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+//        }
         return new AuthenticatedUserInfoDto(user.getRole(), user.getUserId());
     }
+
+//    @Override
+//    public List<ProfileResponseDto> getAllSellerList() {
+////        List<User> sellerList = userRepository.findAllByRole(UserRoleEnum.SELLER);
+//        List<String> userIdList = userRepository.findAllByRole(UserRoleEnum.SELLER).stream()
+//                .map(User::getUserId)
+//                .collect(Collectors.toList());
+////        List<Profile> sellerProfileList = profileRepository.findAllByUserIdIn(userIdList);
+//        List<ProfileResponseDto> responseDtos = profileRepository.findAllByUserIdIn(userIdList).stream()
+//                .map(profile -> new ProfileResponseDto(profile.getUserId(), profile))
+//                .collect(Collectors.toList());
+//        return responseDtos;
+//    }
 
     @Override
     public void signout() {
