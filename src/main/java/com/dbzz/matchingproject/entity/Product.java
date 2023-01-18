@@ -30,4 +30,15 @@ public class Product extends Timestamp {
         this.price = price;
         this.productInfo = productInfo;
     }
+
+//    //상품을 등록한 유저가 맞는지 확인
+//    public boolean isUser(String userId) {
+//        return this.userId.equals(userId);
+//    }
+
+//    public void update(String userId, UpdateProductRequestDto requestDto) { //프로덕트
+//        this.productName = requestDto.getProductName();
+//        this.price = requestDto.getPrice();
+//        this.productInfo = requestDto.getProductInfo();
+//    }
 }

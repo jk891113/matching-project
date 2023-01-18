@@ -3,8 +3,10 @@ package com.dbzz.matchingproject.service;
 import com.dbzz.matchingproject.dto.request.CreateProductRequestDto;
 import com.dbzz.matchingproject.dto.response.ProductResponseDto;
 import com.dbzz.matchingproject.entity.Product;
+import com.dbzz.matchingproject.entity.User;
 import com.dbzz.matchingproject.repository.ProductRepository;
 import com.dbzz.matchingproject.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -49,13 +51,26 @@ public class ProductServiceImpl implements ProductService {
         return allProductsList;
     }
 
+//    //판매상품 수정
+//    @Override
+////    @Transactional
+//    public void updateProduct(String userId, UpdateProductRequestDto requestDto) {
+//        productRepository.findByProductId(userId).orElseThrow(
+//                () -> new IllegalArgumentException("존재하지 않는 상품입니다.")
+//        );
+//        Product product = new Product(userId, requestDto.getProductName(), requestDto.getPrice(), requestDto.getProductInfo());
+//        productRepository.update(product);
+//    }
+
+    //판매상품 삭제
     @Override
-    public void updateProduct() {
-
-    }
-
-    @Override
-    public void deleteProduct() {
-
+    @Transactional
+    public void deleteProduct(Long productId) {
+        Product product = productRepository.findByProductId(productId).orElseThrow(
+                () -> new IllegalArgumentException("존재하지 않는 상품입니다.")
+        );
+//        if (product.getUserId().equals(user.getUserId())) {
+            productRepository.deleteById(productId);
+//        } throw new RuntimeException("본인이 등록한 상품만 삭제할 수 있습니다.");
     }
 }

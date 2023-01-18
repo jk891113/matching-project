@@ -18,4 +18,11 @@ public class ProductResponseDto {
         this.price = product.getPrice();
         this.productInfo = product.getProductInfo();
     }
+
+//    public ProductResponseDto(String userId, Product product) {
+//        this.userId = product.getUserId();
+//        this.productName = product.getProductName();
+//        this.price = product.getPrice();
+//        this.productInfo = product.getProductInfo();
+//    }
 }

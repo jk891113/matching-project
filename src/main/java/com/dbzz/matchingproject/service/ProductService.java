@@ -16,7 +16,9 @@ public interface ProductService {
     //전체 상품 조회(고객용)
     List<ProductResponseDto> getAllProducts();
 
-    void updateProduct();
+    //판매상품 수정
+//    ProductResponseDto updateProduct(String userId, UpdateProductRequestDto requestDto);
 
-    void deleteProduct();
+    //판매상품 삭제
+    void deleteProduct(Long productId);
 }
