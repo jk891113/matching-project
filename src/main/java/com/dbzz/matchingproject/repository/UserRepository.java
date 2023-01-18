@@ -14,5 +14,7 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     List<User> findAllByOrderByCreatedAtDesc();
 
+    List<User> findAllByRole(UserRoleEnum roleEnum);
+
 
 }

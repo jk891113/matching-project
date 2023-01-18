@@ -4,9 +4,11 @@ import com.dbzz.matchingproject.dto.request.PermissionRequestDto;
 import com.dbzz.matchingproject.dto.response.PermissionResponseDto;
 import com.dbzz.matchingproject.dto.response.SellerListResponseDto;
 import com.dbzz.matchingproject.dto.response.UserResponseDto;
+import com.dbzz.matchingproject.entity.Form;
 import com.dbzz.matchingproject.entity.Profile;
 import com.dbzz.matchingproject.entity.User;
 import com.dbzz.matchingproject.enums.UserRoleEnum;
+import com.dbzz.matchingproject.repository.FormRepository;
 import com.dbzz.matchingproject.repository.ProfileRepository;
 import com.dbzz.matchingproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ import java.util.List;
 public class AdminServiceImpl implements AdminService{
     private final ProfileRepository profileRepository;
     private final UserRepository userRepository;
+    private final FormRepository formRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -49,10 +52,12 @@ public class AdminServiceImpl implements AdminService{
     @Override
     @Transactional(readOnly = true)
     public List<PermissionResponseDto> getPermissionRequestForms() {
-        List<User> userList = userRepository.findAllByOrderByCreatedAtDesc();
-
-
-        return null;
+        List<Form> formList = formRepository.findAll();
+        List<PermissionResponseDto> permitList = new ArrayList<>();
+        for(Form form : formList){
+            permitList.add(new PermissionResponseDto(form));
+        }
+        return permitList;
     }
 
     @Override
@@ -61,7 +66,7 @@ public class AdminServiceImpl implements AdminService{
         User user = userRepository.findByUserId(userId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 회원입니다.")
         );
-        user.update(requestDto);
+        user.changeSeller(user);
         return new PermissionResponseDto(userId, user);
     }
 
@@ -73,7 +78,7 @@ public class AdminServiceImpl implements AdminService{
         );
         if (user.getRole() != UserRoleEnum.SELLER)
             throw new IllegalArgumentException("해당 유저는 판매자가 아닙니다.");
-        user.update(requestDto);
+        user.removeSeller(user);
         return new PermissionResponseDto(userId, user);
 
     }

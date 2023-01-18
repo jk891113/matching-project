@@ -27,7 +27,11 @@ public class User extends Timestamp{
         this.role = role;
     }
 
-    public void update(PermissionRequestDto requestDto) {
+    public void changeSeller(User user) {
         this.role = UserRoleEnum.SELLER;
+    }
+
+    public void removeSeller(User user) {
+        this.role = UserRoleEnum.CUSTOMER;
     }
 }
