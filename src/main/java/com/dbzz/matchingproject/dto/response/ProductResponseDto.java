@@ -7,14 +7,13 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class ProductResponseDto {
-    private String userId;
+    private Long productId;
     private String productName;
     private int price;
     private String productInfo;
 
-
-    public ProductResponseDto(String userId, Product product) {
-        this.userId = userId;
+    public ProductResponseDto(Product product) {
+        this.productId = product.getProductId();
         this.productName = product.getProductName();
         this.price = product.getPrice();
         this.productInfo = product.getProductInfo();

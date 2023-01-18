@@ -3,7 +3,6 @@ package com.dbzz.matchingproject.service;
 import com.dbzz.matchingproject.dto.request.CreateProductRequestDto;
 import com.dbzz.matchingproject.dto.response.ProductResponseDto;
 import com.dbzz.matchingproject.entity.Product;
-import com.dbzz.matchingproject.entity.User;
 import com.dbzz.matchingproject.repository.ProductRepository;
 import com.dbzz.matchingproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,13 +36,17 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductResponseDto> getAllProductByUserId(String userId) {
         List<Product> list = productRepository.findByUserId(userId);
 
-        List<ProductResponseDto> allProductByUserIdList = list.stream().map(product -> new ProductResponseDto(userId, product)).collect(Collectors.toList());
+        List<ProductResponseDto> allProductByUserIdList = list.stream().map(product -> new ProductResponseDto(product)).collect(Collectors.toList());
         return allProductByUserIdList;
     }
 
+    //전체 상품 조회(고객용)
     @Override
-    public void getAllProducts() {
+    public List<ProductResponseDto> getAllProducts() {
+        List<Product> list = productRepository.findAll();
 
+        List<ProductResponseDto> allProductsList = list.stream().map(product -> new ProductResponseDto(product)).collect(Collectors.toList());
+        return allProductsList;
     }
 
     @Override

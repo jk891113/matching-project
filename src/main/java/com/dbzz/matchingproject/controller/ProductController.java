@@ -38,4 +38,12 @@ public class ProductController {
         jwtUtil.validateAndGetUserInfo(token);
         return productService.getAllProductByUserId(userId);
     }
+
+    //전체 상품 조회(고객용)
+    @GetMapping("/products")
+    public List<ProductResponseDto> getAllProducts(HttpServletRequest request) {
+        String token = jwtUtil.resolveToken(request);
+        jwtUtil.validateAndGetUserInfo(token);
+        return productService.getAllProducts();
+    }
 }
