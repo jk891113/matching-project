@@ -1,5 +1,6 @@
 package com.dbzz.matchingproject.service;
 
+import com.dbzz.matchingproject.dto.request.ProfileRequestDto;
 import com.dbzz.matchingproject.dto.response.PermissionResponseDto;
 import com.dbzz.matchingproject.dto.response.SellerListResponseDto;
 import com.dbzz.matchingproject.dto.response.UserResponseDto;
@@ -70,10 +71,12 @@ public class AdminServiceImpl implements AdminService{
     @Override
     public void permitAuth(String userId) {
         Form form = formRepository.findByUserId(userId).get();
+        Profile profile = profileRepository.findByUserId(form.getUserId()).get();
         User user = userRepository.findByUserId(form.getUserId()).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 회원입니다.")
         );
         user.changeRole(UserRoleEnum.SELLER);
+        profile.updateSellerProfile(form);
         userRepository.save(user);
         formRepository.delete(form);
     }

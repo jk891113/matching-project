@@ -1,7 +1,6 @@
 package com.dbzz.matchingproject.service;
 
 import com.dbzz.matchingproject.dto.response.*;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
