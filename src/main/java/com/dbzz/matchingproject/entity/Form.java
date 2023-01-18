@@ -18,14 +18,14 @@ public class Form extends Timestamp {
     private String userId;
 
     @Column(nullable = false)
-    private String info;
+    private String intro;
 
     @Column(nullable = false)
     private String item;
 
-    public Form(String userId, SellerProfileRequestDto requestDto) {
+    public Form(String userId, String intro, String item) {
         this.userId = userId;
-        this.info = requestDto.getIntro();
-        this.item = requestDto.getItem();
+        this.intro = intro;
+        this.item = item;
     }
 }
