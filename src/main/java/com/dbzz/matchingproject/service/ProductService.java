@@ -1,13 +1,24 @@
 package com.dbzz.matchingproject.service;
 
+import com.dbzz.matchingproject.dto.request.CreateProductRequestDto;
+import com.dbzz.matchingproject.dto.response.ProductResponseDto;
+
+import java.util.List;
+
 public interface ProductService {
-    void createProductPage();
 
-    void getAllProductByUserId();
+    //판매상품 등록
+    void createProductPage(String userId, CreateProductRequestDto requestDto);
 
-    void getAllProducts();
+    //나의 판매상품 조회
+    List<ProductResponseDto> getAllProductByUserId(String userId);
 
-    void updateProduct();
+    //전체 상품 조회(고객용)
+    List<ProductResponseDto> getAllProducts();
 
-    void deleteProduct();
+    //판매상품 수정
+//    ProductResponseDto updateProduct(String userId, UpdateProductRequestDto requestDto);
+
+    //판매상품 삭제
+    void deleteProduct(Long productId);
 }
