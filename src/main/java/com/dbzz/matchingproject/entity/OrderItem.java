@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Entity(name = "order_items")
 @Getter
 @NoArgsConstructor
-public class OrderItem {
+public class OrderItem extends Timestamp {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long itemId;

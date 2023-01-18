@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Entity(name = "profiles")
 @Getter
 @NoArgsConstructor
-public class Profile extends Timestamp{
+public class Profile extends Timestamp {
     @Id
     @Column(name = "user_id", nullable = false)
     private String userId;
