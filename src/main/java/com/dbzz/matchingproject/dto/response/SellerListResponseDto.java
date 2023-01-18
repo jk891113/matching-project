@@ -6,19 +6,15 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class ProfileResponseDto {
+public class SellerListResponseDto {
     private String userId;
     private String nickname;
-    private String image;
-    private String intro;
     private String item;
 
 
-    public ProfileResponseDto(String userId, Profile profile) {
-        this.userId = userId;
+    public SellerListResponseDto(Profile profile) {
+        this.userId = profile.getUserId();
         this.nickname = profile.getNickname();
-        this.image = profile.getImage();
-        this.intro = profile.getIntro();
         this.item = profile.getItem();
     }
 }

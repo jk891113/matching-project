@@ -1,13 +1,18 @@
 package com.dbzz.matchingproject.service;
 
+import com.dbzz.matchingproject.dto.request.PermissionRequestDto;
+import com.dbzz.matchingproject.dto.response.*;
+
+import java.util.List;
+
 public interface AdminService {
-    void getAllCustomers();
+    List<UserResponseDto> getAllCustomers();
 
-    void getAllSellers();
+    List<SellerListResponseDto> getAllSellers();
 
-    void getPermissionRequestForms();
+    List<PermissionResponseDto> getPermissionRequestForms();
 
-    void permitAuth();
+    PermissionResponseDto permitAuth(String userId, PermissionRequestDto requestDto);
 
-    void removeAuth();
+    PermissionResponseDto removeAuth(String userId, PermissionRequestDto requestDto);
 }

@@ -1,5 +1,6 @@
 package com.dbzz.matchingproject.entity;
 
+import com.dbzz.matchingproject.dto.request.PermissionRequestDto;
 import com.dbzz.matchingproject.enums.UserRoleEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -8,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Entity(name = "users")
 @Getter
 @NoArgsConstructor
-public class User {
+public class User extends Timestamp{
     @Id
     @Column(name = "user_id", nullable = false)
     private String userId;
@@ -24,5 +25,9 @@ public class User {
         this.userId = userId;
         this.password = password;
         this.role = role;
+    }
+
+    public void update(PermissionRequestDto requestDto) {
+        this.role = UserRoleEnum.SELLER;
     }
 }

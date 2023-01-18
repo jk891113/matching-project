@@ -1,6 +1,7 @@
 package com.dbzz.matchingproject.dto.response;
 
 import com.dbzz.matchingproject.entity.Profile;
+import com.dbzz.matchingproject.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,4 +17,5 @@ public class CustomerProfileResponseDto {
         this.nickname = profile.getNickname();
         this.image = profile.getImage();
     }
+
 }

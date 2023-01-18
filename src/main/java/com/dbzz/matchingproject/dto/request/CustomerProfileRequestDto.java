@@ -6,4 +6,6 @@ import lombok.Getter;
 public class CustomerProfileRequestDto {
     private String nickname;
     private String image;
+
+
 }
