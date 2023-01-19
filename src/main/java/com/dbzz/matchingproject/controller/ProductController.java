@@ -1,6 +1,7 @@
 package com.dbzz.matchingproject.controller;
 
 import com.dbzz.matchingproject.dto.request.CreateProductRequestDto;
+import com.dbzz.matchingproject.dto.request.UpdateProductRequestDto;
 import com.dbzz.matchingproject.dto.response.ProductResponseDto;
 import com.dbzz.matchingproject.dto.response.StatusResponseDto;
 import com.dbzz.matchingproject.enums.StatusEnum;
@@ -48,12 +49,14 @@ public class ProductController {
     }
 
     //판매상품 수정
-//    @PutMapping("/products/{userId}/{productId}")
-//    public ProductResponseDto updateProduct(@PathVariable String userId, @RequestBody UpdateProductRequestDto requestDto, HttpServletRequest request) {
-//        String token = jwtUtil.resolveToken(request);
-//        jwtUtil.validateAndGetUserInfo(token);
-//        return productService.updateProduct(userId, requestDto);
-//    }
+    @PutMapping("/products/{productId}")
+    public ResponseEntity<StatusResponseDto> updateProduct(@PathVariable Long productId, @RequestBody UpdateProductRequestDto requestDto, HttpServletRequest request) {
+        StatusResponseDto responseDto = new StatusResponseDto(StatusEnum.OK, "상품 수정 완료");
+        String token = jwtUtil.resolveToken(request);
+        jwtUtil.validateAndGetUserInfo(token);
+        productService.updateProduct(productId, requestDto);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
 
     //판매상품 삭제
     @DeleteMapping("/products/{productId}")

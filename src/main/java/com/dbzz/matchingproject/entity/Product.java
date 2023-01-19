@@ -1,5 +1,6 @@
 package com.dbzz.matchingproject.entity;
 
+import com.dbzz.matchingproject.dto.request.UpdateProductRequestDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,5 +29,11 @@ public class Product extends Timestamp {
         this.productName = productName;
         this.price = price;
         this.productInfo = productInfo;
+    }
+
+    public void update(UpdateProductRequestDto requestDto) {
+        this.productName = requestDto.getProductName();
+        this.price = requestDto.getPrice();
+        this.productInfo = requestDto.getProductInfo();
     }
 }
