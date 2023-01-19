@@ -12,6 +12,7 @@ import com.dbzz.matchingproject.jwt.AuthenticatedUserInfoDto;
 import com.dbzz.matchingproject.repository.FormRepository;
 import com.dbzz.matchingproject.repository.ProfileRepository;
 import com.dbzz.matchingproject.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -64,6 +65,12 @@ public class UserServiceImpl implements UserService {
         return new AuthenticatedUserInfoDto(user.getRole(), user.getUserId());
     }
 
+    @Override
+    public void signout(HttpServletRequest request) {
+
+
+    }
+
 //    @Override
 //    public List<ProfileResponseDto> getAllSellerList() {
 ////        List<User> sellerList = userRepository.findAllByRole(UserRoleEnum.SELLER);
@@ -77,10 +84,6 @@ public class UserServiceImpl implements UserService {
 //        return responseDtos;
 //    }
 
-    @Override
-    public void signout() {
-
-    }
 
     @Override
     public void sellerAuth(String userId, SellerAuthRequestDto requestDto) {

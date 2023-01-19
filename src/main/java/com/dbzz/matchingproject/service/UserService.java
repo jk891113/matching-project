@@ -7,6 +7,7 @@ import com.dbzz.matchingproject.dto.response.ProfileResponseDto;
 import com.dbzz.matchingproject.dto.response.SellerListResponseDto;
 import com.dbzz.matchingproject.dto.response.StatusResponseDto;
 import com.dbzz.matchingproject.jwt.AuthenticatedUserInfoDto;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public interface UserService {
 
 //    List<ProfileResponseDto> getAllSellerList();
 
-    void signout();
+    void signout(HttpServletRequest request);
 
     void sellerAuth(String userId, SellerAuthRequestDto requestDto);
 

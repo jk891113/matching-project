@@ -66,4 +66,14 @@ public class UserController {
         jwtUtil.validateAndGetUserInfo(token);
         return userService.getAllSellers();
     }
+
+    @GetMapping("/users/signout")
+    public ResponseEntity<StatusResponseDto> signout(HttpServletRequest request){
+        StatusResponseDto responseDto = new StatusResponseDto(StatusEnum.OK, "로그아웃 완료");
+        String token = jwtUtil.resolveToken(request);
+        jwtUtil.validateAndGetUserInfo(token);
+        userService.signout(request);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
 }
