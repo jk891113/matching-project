@@ -12,6 +12,9 @@ public interface ProductService {
     void createProductPage(String userId, CreateProductRequestDto requestDto);
 
     //나의 판매상품 조회
+    ProductResponseDto getProductByUserId(String userId, Long productId);
+
+    //나의 전체 판매상품 조회
     List<ProductResponseDto> getAllProductByUserId(String userId);
 
     //전체 상품 조회(고객용)

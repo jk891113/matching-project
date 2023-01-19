@@ -36,6 +36,22 @@ public class ProductServiceImpl implements ProductService {
 
     //나의 판매상품 조회
     @Override
+    public ProductResponseDto getProductByUserId(String userId, Long productId) {
+        Product product= productRepository.findByProductId(productId).orElseThrow(
+                () -> new RuntimeException("productId값이 일치하는 상품이 없습니다.")
+        );
+
+        userRepository.findByUserId(userId).orElseThrow(
+                () -> new RuntimeException("해당 회원이 등록한 상품이 아닙니다.")
+        );
+
+        ProductResponseDto productResponseDto = new ProductResponseDto(product);
+
+        return productResponseDto;
+    }
+
+    //나의 전체 판매상품 조회
+    @Override
     public List<ProductResponseDto> getAllProductByUserId(String userId) {
         List<Product> list = productRepository.findByUserId(userId);
 

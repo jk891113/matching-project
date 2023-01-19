@@ -5,7 +5,9 @@ import com.dbzz.matchingproject.dto.request.UpdateProductRequestDto;
 import com.dbzz.matchingproject.dto.response.ProductResponseDto;
 import com.dbzz.matchingproject.dto.response.StatusResponseDto;
 import com.dbzz.matchingproject.enums.StatusEnum;
+import com.dbzz.matchingproject.jwt.JwtUtil;
 import com.dbzz.matchingproject.service.ProductService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,17 +20,28 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
+    private final JwtUtil jwtUtil;
 
     //판매상품 등록
-    @PostMapping("/products")
-    public ResponseEntity<StatusResponseDto> createProductPage(@PathVariable String userId, @RequestBody CreateProductRequestDto requestDto) {
+    @PostMapping("/products/{userId}")
+    public ResponseEntity<StatusResponseDto> createProductPage(@PathVariable String userId, @RequestBody CreateProductRequestDto requestDto, HttpServletRequest request) {
         StatusResponseDto responseDto = new StatusResponseDto(StatusEnum.OK, "상품 등록 완료");
+        String token = jwtUtil.resolveToken(request);
+        jwtUtil.validateAndGetUserInfo(token);
         productService.createProductPage(userId, requestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     //나의 판매상품 조회
-    @GetMapping("/allproducts")
+    @GetMapping("/products/{userId}/{productId}")
+    public ProductResponseDto getProductByUserId(@PathVariable String userId, @PathVariable Long productId, HttpServletRequest request) {
+        String token = jwtUtil.resolveToken(request);
+        jwtUtil.validateAndGetUserInfo(token);
+        return productService.getProductByUserId(userId, productId);
+    }
+
+    //나의 전체 판매상품 조회
+    @GetMapping("/products/{userId}")
     public List<ProductResponseDto> getAllProductByUserId(@PathVariable String userId) {
         return productService.getAllProductByUserId(userId);
     }
