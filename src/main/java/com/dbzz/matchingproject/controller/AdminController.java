@@ -7,28 +7,27 @@ import com.dbzz.matchingproject.dto.response.UserResponseDto;
 import com.dbzz.matchingproject.enums.StatusEnum;
 import com.dbzz.matchingproject.service.AdminService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@Secured({"ROLE_ADMIN"})
 public class AdminController {
 
     private final AdminService adminService;
 
     @GetMapping("/admin/customer-list")
-    public List<UserResponseDto> getAllCustomers() {
-        return adminService.getAllCustomers();
+    public List<UserResponseDto> getAllCustomers(Pageable pageable) {
+        return adminService.getAllCustomers(pageable);
     }
 
     @GetMapping("/admin/seller-list")
-    public List<SellerListResponseDto> getAllSellers() {
-        return adminService.getAllSellers();
+    public List<SellerListResponseDto> getAllSellers(Pageable pageable) {
+        return adminService.getAllSellers(pageable);
     }
 
     @GetMapping("/admin/permission")

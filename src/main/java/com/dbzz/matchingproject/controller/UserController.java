@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -61,10 +62,10 @@ public class UserController {
     }
 
     @GetMapping("/users/seller-list")
-    public List<SellerListResponseDto> getAllSellers(HttpServletRequest request) {
+    public List<SellerListResponseDto> getAllSellers(HttpServletRequest request, Pageable pageable) {
         String token = jwtUtil.resolveToken(request);
         jwtUtil.validateAndGetUserInfo(token);
-        return userService.getAllSellers();
+        return userService.getAllSellers(pageable);
     }
 
     @GetMapping("/users/signout")
