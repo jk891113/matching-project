@@ -3,7 +3,9 @@ package com.dbzz.matchingproject.controller;
 import com.dbzz.matchingproject.dto.request.LoginRequestDto;
 import com.dbzz.matchingproject.dto.request.SellerAuthRequestDto;
 import com.dbzz.matchingproject.dto.request.SignupRequestDto;
+import com.dbzz.matchingproject.dto.response.PermissionResponseDto;
 import com.dbzz.matchingproject.dto.response.ProfileResponseDto;
+import com.dbzz.matchingproject.dto.response.SellerListResponseDto;
 import com.dbzz.matchingproject.dto.response.StatusResponseDto;
 import com.dbzz.matchingproject.enums.StatusEnum;
 import com.dbzz.matchingproject.jwt.AuthenticatedUserInfoDto;
@@ -58,11 +60,10 @@ public class UserController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-
-//    @GetMapping("/users/sellerlist")
-//    public List<ProfileResponseDto> getAllSellerList(HttpServletRequest request) {
-//        String token = jwtUtil.resolveToken(request);
-//        jwtUtil.validateAndGetUserInfo(token);
-//        return userService.getAllSellerList();
-//    }
+    @GetMapping("/users/seller-list")
+    public List<SellerListResponseDto> getAllSellers(HttpServletRequest request) {
+        String token = jwtUtil.resolveToken(request);
+        jwtUtil.validateAndGetUserInfo(token);
+        return userService.getAllSellers();
+    }
 }

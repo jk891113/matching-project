@@ -3,7 +3,7 @@ package com.dbzz.matchingproject.service;
 import com.dbzz.matchingproject.dto.request.LoginRequestDto;
 import com.dbzz.matchingproject.dto.request.SellerAuthRequestDto;
 import com.dbzz.matchingproject.dto.request.SignupRequestDto;
-import com.dbzz.matchingproject.dto.response.ProfileResponseDto;
+import com.dbzz.matchingproject.dto.response.SellerListResponseDto;
 import com.dbzz.matchingproject.entity.Form;
 import com.dbzz.matchingproject.entity.Profile;
 import com.dbzz.matchingproject.entity.User;
@@ -15,17 +15,17 @@ import com.dbzz.matchingproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-
     private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
     private final FormRepository formRepository;
+    private final ProfileRepository profileRepository;
 
     @Override
     public void signup(SignupRequestDto requestDto) {
@@ -90,5 +90,21 @@ public class UserServiceImpl implements UserService {
         Form form = new Form(userId, requestDto.getIntro(), requestDto.getItem());
         formRepository.save(form);
 
+    }
+
+    @Override
+    public List<SellerListResponseDto> getAllSellers() {
+        List<User> userList = userRepository.findAllByRole(UserRoleEnum.SELLER);
+        List<String> userIdList = new ArrayList<>();
+        for(User user : userList){
+            userIdList.add(user.getUserId());
+        }
+        List<Profile> profileList = profileRepository.findAllByUserIdIn(userIdList);
+        if (profileList.isEmpty()) throw new IllegalArgumentException("판매자 목록이 없습니다.");
+        List<SellerListResponseDto> sellerList = new ArrayList<>();
+        for(Profile profile : profileList){
+            sellerList.add(new SellerListResponseDto(profile));
+        }
+        return sellerList;
     }
 }
