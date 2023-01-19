@@ -58,11 +58,6 @@ public class OrderServiceImpl implements OrderService {
                 () -> new IllegalArgumentException("해당 주문이 존재하지 않습니다.")
         );
         return new OrderForCustomerResponseDto(order);
-
-//        List<OrderForCustomerResponseDto> responseDtos = orderRepository.findByOrderId(orderId).stream()
-//                .map(order -> new OrderForCustomerResponseDto(order))
-//                .collect(Collectors.toList());
-//        return responseDtos;
     }
 
     @Override
@@ -89,8 +84,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void getAllOrderForSeller(String sellerId) {
-
+    public List<OrderForSellerResponseDto> getAllOrderForSeller(String sellerId) {
+        List<Long> orderIdList = orderItemRepository.findAllBySellerId(sellerId).stream()
+                .map(orderItem -> orderItem.getOrder().getOrderId())
+                .collect(Collectors.toList());
+        List<OrderForSellerResponseDto> responseDtos = orderRepository.findAllByOrderIdIn(orderIdList).stream()
+                .map(order -> new OrderForSellerResponseDto(order, sellerId))
+                .collect(Collectors.toList());
+        return responseDtos;
     }
 
 
