@@ -16,6 +16,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableJpaAuditing
 @SpringBootApplication
@@ -29,20 +30,21 @@ public class MatchingProjectApplication {
                                   ProfileRepository profileRepository,
                                   ProductRepository productRepository,
                                   FormRepository formRepository,
+                                  PasswordEncoder passwordEncoder,
                                   UserService userService) {
 
         return (args) -> {
-            userRepository.save(new User("customer1", "1234?5678", UserRoleEnum.CUSTOMER));
-            userRepository.save(new User("customer2", "1234?5678", UserRoleEnum.CUSTOMER));
-            userRepository.save(new User("customer3", "1234?5678", UserRoleEnum.CUSTOMER));
-            userRepository.save(new User("customer4", "1234?5678", UserRoleEnum.CUSTOMER));
-            userRepository.save(new User("customer5", "1234?5678", UserRoleEnum.CUSTOMER));
-            userRepository.save(new User("seller1", "1234?5678", UserRoleEnum.SELLER));
-            userRepository.save(new User("seller2", "1234?5678", UserRoleEnum.SELLER));
-            userRepository.save(new User("seller3", "1234?5678", UserRoleEnum.SELLER));
-            userRepository.save(new User("seller4", "1234?5678", UserRoleEnum.SELLER));
-            userRepository.save(new User("seller5", "1234?5678", UserRoleEnum.SELLER));
-            userRepository.save(new User("admin", "1234?5678", UserRoleEnum.ADMIN));
+            userRepository.save(new User("customer1", passwordEncoder.encode("1234?5678"), UserRoleEnum.CUSTOMER));
+            userRepository.save(new User("customer2", passwordEncoder.encode("1234?5678"), UserRoleEnum.CUSTOMER));
+            userRepository.save(new User("customer3", passwordEncoder.encode("1234?5678"), UserRoleEnum.CUSTOMER));
+            userRepository.save(new User("customer4", passwordEncoder.encode("1234?5678"), UserRoleEnum.CUSTOMER));
+            userRepository.save(new User("customer5", passwordEncoder.encode("1234?5678"), UserRoleEnum.CUSTOMER));
+            userRepository.save(new User("seller1", passwordEncoder.encode("1234?5678"), UserRoleEnum.SELLER));
+            userRepository.save(new User("seller2", passwordEncoder.encode("1234?5678"), UserRoleEnum.SELLER));
+            userRepository.save(new User("seller3", passwordEncoder.encode("1234?5678"), UserRoleEnum.SELLER));
+            userRepository.save(new User("seller4", passwordEncoder.encode("1234?5678"), UserRoleEnum.SELLER));
+            userRepository.save(new User("seller5", passwordEncoder.encode("1234?5678"), UserRoleEnum.SELLER));
+            userRepository.save(new User("admin", passwordEncoder.encode("1234?5678"), UserRoleEnum.ADMIN));
 
             profileRepository.save(new Profile("customer1", "고객1"));
             profileRepository.save(new Profile("customer2", "고객2"));
