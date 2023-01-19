@@ -1,12 +1,15 @@
 package com.dbzz.matchingproject.service;
 
 import com.dbzz.matchingproject.dto.request.LoginRequestDto;
+import com.dbzz.matchingproject.dto.request.SellerAuthRequestDto;
 import com.dbzz.matchingproject.dto.request.SignupRequestDto;
 import com.dbzz.matchingproject.dto.response.ProfileResponseDto;
+import com.dbzz.matchingproject.entity.Form;
 import com.dbzz.matchingproject.entity.Profile;
 import com.dbzz.matchingproject.entity.User;
 import com.dbzz.matchingproject.enums.UserRoleEnum;
 import com.dbzz.matchingproject.jwt.AuthenticatedUserInfoDto;
+import com.dbzz.matchingproject.repository.FormRepository;
 import com.dbzz.matchingproject.repository.ProfileRepository;
 import com.dbzz.matchingproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +25,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
+    private final FormRepository formRepository;
+
     @Override
     public void signup(SignupRequestDto requestDto) {
 //        String userId = requestDto.getUserId();
@@ -74,6 +79,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void signout() {
+
+    }
+
+    @Override
+    public void sellerAuth(String userId, SellerAuthRequestDto requestDto) {
+        User user = userRepository.findByUserId(userId).orElseThrow(
+                () -> new IllegalArgumentException("존재하지 않는 회원입니다.")
+        );
+        Form form = new Form(userId, requestDto.getIntro(), requestDto.getItem());
+        formRepository.save(form);
 
     }
 }
