@@ -12,7 +12,7 @@ public interface UserService {
 
     AuthenticatedUserInfoDto signin(LoginRequestDto requestDto);
 
-//    List<ProfileResponseDto> getAllSellerList();
+    List<ProfileResponseDto> getAllSellerList();
 
     void signout();
 }

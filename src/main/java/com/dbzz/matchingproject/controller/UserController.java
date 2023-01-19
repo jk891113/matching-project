@@ -8,6 +8,7 @@ import com.dbzz.matchingproject.enums.StatusEnum;
 import com.dbzz.matchingproject.jwt.AuthenticatedUserInfoDto;
 import com.dbzz.matchingproject.jwt.JwtUtil;
 import com.dbzz.matchingproject.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -48,10 +49,10 @@ public class UserController {
         return new ResponseEntity<>(responseDto, headers, HttpStatus.OK);
     }
 
-//    @GetMapping("/users/sellerlist")
-//    public List<ProfileResponseDto> getAllSellerList(HttpServletRequest request) {
-//        String token = jwtUtil.resolveToken(request);
-//        jwtUtil.validateAndGetUserInfo(token);
-//        return userService.getAllSellerList();
-//    }
+    @GetMapping("/users/sellerlist")
+    public List<ProfileResponseDto> getAllSellerList(HttpServletRequest request) {
+        String token = jwtUtil.resolveToken(request);
+        jwtUtil.validateAndGetUserInfo(token);
+        return userService.getAllSellerList();
+    }
 }
