@@ -17,17 +17,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderController {
     private final OrderService orderService;
-//    private final JwtUtil jwtUtil;
 
-//    @PostMapping("/orders/items/{productId}")
-//    public void createOrderItem(@PathVariable Long productId,
-//                                @RequestBody OrderItemRequestDto requestDto,
-//                                @AuthenticationPrincipal UserDetailsImpl userDetails) {
-////        String token = jwtUtil.resolveToken(request);
-////        jwtUtil.validateAndGetUserInfo(token);
-//        orderService.createOrderItem(productId, requestDto, userDetails.getUserId());
-//    }
-//
+    @PostMapping("/orders/items")
+    public void createOrderItem(@RequestParam List<Long> productId, @RequestParam List<Integer> quantity,
+                                @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        orderService.createOrderItem(productId, quantity, userDetails.getUserId());
+    }
+
     @GetMapping("/orders/items")
     public List<OrderItemResponseDto> getOrderItemList(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return orderService.getOrderItemList(userDetails.getUserId());
@@ -41,8 +37,13 @@ public class OrderController {
 
     }
 
-    @PostMapping("/Orders")
+    @PostMapping("/orders")
     public void createOrder(@RequestBody OrderItemRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         orderService.createOrder(requestDto, userDetails.getUserId());
+    }
+
+    @PutMapping("/orders/{orderId}")
+    public void acceptOrder(@PathVariable long orderId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        orderService.acceptOrder(orderId);
     }
 }

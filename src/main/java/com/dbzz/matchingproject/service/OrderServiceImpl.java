@@ -2,16 +2,18 @@ package com.dbzz.matchingproject.service;
 
 import com.dbzz.matchingproject.dto.request.OrderItemRequestDto;
 import com.dbzz.matchingproject.dto.response.OrderItemResponseDto;
+import com.dbzz.matchingproject.entity.Order;
 import com.dbzz.matchingproject.entity.OrderItem;
 import com.dbzz.matchingproject.entity.Product;
-import com.dbzz.matchingproject.repository.OrderItemRepository;
-import com.dbzz.matchingproject.repository.ProductRepository;
-import com.dbzz.matchingproject.repository.UserRepository;
+import com.dbzz.matchingproject.entity.ShippingInfo;
+import com.dbzz.matchingproject.enums.ShippingStatusEnum;
+import com.dbzz.matchingproject.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,15 +21,23 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl implements OrderService {
     private final ProductRepository productRepository;
     private final OrderItemRepository orderItemRepository;
+    private final OrderRepository orderRepository;
 
     @Override
-    public void createOrderItem(Long productId, OrderItemRequestDto requestDto, String userId) {
-        Product product = productRepository.findByProductId(productId).orElseThrow(
-                () -> new IllegalArgumentException("존재하지 않는 상품입니다.")
-        );
-        int amount = product.getPrice() * requestDto.getQuantity();
-        OrderItem orderItem = new OrderItem(userId, product.getProductId(), requestDto.getQuantity(), amount);
-        orderItemRepository.save(orderItem);
+    @Transactional
+    public void createOrderItem(List<Long> productId, List<Integer> quantity, String userId) {
+        int totalAmount = 0;
+        for (int i = 0; i < productId.size(); i++) {
+            Product product = productRepository.findByProductId(productId.get(i)).orElseThrow(
+                    () -> new IllegalArgumentException("존재하지 않는 상품입니다.")
+            );
+            int amount = product.getPrice() * quantity.get(i);
+            totalAmount += amount;
+            OrderItem orderItem = new OrderItem(userId, product.getProductId(), quantity.get(i), amount);
+            orderItemRepository.save(orderItem);
+        }
+        Order order = new Order(userId, totalAmount, ShippingStatusEnum.DEFAULT);
+        orderRepository.save(order);
     }
 
     @Override
@@ -42,11 +52,6 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public void createOrder(OrderItemRequestDto requestDto, String userId) {
-        Product product = productRepository.findByProductId(requestDto.getProductId()).orElseThrow(
-                () -> new IllegalArgumentException("존재하지 않는 상품입니다.")
-        );
-        int amount = product.getPrice() * requestDto.getQuantity();
-        OrderItem orderItem = new OrderItem(userId, requestDto.getProductId(), requestDto.getQuantity(), amount);
 
     }
 
@@ -56,7 +61,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void acceptOrder() {
-
+    public void acceptOrder(long orderId) {
+        Order order = orderRepository.findByOrderId(orderId).orElseThrow(
+                () -> new IllegalArgumentException("주문 페이지가 존재하지 않습니다.")
+        );
     }
 }

@@ -6,7 +6,7 @@ import com.dbzz.matchingproject.dto.response.OrderItemResponseDto;
 import java.util.List;
 
 public interface OrderService {
-    void createOrderItem(Long productId, OrderItemRequestDto requestDto, String userId);
+    void createOrderItem(List<Long> productId, List<Integer> quantity, String userId);
 
     List<OrderItemResponseDto> getOrderItemList(String userId);
 
@@ -14,5 +14,5 @@ public interface OrderService {
 
     void getOrderByUserId();
 
-    void acceptOrder();
+    void acceptOrder(long orderId);
 }

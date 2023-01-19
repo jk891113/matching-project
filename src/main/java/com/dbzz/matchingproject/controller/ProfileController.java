@@ -6,49 +6,40 @@ import com.dbzz.matchingproject.dto.request.SellerProfileRequestDto;
 import com.dbzz.matchingproject.dto.response.CustomerProfileResponseDto;
 import com.dbzz.matchingproject.dto.response.ProfileResponseDto;
 import com.dbzz.matchingproject.jwt.JwtUtil;
+import com.dbzz.matchingproject.security.UserDetailsImpl;
 import com.dbzz.matchingproject.service.ProfileService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 public class ProfileController {
     private final ProfileService profileService;
-    private final JwtUtil jwtUtil;
 
-    @PostMapping("/profiles/customers/{userId}")
-    public CustomerProfileResponseDto createCustomerProfile(@PathVariable String userId, @RequestBody CustomerProfileRequestDto requestDto, HttpServletRequest request) {
-//        String token = jwtUtil.resolveToken(request);
-//        jwtUtil.validateAndGetUserInfo(token);
-        return profileService.createCustomerProfile(userId, requestDto);
+    @PostMapping("/profiles/customers")
+    public CustomerProfileResponseDto createCustomerProfile(@RequestBody CustomerProfileRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return profileService.createCustomerProfile(userDetails.getUserId(), requestDto);
     }
 
-    @PostMapping("/profiles/sellers/{userId}")
-    public void createSellerProfile(@PathVariable String userId, @RequestBody SellerProfileRequestDto requestDto, HttpServletRequest request) {
-//        String token = jwtUtil.resolveToken(request);
-//        jwtUtil.validateAndGetUserInfo(token);
-        profileService.createSellerProfile(userId, requestDto);
+    @PostMapping("/profiles/sellers")
+    public void createSellerProfile(@RequestBody SellerProfileRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        profileService.createSellerProfile(userDetails.getUserId(), requestDto);
     }
 
-    @GetMapping("/profiles/customers/{userId}")
-    public CustomerProfileResponseDto getCustomerProfileByUserId(@PathVariable String userId, HttpServletRequest request) {
-//        String token = jwtUtil.resolveToken(request);
-//        jwtUtil.validateAndGetUserInfo(token);
-        return profileService.getCustomerProfileByUserId(userId);
+    @GetMapping("/profiles/customers")
+    public CustomerProfileResponseDto getCustomerProfileByUserId(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return profileService.getCustomerProfileByUserId(userDetails.getUserId());
     }
 
-    @GetMapping("/profiles/sellers/{userId}")
-    public ProfileResponseDto getSellerProfileByUserId(@PathVariable String userId, HttpServletRequest request) {
-//        String token = jwtUtil.resolveToken(request);
-//        jwtUtil.validateAndGetUserInfo(token);
-        return profileService.getSellerProfileByUserId(userId);
+    @GetMapping("/profiles/sellers")
+    public ProfileResponseDto getSellerProfileByUserId(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return profileService.getSellerProfileByUserId(userDetails.getUserId());
     }
 
-    @PutMapping("/profiles/{userId}")
-    public ProfileResponseDto updateProfile(@PathVariable String userId, @RequestBody ProfileRequestDto requestDto, HttpServletRequest request) {
-//        String token = jwtUtil.resolveToken(request);
-//        jwtUtil.validateAndGetUserInfo(token);
-        return profileService.updateProfile(userId, requestDto);
+    @PutMapping("/profiles")
+    public ProfileResponseDto updateProfile(@RequestBody ProfileRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return profileService.updateProfile(userDetails.getUserId(), requestDto);
     }
 }

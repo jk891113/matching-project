@@ -22,6 +22,7 @@ public class AdminController {
     private final AdminService adminService;
     private final JwtUtil jwtUtil;
 
+    // 페이징
     @GetMapping("/admin/customer-list")
     public List<UserResponseDto> getAllCustomers(HttpServletRequest request) {
         String token = jwtUtil.resolveToken(request);
@@ -29,6 +30,7 @@ public class AdminController {
         return adminService.getAllCustomers();
     }
 
+    // 페이징
     @GetMapping("/admin/seller-list")
     public List<SellerListResponseDto> getAllSellers(HttpServletRequest request) {
         String token = jwtUtil.resolveToken(request);

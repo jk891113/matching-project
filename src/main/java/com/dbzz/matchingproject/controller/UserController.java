@@ -60,6 +60,8 @@ public class UserController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
+
+    // 페이징
     @GetMapping("/users/seller-list")
     public List<SellerListResponseDto> getAllSellers(HttpServletRequest request) {
         String token = jwtUtil.resolveToken(request);
