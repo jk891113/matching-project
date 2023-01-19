@@ -1,6 +1,7 @@
 package com.dbzz.matchingproject.service;
 
 import com.dbzz.matchingproject.dto.request.CreateProductRequestDto;
+import com.dbzz.matchingproject.dto.request.UpdateProductRequestDto;
 import com.dbzz.matchingproject.dto.response.ProductResponseDto;
 import com.dbzz.matchingproject.entity.Product;
 import com.dbzz.matchingproject.entity.User;
@@ -51,16 +52,16 @@ public class ProductServiceImpl implements ProductService {
         return allProductsList;
     }
 
-//    //판매상품 수정
-//    @Override
-////    @Transactional
-//    public void updateProduct(String userId, UpdateProductRequestDto requestDto) {
-//        productRepository.findByProductId(userId).orElseThrow(
-//                () -> new IllegalArgumentException("존재하지 않는 상품입니다.")
-//        );
-//        Product product = new Product(userId, requestDto.getProductName(), requestDto.getPrice(), requestDto.getProductInfo());
-//        productRepository.update(product);
-//    }
+    //판매상품 수정
+    @Override
+    @Transactional
+    public ProductResponseDto updateProduct(Long productId, UpdateProductRequestDto requestDto) {
+        Product product = productRepository.findByProductId(productId).orElseThrow(
+                () -> new IllegalArgumentException("존재하지 않는 상품입니다.")
+        );
+        product.update(requestDto);
+        return new ProductResponseDto(product);
+    }
 
     //판매상품 삭제
     @Override

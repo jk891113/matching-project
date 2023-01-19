@@ -1,6 +1,7 @@
 package com.dbzz.matchingproject.service;
 
 import com.dbzz.matchingproject.dto.request.CreateProductRequestDto;
+import com.dbzz.matchingproject.dto.request.UpdateProductRequestDto;
 import com.dbzz.matchingproject.dto.response.ProductResponseDto;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public interface ProductService {
     List<ProductResponseDto> getAllProducts();
 
     //판매상품 수정
-//    ProductResponseDto updateProduct(String userId, UpdateProductRequestDto requestDto);
+    ProductResponseDto updateProduct(Long productId, UpdateProductRequestDto requestDto);
 
     //판매상품 삭제
     void deleteProduct(Long productId);
