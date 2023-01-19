@@ -31,9 +31,9 @@ public class OrderController {
         return orderService.getOrderForCustomer(orderId);
     }
 
-    @GetMapping("/orders/custommers")
-    public void getAllOrderForCustomer(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        orderService.getAllOrderForCustomer(userDetails.getUserId());
+    @GetMapping("/orders/customers")
+    public List<OrderForCustomerResponseDto> getAllOrderForCustomer(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return orderService.getAllOrderForCustomer(userDetails.getUserId());
     }
 
     @GetMapping("/orders/sellers/{orderId}")

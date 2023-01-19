@@ -66,8 +66,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void getAllOrderForCustomer(String customerId) {
-
+    public List<OrderForCustomerResponseDto> getAllOrderForCustomer(String customerId) {
+        List<OrderForCustomerResponseDto> responseDtos = orderRepository.findAllByCustomerId(customerId).stream()
+                .map(order -> new OrderForCustomerResponseDto(order))
+                .collect(Collectors.toList());
+        return responseDtos;
     }
 
 
