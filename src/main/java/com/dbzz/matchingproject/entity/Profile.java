@@ -62,4 +62,9 @@ public class Profile extends Timestamp {
         this.intro = requestDto.getIntro();
         this.item = requestDto.getItem();
     }
+
+    public void updateSellerProfile(Form form) {
+        this.intro = form.getIntro();
+        this.item = form.getItem();
+    }
 }

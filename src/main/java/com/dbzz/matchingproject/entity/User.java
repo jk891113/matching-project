@@ -26,11 +26,7 @@ public class User extends Timestamp {
         this.role = role;
     }
 
-    public void changeSeller(UserRoleEnum role) {
-        this.role = UserRoleEnum.SELLER;
-    }
-
-    public void removeSeller(UserRoleEnum role) {
-        this.role = UserRoleEnum.CUSTOMER;
+    public void changeRole(UserRoleEnum role) {
+        this.role = role;
     }
 }

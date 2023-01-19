@@ -1,17 +1,23 @@
 package com.dbzz.matchingproject.service;
 
 import com.dbzz.matchingproject.dto.request.LoginRequestDto;
+import com.dbzz.matchingproject.dto.request.SellerAuthRequestDto;
 import com.dbzz.matchingproject.dto.request.SignupRequestDto;
 import com.dbzz.matchingproject.dto.response.ProfileResponseDto;
+import com.dbzz.matchingproject.dto.response.SellerListResponseDto;
+import com.dbzz.matchingproject.entity.Form;
 import com.dbzz.matchingproject.entity.Profile;
 import com.dbzz.matchingproject.entity.User;
 import com.dbzz.matchingproject.enums.UserRoleEnum;
 import com.dbzz.matchingproject.jwt.AuthenticatedUserInfoDto;
+import com.dbzz.matchingproject.repository.FormRepository;
 import com.dbzz.matchingproject.repository.ProfileRepository;
 import com.dbzz.matchingproject.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,9 +27,9 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ProfileRepository profileRepository;
+    private final FormRepository formRepository;
 
     private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
-
     @Override
     public void signup(SignupRequestDto requestDto) {
 //        String userId = requestDto.getUserId();
@@ -61,19 +67,45 @@ public class UserServiceImpl implements UserService {
         return new AuthenticatedUserInfoDto(user.getRole(), user.getUserId());
     }
 
+//    @Override
+//    public List<ProfileResponseDto> getAllSellerList() {
+//        List<String> userIdList = userRepository.findAllByRole(UserRoleEnum.SELLER).stream()
+//                .map(User::getUserId)
+//                .collect(Collectors.toList());
+//        List<ProfileResponseDto> responseDtos = profileRepository.findAllByUserIdIn(userIdList).stream()
+//                .map(profile -> new ProfileResponseDto(profile.getUserId(), profile))
+//                .collect(Collectors.toList());
+//        return responseDtos;
+//    }
+
     @Override
-    public List<ProfileResponseDto> getAllSellerList() {
-        List<String> userIdList = userRepository.findAllByRole(UserRoleEnum.SELLER).stream()
-                .map(User::getUserId)
-                .collect(Collectors.toList());
-        List<ProfileResponseDto> responseDtos = profileRepository.findAllByUserIdIn(userIdList).stream()
-                .map(profile -> new ProfileResponseDto(profile.getUserId(), profile))
-                .collect(Collectors.toList());
-        return responseDtos;
+    public void signout(HttpServletRequest request) {
+
     }
 
     @Override
-    public void signout() {
+    public void sellerAuth(String userId, SellerAuthRequestDto requestDto) {
+        User user = userRepository.findByUserId(userId).orElseThrow(
+                () -> new IllegalArgumentException("존재하지 않는 회원입니다.")
+        );
+        Form form = new Form(userId, requestDto.getIntro(), requestDto.getItem());
+        formRepository.save(form);
 
+    }
+
+    @Override
+    public List<SellerListResponseDto> getAllSellers() {
+        List<User> userList = userRepository.findAllByRole(UserRoleEnum.SELLER);
+        List<String> userIdList = new ArrayList<>();
+        for (User user : userList) {
+            userIdList.add(user.getUserId());
+        }
+        List<Profile> profileList = profileRepository.findAllByUserIdIn(userIdList);
+        if (profileList.isEmpty()) throw new IllegalArgumentException("판매자 목록이 없습니다.");
+        List<SellerListResponseDto> sellerList = new ArrayList<>();
+        for (Profile profile : profileList) {
+            sellerList.add(new SellerListResponseDto(profile));
+        }
+        return sellerList;
     }
 }

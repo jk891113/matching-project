@@ -1,7 +1,6 @@
 package com.dbzz.matchingproject.repository;
 
 import com.dbzz.matchingproject.entity.Form;
-import com.dbzz.matchingproject.entity.Profile;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

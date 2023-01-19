@@ -11,7 +11,7 @@ public interface AdminService {
 
     List<PermissionResponseDto> getPermissionRequestForms();
 
-    PermissionResponseDto permitAuth(String userId);
+    void permitAuth(String userId);
 
-    PermissionResponseDto removeAuth(String userId);
+    void removeAuth(String userId);
 }
