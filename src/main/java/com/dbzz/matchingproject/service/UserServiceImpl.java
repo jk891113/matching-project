@@ -20,8 +20,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final ProfileRepository profileRepository;
 
     private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
+
     @Override
     public void signup(SignupRequestDto requestDto) {
 //        String userId = requestDto.getUserId();
@@ -59,18 +61,16 @@ public class UserServiceImpl implements UserService {
         return new AuthenticatedUserInfoDto(user.getRole(), user.getUserId());
     }
 
-//    @Override
-//    public List<ProfileResponseDto> getAllSellerList() {
-////        List<User> sellerList = userRepository.findAllByRole(UserRoleEnum.SELLER);
-//        List<String> userIdList = userRepository.findAllByRole(UserRoleEnum.SELLER).stream()
-//                .map(User::getUserId)
-//                .collect(Collectors.toList());
-////        List<Profile> sellerProfileList = profileRepository.findAllByUserIdIn(userIdList);
-//        List<ProfileResponseDto> responseDtos = profileRepository.findAllByUserIdIn(userIdList).stream()
-//                .map(profile -> new ProfileResponseDto(profile.getUserId(), profile))
-//                .collect(Collectors.toList());
-//        return responseDtos;
-//    }
+    @Override
+    public List<ProfileResponseDto> getAllSellerList() {
+        List<String> userIdList = userRepository.findAllByRole(UserRoleEnum.SELLER).stream()
+                .map(User::getUserId)
+                .collect(Collectors.toList());
+        List<ProfileResponseDto> responseDtos = profileRepository.findAllByUserIdIn(userIdList).stream()
+                .map(profile -> new ProfileResponseDto(profile.getUserId(), profile))
+                .collect(Collectors.toList());
+        return responseDtos;
+    }
 
     @Override
     public void signout() {

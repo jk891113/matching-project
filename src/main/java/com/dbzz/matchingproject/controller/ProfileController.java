@@ -19,36 +19,36 @@ public class ProfileController {
 
     @PostMapping("/profiles/customers/{userId}")
     public CustomerProfileResponseDto createCustomerProfile(@PathVariable String userId, @RequestBody CustomerProfileRequestDto requestDto, HttpServletRequest request) {
-        String token = jwtUtil.resolveToken(request);
-        jwtUtil.validateAndGetUserInfo(token);
+//        String token = jwtUtil.resolveToken(request);
+//        jwtUtil.validateAndGetUserInfo(token);
         return profileService.createCustomerProfile(userId, requestDto);
     }
 
     @PostMapping("/profiles/sellers/{userId}")
     public void createSellerProfile(@PathVariable String userId, @RequestBody SellerProfileRequestDto requestDto, HttpServletRequest request) {
-        String token = jwtUtil.resolveToken(request);
-        jwtUtil.validateAndGetUserInfo(token);
+//        String token = jwtUtil.resolveToken(request);
+//        jwtUtil.validateAndGetUserInfo(token);
         profileService.createSellerProfile(userId, requestDto);
     }
 
     @GetMapping("/profiles/customers/{userId}")
     public CustomerProfileResponseDto getCustomerProfileByUserId(@PathVariable String userId, HttpServletRequest request) {
-        String token = jwtUtil.resolveToken(request);
-        jwtUtil.validateAndGetUserInfo(token);
+//        String token = jwtUtil.resolveToken(request);
+//        jwtUtil.validateAndGetUserInfo(token);
         return profileService.getCustomerProfileByUserId(userId);
     }
 
     @GetMapping("/profiles/sellers/{userId}")
     public ProfileResponseDto getSellerProfileByUserId(@PathVariable String userId, HttpServletRequest request) {
-        String token = jwtUtil.resolveToken(request);
-        jwtUtil.validateAndGetUserInfo(token);
+//        String token = jwtUtil.resolveToken(request);
+//        jwtUtil.validateAndGetUserInfo(token);
         return profileService.getSellerProfileByUserId(userId);
     }
 
     @PutMapping("/profiles/{userId}")
     public ProfileResponseDto updateProfile(@PathVariable String userId, @RequestBody ProfileRequestDto requestDto, HttpServletRequest request) {
-        String token = jwtUtil.resolveToken(request);
-        jwtUtil.validateAndGetUserInfo(token);
+//        String token = jwtUtil.resolveToken(request);
+//        jwtUtil.validateAndGetUserInfo(token);
         return profileService.updateProfile(userId, requestDto);
     }
 }

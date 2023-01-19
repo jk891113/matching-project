@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-public class ShippingInfo {
+public class ShippingInfo extends Timestamp {
     @Id
     @Column(nullable = false)
     private String userId;
