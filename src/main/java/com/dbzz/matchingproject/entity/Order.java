@@ -5,6 +5,10 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.awt.print.Pageable;
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity(name = "orders")
 @Getter
 @NoArgsConstructor
@@ -14,18 +18,30 @@ public class Order extends Timestamp {
     private long orderId;
 
     @Column(nullable = false)
-    private String customerId;
+    private String customerId = "";
+
+    @Column(nullable = false)
+    private String sellerId = "";
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderItem> orderItemList = new ArrayList<>();
 
     @Column(nullable = false)
     private int totalAmount = 0;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private ShippingStatusEnum shippingStatus;
+    private ShippingStatusEnum shippingStatus = ShippingStatusEnum.DEFAULT;
 
-    public Order(String customerId, int totalAmount, ShippingStatusEnum shippingStatus) {
+    public Order(String customerId, String sellerId, int totalAmount) {
         this.customerId = customerId;
+        this.sellerId = sellerId;
         this.totalAmount = totalAmount;
-        this.shippingStatus = shippingStatus;
+    }
+
+    public void putDatasInOrder(String customerId, String sellerId, int totalAmount) {
+        this.customerId = customerId;
+        this.sellerId = sellerId;
+        this.totalAmount = totalAmount;
     }
 }

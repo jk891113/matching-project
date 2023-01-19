@@ -1,6 +1,8 @@
 package com.dbzz.matchingproject.controller;
 
 import com.dbzz.matchingproject.dto.request.OrderItemRequestDto;
+import com.dbzz.matchingproject.dto.response.OrderForCustomerResponseDto;
+import com.dbzz.matchingproject.dto.response.OrderForSellerResponseDto;
 import com.dbzz.matchingproject.dto.response.OrderItemResponseDto;
 import com.dbzz.matchingproject.jwt.JwtUtil;
 import com.dbzz.matchingproject.security.UserDetailsImpl;
@@ -18,29 +20,49 @@ import java.util.List;
 public class OrderController {
     private final OrderService orderService;
 
-    @PostMapping("/orders/items")
-    public void createOrderItem(@RequestParam List<Long> productId, @RequestParam List<Integer> quantity,
-                                @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        orderService.createOrderItem(productId, quantity, userDetails.getUserId());
-    }
-
-    @GetMapping("/orders/items")
-    public List<OrderItemResponseDto> getOrderItemList(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return orderService.getOrderItemList(userDetails.getUserId());
-    }
-
-    public void updateOrderItem() {
-
-    }
-
-    public void removeOrderItem() {
-
-    }
-
     @PostMapping("/orders")
-    public void createOrder(@RequestBody OrderItemRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        orderService.createOrder(requestDto, userDetails.getUserId());
+    public void createOrder(@RequestParam List<Long> productId, @RequestParam List<Integer> quantity,
+                                @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        orderService.createOrder(productId, quantity, userDetails.getUserId());
     }
+
+    @GetMapping("/orders/customers/{orderId}")
+    public OrderForCustomerResponseDto getOrderForCustomer(@PathVariable long orderId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return orderService.getOrderForCustomer(orderId);
+    }
+
+    @GetMapping("/orders/custommers")
+    public void getAllOrderForCustomer(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        orderService.getAllOrderForCustomer(userDetails.getUserId());
+    }
+
+    @GetMapping("/orders/sellers/{orderId}")
+    public OrderForSellerResponseDto getOrderForSeller(@PathVariable long orderId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return orderService.getOrderForSeller(orderId, userDetails.getUserId());
+    }
+
+    @GetMapping("/orders/sellers")
+    public void getAllOrderForSeller(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        orderService.getAllOrderForSeller(userDetails.getUserId());
+    }
+
+//    @GetMapping("/orders/items")
+//    public List<OrderItemResponseDto> getOrderItemList(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+//        return orderService.getOrderItemList(userDetails.getUserId());
+//    }
+
+//    public void updateOrderItem() {
+//
+//    }
+//
+//    public void removeOrderItem() {
+//
+//    }
+
+//    @PostMapping("/orders")
+//    public void createOrder(@RequestBody OrderItemRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+//        orderService.createOrder(requestDto, userDetails.getUserId());
+//    }
 
     @PutMapping("/orders/{orderId}")
     public void acceptOrder(@PathVariable long orderId, @AuthenticationPrincipal UserDetailsImpl userDetails) {

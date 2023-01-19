@@ -13,11 +13,15 @@ public class OrderItem extends Timestamp {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long itemId;
 
-    @Column(nullable = false)
-    private String customerId;
-
 //    @Column(nullable = false)
 //    private long orderId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
+    private Order order;
+
+    @Column(nullable = false)
+    private String sellerId;
 
     @Column(nullable = false)
     private long productId;
@@ -28,11 +32,11 @@ public class OrderItem extends Timestamp {
     @Column(nullable = false)
     private int amount;
 
-    public OrderItem(String customerId, long productId, int quantity, int amount) {
-        this.customerId = customerId;
-//        this.orderId = orderId;
+    public OrderItem(String sellerId, long productId, int quantity, int amount, Order order) {
+        this.sellerId = sellerId;
         this.productId = productId;
         this.quantity = quantity;
         this.amount = amount;
+        this.order = order;
     }
 }
