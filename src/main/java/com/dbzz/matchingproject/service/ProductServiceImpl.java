@@ -59,14 +59,8 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.findByProductId(productId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 상품입니다.")
         );
-
         product.update(requestDto);
-//        Product product = new Product(productId, requestDto.getProductName(), requestDto.getPrice(), requestDto.getProductInfo());
-//        productRepository.update(product);
-//        product.update(updateProductRequestDto.getProductName(), updateProductRequestDto.getPrice(), updateProductRequestDto.getProductInfo());
         return new ProductResponseDto(product);
-//        BoardResponseDto boardResponseDto = new BoardResponseDto(board);
-//        return boardResponseDto;
     }
 
     //판매상품 삭제
