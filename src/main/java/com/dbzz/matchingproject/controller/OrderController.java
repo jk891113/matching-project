@@ -2,10 +2,7 @@ package com.dbzz.matchingproject.controller;
 
 import com.dbzz.matchingproject.dto.request.OrderItemRequestDto;
 import com.dbzz.matchingproject.dto.request.ShippingInfoRequestDto;
-import com.dbzz.matchingproject.dto.response.CreateOrderResponseDto;
-import com.dbzz.matchingproject.dto.response.OrderForCustomerResponseDto;
-import com.dbzz.matchingproject.dto.response.OrderForSellerResponseDto;
-import com.dbzz.matchingproject.dto.response.OrderItemResponseDto;
+import com.dbzz.matchingproject.dto.response.*;
 import com.dbzz.matchingproject.jwt.JwtUtil;
 import com.dbzz.matchingproject.security.UserDetailsImpl;
 import com.dbzz.matchingproject.service.OrderService;
@@ -31,7 +28,7 @@ public class OrderController {
     }
 
     @GetMapping("/orders/customers/{orderId}")
-    public OrderForCustomerResponseDto getOrderForCustomer(@PathVariable long orderId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public MyOrderForCustomerResponseDto getOrderForCustomer(@PathVariable long orderId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return orderService.getOrderForCustomer(orderId);
     }
 
@@ -41,7 +38,7 @@ public class OrderController {
     }
 
     @GetMapping("/orders/sellers/{orderId}")
-    public OrderForSellerResponseDto getOrderForSeller(@PathVariable long orderId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public MyOrderForSellerResponseDto getOrderForSeller(@PathVariable long orderId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return orderService.getOrderForSeller(orderId, userDetails.getUserId());
     }
 
@@ -51,7 +48,7 @@ public class OrderController {
     }
 
     @PutMapping("/orders/{orderId}")
-    public OrderForSellerResponseDto acceptOrder(@PathVariable long orderId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public MyOrderForSellerResponseDto acceptOrder(@PathVariable long orderId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return orderService.acceptOrder(orderId, userDetails.getUserId());
     }
 }

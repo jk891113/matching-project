@@ -2,10 +2,7 @@ package com.dbzz.matchingproject.service;
 
 import com.dbzz.matchingproject.dto.request.OrderItemRequestDto;
 import com.dbzz.matchingproject.dto.request.ShippingInfoRequestDto;
-import com.dbzz.matchingproject.dto.response.CreateOrderResponseDto;
-import com.dbzz.matchingproject.dto.response.OrderForCustomerResponseDto;
-import com.dbzz.matchingproject.dto.response.OrderForSellerResponseDto;
-import com.dbzz.matchingproject.dto.response.OrderItemResponseDto;
+import com.dbzz.matchingproject.dto.response.*;
 import com.dbzz.matchingproject.entity.Order;
 import com.dbzz.matchingproject.entity.OrderItem;
 import com.dbzz.matchingproject.entity.Product;
@@ -59,11 +56,14 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional(readOnly = true)
-    public OrderForCustomerResponseDto getOrderForCustomer(long orderId) {
+    public MyOrderForCustomerResponseDto getOrderForCustomer(long orderId) {
         Order order = orderRepository.findByOrderId(orderId).orElseThrow(
                 () -> new IllegalArgumentException("해당 주문이 존재하지 않습니다.")
         );
-        return new OrderForCustomerResponseDto(order);
+        ShippingInfo shippingInfo = shippingInfoRepository.findByShippingInfoId(order.getShippingInfoId()).orElseThrow(
+                () -> new IllegalArgumentException("배송정보가 존재하지 않습니다.")
+        );
+        return new MyOrderForCustomerResponseDto(order, shippingInfo);
     }
 
     @Override
@@ -76,11 +76,14 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
-    public OrderForSellerResponseDto getOrderForSeller(long orderId, String sellerId) {
+    public MyOrderForSellerResponseDto getOrderForSeller(long orderId, String sellerId) {
         Order order = orderRepository.findByOrderId(orderId).orElseThrow(
                 () -> new IllegalArgumentException("해당 주문이 존재하지 않습니다.")
         );
-        return new OrderForSellerResponseDto(order, sellerId);
+        ShippingInfo shippingInfo = shippingInfoRepository.findByShippingInfoId(order.getShippingInfoId()).orElseThrow(
+                () -> new IllegalArgumentException("배송정보가 존재하지 않습니다.")
+        );
+        return new MyOrderForSellerResponseDto(order, sellerId, shippingInfo);
     }
 
     @Override
@@ -96,7 +99,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public OrderForSellerResponseDto acceptOrder(long orderId, String sellerId) {
+    public MyOrderForSellerResponseDto acceptOrder(long orderId, String sellerId) {
         Order order = orderRepository.findByOrderId(orderId).orElseThrow(
                 () -> new IllegalArgumentException("주문 페이지가 존재하지 않습니다.")
         );
