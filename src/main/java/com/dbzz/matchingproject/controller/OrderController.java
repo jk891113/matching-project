@@ -47,7 +47,7 @@ public class OrderController {
     }
 
     @PutMapping("/orders/{orderId}")
-    public void acceptOrder(@PathVariable long orderId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        orderService.acceptOrder(orderId, userDetails.getUserId());
+    public OrderForSellerResponseDto acceptOrder(@PathVariable long orderId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return orderService.acceptOrder(orderId, userDetails.getUserId());
     }
 }

@@ -91,7 +91,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public void acceptOrder(long orderId, String sellerId) {
+    public OrderForSellerResponseDto acceptOrder(long orderId, String sellerId) {
         Order order = orderRepository.findByOrderId(orderId).orElseThrow(
                 () -> new IllegalArgumentException("주문 페이지가 존재하지 않습니다.")
         );
@@ -101,5 +101,6 @@ public class OrderServiceImpl implements OrderService {
             orderItemRepository.save(orderItem);
         }
         order.updateShippingStatus(order);
+        return getOrderForSeller(orderId, sellerId);
     }
 }
