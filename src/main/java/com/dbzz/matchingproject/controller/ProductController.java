@@ -7,6 +7,7 @@ import com.dbzz.matchingproject.dto.response.ProductResponseDto;
 import com.dbzz.matchingproject.dto.response.StatusResponseDto;
 import com.dbzz.matchingproject.enums.StatusEnum;
 import com.dbzz.matchingproject.jwt.JwtUtil;
+import com.dbzz.matchingproject.security.UserDetailsImpl;
 import com.dbzz.matchingproject.service.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,24 +30,27 @@ public class ProductController {
 
     //판매상품 등록
     @PostMapping("/products")
-    public ResponseEntity<StatusResponseDto> createProductPage(@PathVariable String userId, @RequestBody CreateProductRequestDto requestDto) {
+    public ResponseEntity<StatusResponseDto> createProductPage(@RequestBody CreateProductRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         StatusResponseDto responseDto = new StatusResponseDto(StatusEnum.OK, "상품 등록 완료");
-        productService.createProductPage(userId, requestDto);
+        productService.createProductPage(userDetails.getUserId(), requestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     //나의 판매상품 조회
-    @GetMapping("/products/{userId}/{productId}")
-    public ProductResponseDto getProductByUserId(@PathVariable String userId, @PathVariable Long productId) {
-        return productService.getProductByUserId(userId, productId);
+    @GetMapping("/products/{productId}")
+    public ProductResponseDto getProductByUserId(@PathVariable Long productId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return productService.getProductByUserId(userDetails.getUserId(), productId);
     }
 
+    // 페이징
     //나의 전체 판매상품 조회
     @GetMapping("/products/{userId}")
     public List<ProductResponseDto> getAllProductByUserId(@PathVariable String userId, Pageable pageable) {
         return productService.getAllProductByUserId(userId, pageable);
     }
 
+
+    // 페이징
     //전체 상품 조회(고객용)
     @GetMapping("/products")
     public List<AllProductResponseDto> getAllProducts(Pageable pageable) {

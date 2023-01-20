@@ -1,6 +1,5 @@
 package com.dbzz.matchingproject.service;
 
-import com.dbzz.matchingproject.dto.request.ProfileRequestDto;
 import com.dbzz.matchingproject.dto.response.PermissionResponseDto;
 import com.dbzz.matchingproject.dto.response.SellerListResponseDto;
 import com.dbzz.matchingproject.dto.response.UserResponseDto;
@@ -13,6 +12,7 @@ import com.dbzz.matchingproject.repository.ProfileRepository;
 import com.dbzz.matchingproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,8 +29,8 @@ public class AdminServiceImpl implements AdminService{
 
     @Override
     @Transactional(readOnly = true)
-    public List<UserResponseDto> getAllCustomers() {
-        List<User> userList = userRepository.findAllByOrderByCreatedAtDesc();
+    public List<UserResponseDto> getAllCustomers(Pageable pageable) {
+        List<User> userList = userRepository.findAllByOrderByCreatedAtDesc(pageable);
         if (userList.isEmpty()) throw new IllegalArgumentException("회원 목록이 없습니다.");
         List<UserResponseDto> customerList = new ArrayList<>();
             for(User user : userList){
@@ -41,8 +41,8 @@ public class AdminServiceImpl implements AdminService{
 
     @Override
     @Transactional(readOnly = true)
-    public List<SellerListResponseDto> getAllSellers() {
-        List<User> userList = userRepository.findAllByRole(UserRoleEnum.SELLER);
+    public List<SellerListResponseDto> getAllSellers(Pageable pageable) {
+        List<User> userList = userRepository.findAllByRole(UserRoleEnum.SELLER, pageable);
         List<String> userIdList = new ArrayList<>();
         for(User user : userList){
             userIdList.add(user.getUserId());
@@ -70,10 +70,14 @@ public class AdminServiceImpl implements AdminService{
 
     @Override
     public void permitAuth(String userId) {
-        Form form = formRepository.findByUserId(userId).get();
-        Profile profile = profileRepository.findByUserId(form.getUserId()).get();
-        User user = userRepository.findByUserId(form.getUserId()).orElseThrow(
-                () -> new IllegalArgumentException("존재하지 않는 회원입니다.")
+        Form form = formRepository.findByUserId(userId).orElseThrow(
+                () -> new IllegalArgumentException("판매자 권한 요청 내역이 없습니다.")
+        );
+        Profile profile = profileRepository.findByUserId(userId).orElseThrow(
+                () -> new IllegalArgumentException("판매자 권한 요청 내역이 없습니다.")
+        );
+        User user = userRepository.findByUserId(userId).orElseThrow(
+                () -> new IllegalArgumentException("판매자 권한 요청 내역이 없습니다.")
         );
         user.changeRole(UserRoleEnum.SELLER);
         profile.updateSellerProfile(form);

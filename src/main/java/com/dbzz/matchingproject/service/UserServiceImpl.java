@@ -15,6 +15,7 @@ import com.dbzz.matchingproject.repository.ProfileRepository;
 import com.dbzz.matchingproject.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -69,16 +70,16 @@ public class UserServiceImpl implements UserService {
         return new AuthenticatedUserInfoDto(user.getRole(), user.getUserId());
     }
 
-    @Override
-    public List<ProfileResponseDto> getAllSellerList() {
-        List<String> userIdList = userRepository.findAllByRole(UserRoleEnum.SELLER).stream()
-                .map(User::getUserId)
-                .collect(Collectors.toList());
-        List<ProfileResponseDto> responseDtos = profileRepository.findAllByUserIdIn(userIdList).stream()
-                .map(profile -> new ProfileResponseDto(profile.getUserId(), profile))
-                .collect(Collectors.toList());
-        return responseDtos;
-    }
+//    @Override
+//    public List<ProfileResponseDto> getAllSellerList() {
+//        List<String> userIdList = userRepository.findAllByRole(UserRoleEnum.SELLER).stream()
+//                .map(User::getUserId)
+//                .collect(Collectors.toList());
+//        List<ProfileResponseDto> responseDtos = profileRepository.findAllByUserIdIn(userIdList).stream()
+//                .map(profile -> new ProfileResponseDto(profile.getUserId(), profile))
+//                .collect(Collectors.toList());
+//        return responseDtos;
+//    }
 
     @Override
     public void signout(HttpServletRequest request) {
@@ -96,8 +97,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<SellerListResponseDto> getAllSellers() {
-        List<User> userList = userRepository.findAllByRole(UserRoleEnum.SELLER);
+    public List<SellerListResponseDto> getAllSellers(Pageable pageable) {
+        List<User> userList = userRepository.findAllByRole(UserRoleEnum.SELLER, pageable);
         List<String> userIdList = new ArrayList<>();
         for (User user : userList) {
             userIdList.add(user.getUserId());
