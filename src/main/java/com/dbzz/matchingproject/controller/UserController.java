@@ -48,6 +48,7 @@ public class UserController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType((new MediaType("application", "json", Charset.forName("UTF-8"))));
         AuthenticatedUserInfoDto userInfoDto = userService.signin(requestDto);
+        response.addHeader(jwtUtil.REFRESH_HEADER, jwtUtil.issueRefreshToken(userInfoDto.getUsername(), userInfoDto.getRole()));
         response.addHeader(jwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(userInfoDto.getUsername(), userInfoDto.getRole()));
         return new ResponseEntity<>(responseDto, headers, HttpStatus.OK);
     }
@@ -55,8 +56,8 @@ public class UserController {
     @PostMapping("/users/{userId}/seller-auth")
     public ResponseEntity<StatusResponseDto> sellerAuth(@PathVariable String userId, @RequestBody SellerAuthRequestDto requestDto, HttpServletRequest request){
         StatusResponseDto responseDto = new StatusResponseDto(StatusEnum.OK, "판매자 권한 요청 완료");
-        String token = jwtUtil.resolveToken(request);
-        jwtUtil.validateAndGetUserInfo(token);
+//        String token = jwtUtil.resolveToken(request);
+//        jwtUtil.validateAndGetUserInfo(token);
         userService.sellerAuth(userId, requestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
@@ -65,16 +66,16 @@ public class UserController {
     // 페이징
     @GetMapping("/users/seller-list")
     public List<SellerListResponseDto> getAllSellers(HttpServletRequest request, Pageable pageable) {
-        String token = jwtUtil.resolveToken(request);
-        jwtUtil.validateAndGetUserInfo(token);
+//        String token = jwtUtil.resolveToken(request);
+//        jwtUtil.validateAndGetUserInfo(token);
         return userService.getAllSellers(pageable);
     }
 
     @GetMapping("/users/signout")
     public ResponseEntity<StatusResponseDto> signout(HttpServletRequest request){
         StatusResponseDto responseDto = new StatusResponseDto(StatusEnum.OK, "로그아웃 완료");
-        String token = jwtUtil.resolveToken(request);
-        jwtUtil.validateAndGetUserInfo(token);
+//        String token = jwtUtil.resolveToken(request);
+//        jwtUtil.validateAndGetUserInfo(token);
         userService.signout(request);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
