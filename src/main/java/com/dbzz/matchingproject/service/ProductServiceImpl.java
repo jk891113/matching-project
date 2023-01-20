@@ -4,13 +4,13 @@ import com.dbzz.matchingproject.dto.request.CreateProductRequestDto;
 import com.dbzz.matchingproject.dto.request.UpdateProductRequestDto;
 import com.dbzz.matchingproject.dto.response.ProductResponseDto;
 import com.dbzz.matchingproject.entity.Product;
+import com.dbzz.matchingproject.entity.User;
 import com.dbzz.matchingproject.repository.ProductRepository;
 import com.dbzz.matchingproject.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -74,15 +74,4 @@ public class ProductServiceImpl implements ProductService {
             productRepository.deleteById(productId);
 //        } throw new RuntimeException("본인이 등록한 상품만 삭제할 수 있습니다.");
     }
-
-    // 상품 검색
-    @Transactional(readOnly = true)
-    public List<ProductResponseDto> getSearchProducts(String keyword, Pageable pageable) {
-        List<Product> list = productRepository.findByProductNameContaining(keyword, pageable);
-
-        List<ProductResponseDto> allProductsList = list.stream().map(product -> new ProductResponseDto(product)).collect(Collectors.toList());
-        return allProductsList;
-    }
-
-
 }

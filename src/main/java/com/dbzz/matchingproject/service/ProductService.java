@@ -3,7 +3,6 @@ package com.dbzz.matchingproject.service;
 import com.dbzz.matchingproject.dto.request.CreateProductRequestDto;
 import com.dbzz.matchingproject.dto.request.UpdateProductRequestDto;
 import com.dbzz.matchingproject.dto.response.ProductResponseDto;
-import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -23,6 +22,4 @@ public interface ProductService {
 
     //판매상품 삭제
     void deleteProduct(Long productId);
-
-    List<ProductResponseDto> getSearchProducts(String keyword, Pageable pageable);
 }
