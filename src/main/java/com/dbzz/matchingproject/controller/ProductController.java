@@ -11,6 +11,8 @@ import com.dbzz.matchingproject.service.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -65,4 +67,12 @@ public class ProductController {
         productService.deleteProduct(productId);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
+
+    //상품 검색
+    @GetMapping("/products/search")
+    public ResponseEntity<List<ProductResponseDto>> searchProduct(@RequestParam String keyword, @PageableDefault(size = 10, sort = "productId", direction = Sort.Direction.DESC) Pageable pageable) {
+        List<ProductResponseDto> searchProducts = productService.getSearchProducts(keyword, pageable);
+        return new ResponseEntity<>(searchProducts,HttpStatus.OK);
+    }
+
 }

@@ -27,4 +27,7 @@ public interface ProductService {
 
     //판매상품 삭제
     void deleteProduct(Long productId);
+
+    //상품 검색
+    List<ProductResponseDto> getSearchProducts(String keyword, Pageable pageable);
 }

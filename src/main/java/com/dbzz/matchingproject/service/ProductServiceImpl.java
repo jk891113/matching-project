@@ -89,4 +89,13 @@ public class ProductServiceImpl implements ProductService {
             productRepository.deleteById(productId);
 //        } throw new RuntimeException("본인이 등록한 상품만 삭제할 수 있습니다.");
     }
+
+    //상품 조회
+    public List<ProductResponseDto> getSearchProducts(String keyword, Pageable pageable) {
+        List<Product> list = productRepository.findByProductNameContaining(keyword, pageable);
+
+        List<ProductResponseDto> allProductsList = list.stream().map(product -> new ProductResponseDto(product)).collect(Collectors.toList());
+        return allProductsList;
+    }
+
 }
