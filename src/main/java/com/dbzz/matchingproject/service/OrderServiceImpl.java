@@ -76,12 +76,6 @@ public class OrderServiceImpl implements OrderService {
                 () -> new IllegalArgumentException("해당 주문이 존재하지 않습니다.")
         );
         return new OrderForSellerResponseDto(order, sellerId);
-
-
-//        List<OrderForSellerResponseDto> responseDtos = orderRepository.findAllBySellerId(sellerId).stream()
-//                .map(order -> new OrderForSellerResponseDto(order, sellerId))
-//                .collect(Collectors.toList());
-//        return responseDtos;
     }
 
     @Override
@@ -95,25 +89,15 @@ public class OrderServiceImpl implements OrderService {
         return responseDtos;
     }
 
-
-//    @Override
-//    public List<OrderItemResponseDto> getOrderItemList(String userId) {
-//        List<OrderItem> orderItemList = orderItemRepository.findAllBySellerId(userId);
-//        List<OrderItemResponseDto> responseDtos = orderItemList.stream()
-//                .map(orderItem -> new OrderItemResponseDto(orderItem))
-//                .collect(Collectors.toList());
-//        return responseDtos;
-//    }
-
     @Override
     @Transactional
     public void acceptOrder(long orderId, String sellerId) {
         Order order = orderRepository.findByOrderId(orderId).orElseThrow(
                 () -> new IllegalArgumentException("주문 페이지가 존재하지 않습니다.")
         );
-        List<OrderItem> orderItemList = orderItemRepository.findAllBySellerId(sellerId);
+        List<OrderItem> orderItemList = orderItemRepository.findAllByOrderOrderId(orderId);
         for (OrderItem orderItem : orderItemList) {
-            orderItem.acceptOrder(orderItem.getShippingStatus());
+            orderItem.acceptOrder(orderItem.getShippingStatus(), sellerId);
             orderItemRepository.save(orderItem);
         }
         order.updateShippingStatus(order);

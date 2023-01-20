@@ -45,12 +45,12 @@ public class OrderItem extends Timestamp {
         this.order = order;
     }
 
-    public void acceptOrder(ShippingStatusEnum shippingStatus) {
-        if (shippingStatus.equals(ShippingStatusEnum.DEFAULT)) {
+    public void acceptOrder(ShippingStatusEnum shippingStatus, String sellerId) {
+        if (this.getSellerId().equals(sellerId) && shippingStatus.equals(ShippingStatusEnum.DEFAULT)) {
             this.shippingStatus = ShippingStatusEnum.ACCEPTED;
-        } else if (shippingStatus.equals(ShippingStatusEnum.ACCEPTED)) {
+        } else if (this.getSellerId().equals(sellerId) && shippingStatus.equals(ShippingStatusEnum.ACCEPTED)) {
             this.shippingStatus = ShippingStatusEnum.SHIPPING;
-        } else if (shippingStatus.equals(ShippingStatusEnum.SHIPPING)) {
+        } else if (this.getSellerId().equals(sellerId) && shippingStatus.equals(ShippingStatusEnum.SHIPPING)) {
             this.shippingStatus = ShippingStatusEnum.COMPLETED;
         }
     }
