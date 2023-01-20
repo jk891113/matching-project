@@ -18,5 +18,5 @@ public interface OrderService {
 
     List<OrderForSellerResponseDto> getAllOrderForSeller(String sellerId);
 
-    void acceptOrder(long orderId, String sellerId);
+    OrderForSellerResponseDto acceptOrder(long orderId, String sellerId);
 }
