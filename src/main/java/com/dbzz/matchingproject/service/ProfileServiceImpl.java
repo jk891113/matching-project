@@ -55,6 +55,8 @@ public class ProfileServiceImpl implements ProfileService {
         );
         Optional<Profile> found = profileRepository.findByUserId(userId);
         if (found.isEmpty()) throw new IllegalArgumentException("고객 프로필부터 작성해 주세요.");
+        Optional<Form> foundForm = formRepository.findByUserId(userId);
+        if (foundForm.isPresent()) throw new IllegalArgumentException("판매자 요청은 한번만 가능합니다.");
         Form form = new Form(userId, requestDto.getIntro(), requestDto.getItem());
         formRepository.save(form);
     }

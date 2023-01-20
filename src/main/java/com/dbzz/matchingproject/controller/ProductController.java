@@ -37,7 +37,7 @@ public class ProductController {
     }
 
     //나의 판매상품 조회
-    @GetMapping("/products/{productId}")
+    @GetMapping("/products/my/{productId}")
     public ProductResponseDto getProductByUserId(@PathVariable Long productId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return productService.getProductByUserId(userDetails.getUserId(), productId);
     }

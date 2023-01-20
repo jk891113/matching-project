@@ -1,6 +1,7 @@
 package com.dbzz.matchingproject.controller;
 
 import com.dbzz.matchingproject.dto.request.OrderItemRequestDto;
+import com.dbzz.matchingproject.dto.response.CreateOrderResponseDto;
 import com.dbzz.matchingproject.dto.response.OrderForCustomerResponseDto;
 import com.dbzz.matchingproject.dto.response.OrderForSellerResponseDto;
 import com.dbzz.matchingproject.dto.response.OrderItemResponseDto;
@@ -21,8 +22,8 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping("/orders")
-    public OrderForCustomerResponseDto createOrder(@RequestParam List<Long> productId, @RequestParam List<Integer> quantity,
-                                @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public CreateOrderResponseDto createOrder(@RequestParam List<Long> productId, @RequestParam List<Integer> quantity,
+                                              @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return orderService.createOrder(productId, quantity, userDetails.getUserId());
     }
 

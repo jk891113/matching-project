@@ -1,6 +1,7 @@
 package com.dbzz.matchingproject.service;
 
 import com.dbzz.matchingproject.dto.request.OrderItemRequestDto;
+import com.dbzz.matchingproject.dto.response.CreateOrderResponseDto;
 import com.dbzz.matchingproject.dto.response.OrderForCustomerResponseDto;
 import com.dbzz.matchingproject.dto.response.OrderForSellerResponseDto;
 import com.dbzz.matchingproject.dto.response.OrderItemResponseDto;
@@ -27,8 +28,8 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
 
     @Override
-    @Transactional
-    public OrderForCustomerResponseDto createOrder(List<Long> productId, List<Integer> quantity, String userId) {
+//    @Transactional
+    public CreateOrderResponseDto createOrder(List<Long> productId, List<Integer> quantity, String userId) {
         int totalAmount = 0;
         String sellerId = "";
         Order order = new Order();
@@ -49,7 +50,7 @@ public class OrderServiceImpl implements OrderService {
 
         order.putDatasInOrder(userId, sellerId, totalAmount);
         orderRepository.save(order);
-        return new OrderForCustomerResponseDto(order);
+        return new CreateOrderResponseDto(order, orderItemList);
     }
 
     @Override
