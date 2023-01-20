@@ -2,13 +2,14 @@ package com.dbzz.matchingproject.service;
 
 import com.dbzz.matchingproject.dto.request.CreateProductRequestDto;
 import com.dbzz.matchingproject.dto.request.UpdateProductRequestDto;
+import com.dbzz.matchingproject.dto.response.AllProductResponseDto;
 import com.dbzz.matchingproject.dto.response.ProductResponseDto;
 import com.dbzz.matchingproject.entity.Product;
-import com.dbzz.matchingproject.entity.User;
 import com.dbzz.matchingproject.repository.ProductRepository;
 import com.dbzz.matchingproject.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -36,19 +37,33 @@ public class ProductServiceImpl implements ProductService {
 
     //나의 판매상품 조회
     @Override
-    public List<ProductResponseDto> getAllProductByUserId(String userId) {
-        List<Product> list = productRepository.findByUserId(userId);
+    public ProductResponseDto getProductByUserId(String userId, Long productId) {
+        Product product= productRepository.findByProductId(productId).orElseThrow(
+                () -> new RuntimeException("productId값이 일치하는 상품이 없습니다.")
+        );
 
+        userRepository.findByUserId(userId).orElseThrow(
+                () -> new RuntimeException("해당 회원이 등록한 상품이 아닙니다.")
+        );
+
+        ProductResponseDto productResponseDto = new ProductResponseDto(product);
+
+        return productResponseDto;
+    }
+
+    //나의 전체 판매상품 조회
+    @Override
+    public List<ProductResponseDto> getAllProductByUserId(String userId, Pageable pageable) {
+        List<Product> list = productRepository.findByUserId(userId, pageable);
         List<ProductResponseDto> allProductByUserIdList = list.stream().map(product -> new ProductResponseDto(product)).collect(Collectors.toList());
         return allProductByUserIdList;
     }
 
     //전체 상품 조회(고객용)
     @Override
-    public List<ProductResponseDto> getAllProducts() {
-        List<Product> list = productRepository.findAll();
-
-        List<ProductResponseDto> allProductsList = list.stream().map(product -> new ProductResponseDto(product)).collect(Collectors.toList());
+    public List<AllProductResponseDto> getAllProducts(Pageable pageable) {
+        List<Product> list = productRepository.findAllBy(pageable);
+        List<AllProductResponseDto> allProductsList = list.stream().map(product -> new AllProductResponseDto(product)).collect(Collectors.toList());
         return allProductsList;
     }
 
