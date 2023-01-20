@@ -1,5 +1,6 @@
 package com.dbzz.matchingproject.entity;
 
+import com.dbzz.matchingproject.dto.request.ShippingInfoRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,5 +30,11 @@ public class ShippingInfo extends Timestamp {
         this.nameAs = nameAs;
         this.address = address;
         this.phoneNumber = phoneNumber;
+    }
+
+    public void updateShippingInfo(ShippingInfoRequestDto requestDto) {
+        this.nameAs = requestDto.getNameAs();
+        this.address = requestDto.getAddress();
+        this.phoneNumber = requestDto.getPhoneNumber();
     }
 }

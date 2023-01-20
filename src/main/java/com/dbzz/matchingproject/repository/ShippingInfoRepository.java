@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface ShippingInfoRepository extends JpaRepository<ShippingInfo, String> {
     Optional<ShippingInfo> findByUserId(String userId);
     List<ShippingInfo> findAllByUserId(String userId);
+    Optional<ShippingInfo> findByShippingInfoId(long shippingInfoId);
 }

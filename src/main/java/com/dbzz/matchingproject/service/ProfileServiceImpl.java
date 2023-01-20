@@ -1,15 +1,12 @@
 package com.dbzz.matchingproject.service;
 
-import com.dbzz.matchingproject.dto.request.CreateShippingInfoRequestDto;
 import com.dbzz.matchingproject.dto.request.CustomerProfileRequestDto;
 import com.dbzz.matchingproject.dto.request.ProfileRequestDto;
 import com.dbzz.matchingproject.dto.request.SellerProfileRequestDto;
 import com.dbzz.matchingproject.dto.response.CustomerProfileResponseDto;
 import com.dbzz.matchingproject.dto.response.ProfileResponseDto;
-import com.dbzz.matchingproject.dto.response.ShippingInfoResponseDto;
 import com.dbzz.matchingproject.entity.Form;
 import com.dbzz.matchingproject.entity.Profile;
-import com.dbzz.matchingproject.entity.ShippingInfo;
 import com.dbzz.matchingproject.entity.User;
 import com.dbzz.matchingproject.enums.UserRoleEnum;
 import com.dbzz.matchingproject.repository.FormRepository;
@@ -21,8 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j
