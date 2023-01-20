@@ -1,16 +1,20 @@
 package com.dbzz.matchingproject.service;
 
+import com.dbzz.matchingproject.dto.request.CreateShippingInfoRequestDto;
 import com.dbzz.matchingproject.dto.request.CustomerProfileRequestDto;
 import com.dbzz.matchingproject.dto.request.ProfileRequestDto;
 import com.dbzz.matchingproject.dto.request.SellerProfileRequestDto;
 import com.dbzz.matchingproject.dto.response.CustomerProfileResponseDto;
 import com.dbzz.matchingproject.dto.response.ProfileResponseDto;
+import com.dbzz.matchingproject.dto.response.ShippingInfoResponseDto;
 import com.dbzz.matchingproject.entity.Form;
 import com.dbzz.matchingproject.entity.Profile;
+import com.dbzz.matchingproject.entity.ShippingInfo;
 import com.dbzz.matchingproject.entity.User;
 import com.dbzz.matchingproject.enums.UserRoleEnum;
 import com.dbzz.matchingproject.repository.FormRepository;
 import com.dbzz.matchingproject.repository.ProfileRepository;
+import com.dbzz.matchingproject.repository.ShippingInfoRepository;
 import com.dbzz.matchingproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.swing.text.html.Option;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -27,6 +32,7 @@ public class ProfileServiceImpl implements ProfileService {
     private final UserRepository userRepository;
     private final ProfileRepository profileRepository;
     private final FormRepository formRepository;
+    private final ShippingInfoRepository shippingInfoRepository;
 
     @Override
     public CustomerProfileResponseDto createCustomerProfile(String userId, CustomerProfileRequestDto requestDto) {
@@ -35,7 +41,7 @@ public class ProfileServiceImpl implements ProfileService {
                 () -> new IllegalArgumentException("존재하지 않는 회원입니다.")
         );
         // 입력한 아이디의 회원의 프로필이 존재하는지 확인
-        Optional<Profile> found =  profileRepository.findByUserId(userId);
+        Optional<Profile> found = profileRepository.findByUserId(userId);
         if (found.isPresent()) throw new IllegalArgumentException("프로필이 존재합니다.");
         // Dto 의 image 값이 null 이면 이미지를 제외하고 객체 생성
         Profile profile;
