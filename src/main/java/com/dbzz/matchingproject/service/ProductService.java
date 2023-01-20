@@ -30,4 +30,5 @@ public interface ProductService {
 
     //상품 검색
     List<ProductResponseDto> getSearchProducts(String keyword, Pageable pageable);
+    
 }
