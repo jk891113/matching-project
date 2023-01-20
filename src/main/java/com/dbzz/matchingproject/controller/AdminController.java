@@ -34,6 +34,7 @@ public class AdminController {
 
     @GetMapping("/admin/permission")
     public List<PermissionResponseDto> getPermissionRequestForms(){
+
         return adminService.getPermissionRequestForms();
     }
 
