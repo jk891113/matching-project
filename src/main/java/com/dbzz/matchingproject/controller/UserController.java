@@ -11,6 +11,7 @@ import com.dbzz.matchingproject.enums.StatusEnum;
 import com.dbzz.matchingproject.jwt.AuthenticatedUserInfoDto;
 import com.dbzz.matchingproject.jwt.JwtUtil;
 import com.dbzz.matchingproject.repository.UserRepository;
+import com.dbzz.matchingproject.security.UserDetailsImpl;
 import com.dbzz.matchingproject.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,6 +22,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.Charset;
@@ -53,20 +55,16 @@ public class UserController {
     }
 
     @PostMapping("/users/{userId}/seller-auth")
-    public ResponseEntity<StatusResponseDto> sellerAuth(@PathVariable String userId, @RequestBody SellerAuthRequestDto requestDto, HttpServletRequest request){
+    public ResponseEntity<StatusResponseDto> sellerAuth(@PathVariable String userId, @RequestBody SellerAuthRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         StatusResponseDto responseDto = new StatusResponseDto(StatusEnum.OK, "판매자 권한 요청 완료");
-        String token = jwtUtil.resolveToken(request);
-        jwtUtil.validateAndGetUserInfo(token);
-        userService.sellerAuth(userId, requestDto);
+        userService.sellerAuth(userId, requestDto, userDetails.getUserId());
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
 
     // 페이징
     @GetMapping("/users/seller-list")
-    public List<SellerListResponseDto> getAllSellers(HttpServletRequest request, Pageable pageable) {
-        String token = jwtUtil.resolveToken(request);
-        jwtUtil.validateAndGetUserInfo(token);
+    public List<SellerListResponseDto> getAllSellers(Pageable pageable) {
         return userService.getAllSellers(pageable);
     }
 

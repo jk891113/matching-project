@@ -3,7 +3,6 @@ package com.dbzz.matchingproject.service;
 import com.dbzz.matchingproject.dto.request.LoginRequestDto;
 import com.dbzz.matchingproject.dto.request.SellerAuthRequestDto;
 import com.dbzz.matchingproject.dto.request.SignupRequestDto;
-import com.dbzz.matchingproject.dto.response.ProfileResponseDto;
 import com.dbzz.matchingproject.dto.response.SellerListResponseDto;
 import com.dbzz.matchingproject.entity.Form;
 import com.dbzz.matchingproject.entity.Profile;
@@ -22,7 +21,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -87,7 +85,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void sellerAuth(String userId, SellerAuthRequestDto requestDto) {
+    public void sellerAuth(String userId, SellerAuthRequestDto requestDto, String userDetails) {
         User user = userRepository.findByUserId(userId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 회원입니다.")
         );
