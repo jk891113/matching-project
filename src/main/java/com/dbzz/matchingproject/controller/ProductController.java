@@ -32,6 +32,7 @@ public class ProductController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
+    // 페이징
     //나의 판매상품 조회
     @GetMapping("/products/{userId}")
     public List<ProductResponseDto> getAllProductByUserId(@PathVariable String userId, HttpServletRequest request) {
@@ -40,6 +41,8 @@ public class ProductController {
         return productService.getAllProductByUserId(userId);
     }
 
+
+    // 페이징
     //전체 상품 조회(고객용)
     @GetMapping("/products")
     public List<ProductResponseDto> getAllProducts(HttpServletRequest request) {

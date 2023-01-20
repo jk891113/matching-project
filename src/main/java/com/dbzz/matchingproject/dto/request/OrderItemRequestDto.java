@@ -11,6 +11,4 @@ import java.util.Map;
 public class OrderItemRequestDto {
     private long productId;
     private int quantity;
-//
-//    private Map<Long, Integer> orderItemList = new HashMap<>();
 }

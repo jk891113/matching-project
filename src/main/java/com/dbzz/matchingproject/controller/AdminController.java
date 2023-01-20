@@ -20,11 +20,13 @@ public class AdminController {
 
     private final AdminService adminService;
 
+    // 페이징
     @GetMapping("/admin/customer-list")
     public List<UserResponseDto> getAllCustomers(Pageable pageable) {
         return adminService.getAllCustomers(pageable);
     }
 
+    // 페이징
     @GetMapping("/admin/seller-list")
     public List<SellerListResponseDto> getAllSellers(Pageable pageable) {
         return adminService.getAllSellers(pageable);
