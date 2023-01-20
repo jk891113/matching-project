@@ -1,6 +1,7 @@
 package com.dbzz.matchingproject.service;
 
 import com.dbzz.matchingproject.dto.request.OrderItemRequestDto;
+import com.dbzz.matchingproject.dto.request.ShippingInfoRequestDto;
 import com.dbzz.matchingproject.dto.response.CreateOrderResponseDto;
 import com.dbzz.matchingproject.dto.response.OrderForCustomerResponseDto;
 import com.dbzz.matchingproject.dto.response.OrderForSellerResponseDto;
@@ -26,10 +27,11 @@ public class OrderServiceImpl implements OrderService {
     private final ProductRepository productRepository;
     private final OrderItemRepository orderItemRepository;
     private final OrderRepository orderRepository;
+    private final ShippingInfoRepository shippingInfoRepository;
 
     @Override
-//    @Transactional
-    public CreateOrderResponseDto createOrder(List<Long> productId, List<Integer> quantity, String userId) {
+    @Transactional
+    public CreateOrderResponseDto createOrder(List<Long> productId, List<Integer> quantity, long shippingInfoId, String userId) {
         int totalAmount = 0;
         String sellerId = "";
         Order order = new Order();
@@ -47,10 +49,12 @@ public class OrderServiceImpl implements OrderService {
             orderItemList.add(orderItem);
             orderItemRepository.save(orderItem);
         }
-
-        order.putDatasInOrder(userId, sellerId, totalAmount);
+        ShippingInfo shippingInfo = shippingInfoRepository.findByShippingInfoId(shippingInfoId).orElseThrow(
+                () -> new IllegalArgumentException("배송정보가 존재하지 않습니다.")
+        );
+        order.putDatasInOrder(userId, sellerId, totalAmount, shippingInfoId);
         orderRepository.save(order);
-        return new CreateOrderResponseDto(order, orderItemList);
+        return new CreateOrderResponseDto(order, orderItemList, shippingInfo);
     }
 
     @Override

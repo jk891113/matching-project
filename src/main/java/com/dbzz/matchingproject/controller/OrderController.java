@@ -1,6 +1,7 @@
 package com.dbzz.matchingproject.controller;
 
 import com.dbzz.matchingproject.dto.request.OrderItemRequestDto;
+import com.dbzz.matchingproject.dto.request.ShippingInfoRequestDto;
 import com.dbzz.matchingproject.dto.response.CreateOrderResponseDto;
 import com.dbzz.matchingproject.dto.response.OrderForCustomerResponseDto;
 import com.dbzz.matchingproject.dto.response.OrderForSellerResponseDto;
@@ -21,10 +22,12 @@ import java.util.List;
 public class OrderController {
     private final OrderService orderService;
 
-    @PostMapping("/orders")
-    public CreateOrderResponseDto createOrder(@RequestParam List<Long> productId, @RequestParam List<Integer> quantity,
+    @PostMapping("/orders/{shippingInfoId}")
+    public CreateOrderResponseDto createOrder(@RequestParam List<Long> productId,
+                                              @RequestParam List<Integer> quantity,
+                                              @PathVariable long shippingInfoId,
                                               @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return orderService.createOrder(productId, quantity, userDetails.getUserId());
+        return orderService.createOrder(productId, quantity, shippingInfoId, userDetails.getUserId());
     }
 
     @GetMapping("/orders/customers/{orderId}")

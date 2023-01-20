@@ -2,6 +2,7 @@ package com.dbzz.matchingproject.dto.response;
 
 import com.dbzz.matchingproject.entity.Order;
 import com.dbzz.matchingproject.entity.OrderItem;
+import com.dbzz.matchingproject.entity.ShippingInfo;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,14 +19,16 @@ public class CreateOrderResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private String shippingStatus;
+    private ShippingInfoResponseDto shippingInfo;
     private List<OrderItemResponseDto> orderItemList = new ArrayList<>();
 
-    public CreateOrderResponseDto(Order order, List<OrderItem> orderItemList) {
+    public CreateOrderResponseDto(Order order, List<OrderItem> orderItemList, ShippingInfo shippingInfo) {
         this.orderId = order.getOrderId();
         this.customerId = order.getCustomerId();
         this.createdAt = order.getCreatedAt();
         this.modifiedAt = order.getModifiedAt();
         this.shippingStatus = order.getShippingStatus().toString();
+        this.shippingInfo = new ShippingInfoResponseDto(shippingInfo);
         List<OrderItemResponseDto> orderItemResponseDtos = orderItemList.stream()
                 .map(orderItem -> new OrderItemResponseDto(orderItem))
                 .collect(Collectors.toList());
