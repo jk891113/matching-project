@@ -1,6 +1,5 @@
 package com.dbzz.matchingproject.jwt;
 
-import com.dbzz.matchingproject.enums.UserRoleEnum;
 import com.dbzz.matchingproject.security.SecurityExceptionDto;
 import com.dbzz.matchingproject.security.UserDetailsServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,9 +20,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-import static com.dbzz.matchingproject.jwt.JwtUtil.AUTHORIZATION_HEADER;
-import static com.dbzz.matchingproject.jwt.JwtUtil.REFRESH_HEADER;
-
 @Slf4j
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
@@ -32,27 +28,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token = jwtUtil.resolveToken(request, AUTHORIZATION_HEADER);
+        String token = jwtUtil.resolveToken(request);
         if (token != null) {
-            if (jwtUtil.validateToken(token) == JwtUtil.JwtCode.DENIED){
+            if (!jwtUtil.validateToken(token)){
                 jwtExceptionHandler(response, "Token Error", HttpStatus.UNAUTHORIZED.value());
                 return;
-            } else if (jwtUtil.validateToken(token) == JwtUtil.JwtCode.EXPIRED) {
-                String refresh = jwtUtil.resolveToken(request, REFRESH_HEADER);
-                // refresh token 확인 후 재발급
-                if (refresh != null && jwtUtil.validateToken(refresh) == JwtUtil.JwtCode.ACCESS) {
-                    String newRefresh = jwtUtil.reissueRefreshToken(refresh);
-                    if (newRefresh != null) {
-                        response.setHeader(REFRESH_HEADER, newRefresh);
-
-                        // access token 생성
-                        Authentication authentication = jwtUtil.getAuthentication(refresh);
-                        response.setHeader(AUTHORIZATION_HEADER, jwtUtil.createToken(authentication.getName(), UserRoleEnum.valueOf(authentication.getAuthorities().toString())));
-                        SecurityContextHolder.getContext().setAuthentication(authentication);
-                    }
-                }
-            } else {
-                log.info("Token Error");
             }
             Claims info = jwtUtil.getUserInfoFromToken(token);
             setAuthentication(info.getSubject());
