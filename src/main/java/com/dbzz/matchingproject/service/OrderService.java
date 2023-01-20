@@ -8,7 +8,7 @@ import com.dbzz.matchingproject.dto.response.OrderItemResponseDto;
 import java.util.List;
 
 public interface OrderService {
-    void createOrder(List<Long> productId, List<Integer> quantity, String userId);
+    OrderForCustomerResponseDto createOrder(List<Long> productId, List<Integer> quantity, String userId);
 
     OrderForCustomerResponseDto getOrderForCustomer(long orderId);
 
@@ -18,7 +18,5 @@ public interface OrderService {
 
     List<OrderForSellerResponseDto> getAllOrderForSeller(String sellerId);
 
-//    List<OrderItemResponseDto> getOrderItemList(String userId);
-
-    void acceptOrder(long orderId);
+    void acceptOrder(long orderId, String sellerId);
 }

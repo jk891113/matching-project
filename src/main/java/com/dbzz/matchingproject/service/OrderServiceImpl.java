@@ -28,7 +28,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public void createOrder(List<Long> productId, List<Integer> quantity, String userId) {
+    public OrderForCustomerResponseDto createOrder(List<Long> productId, List<Integer> quantity, String userId) {
         int totalAmount = 0;
         String sellerId = "";
         Order order = new Order();
@@ -49,6 +49,7 @@ public class OrderServiceImpl implements OrderService {
 
         order.putDatasInOrder(userId, sellerId, totalAmount);
         orderRepository.save(order);
+        return new OrderForCustomerResponseDto(order);
     }
 
     @Override
@@ -105,10 +106,16 @@ public class OrderServiceImpl implements OrderService {
 //    }
 
     @Override
-    public void acceptOrder(long orderId) {
+    @Transactional
+    public void acceptOrder(long orderId, String sellerId) {
         Order order = orderRepository.findByOrderId(orderId).orElseThrow(
                 () -> new IllegalArgumentException("주문 페이지가 존재하지 않습니다.")
         );
-
+        List<OrderItem> orderItemList = orderItemRepository.findAllBySellerId(sellerId);
+        for (OrderItem orderItem : orderItemList) {
+            orderItem.acceptOrder(orderItem.getShippingStatus());
+            orderItemRepository.save(orderItem);
+        }
+        order.updateShippingStatus(order);
     }
 }

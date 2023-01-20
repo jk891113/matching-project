@@ -21,9 +21,9 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping("/orders")
-    public void createOrder(@RequestParam List<Long> productId, @RequestParam List<Integer> quantity,
+    public OrderForCustomerResponseDto createOrder(@RequestParam List<Long> productId, @RequestParam List<Integer> quantity,
                                 @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        orderService.createOrder(productId, quantity, userDetails.getUserId());
+        return orderService.createOrder(productId, quantity, userDetails.getUserId());
     }
 
     @GetMapping("/orders/customers/{orderId}")
@@ -46,26 +46,8 @@ public class OrderController {
         return orderService.getAllOrderForSeller(userDetails.getUserId());
     }
 
-//    @GetMapping("/orders/items")
-//    public List<OrderItemResponseDto> getOrderItemList(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-//        return orderService.getOrderItemList(userDetails.getUserId());
-//    }
-
-//    public void updateOrderItem() {
-//
-//    }
-//
-//    public void removeOrderItem() {
-//
-//    }
-
-//    @PostMapping("/orders")
-//    public void createOrder(@RequestBody OrderItemRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-//        orderService.createOrder(requestDto, userDetails.getUserId());
-//    }
-
     @PutMapping("/orders/{orderId}")
     public void acceptOrder(@PathVariable long orderId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        orderService.acceptOrder(orderId);
+        orderService.acceptOrder(orderId, userDetails.getUserId());
     }
 }

@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,5 +42,14 @@ public class Order extends Timestamp {
         this.customerId = customerId;
         this.sellerId = sellerId;
         this.totalAmount = totalAmount;
+    }
+
+    public void updateShippingStatus(Order order) {
+        for (int i = 0; i < order.getOrderItemList().size(); i++) {
+            if (order.getOrderItemList().get(i).getShippingStatus().equals(ShippingStatusEnum.ACCEPTED)) {
+                this.shippingStatus = ShippingStatusEnum.ACCEPTED;
+//            } else if (this.getOrderItemList().get(i))
+            }
+        }
     }
 }
