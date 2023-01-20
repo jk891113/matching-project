@@ -1,5 +1,6 @@
 package com.dbzz.matchingproject.entity;
 
+import com.dbzz.matchingproject.dto.request.AdminPointRequestDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -21,5 +22,11 @@ public class Point extends Timestamp {
     public Point(String userId, int point) {
         this.userId = userId;
         this.point = point;
+    }
+
+    public void changePoint(AdminPointRequestDto requestDto) {
+        this.userId = requestDto.getUserId();
+        this.point = getPoint() + requestDto.getGivePoint();
+
     }
 }
