@@ -52,7 +52,7 @@ public class ProductController {
 
     // 페이징
     //전체 상품 조회(고객용)
-    @GetMapping("/products")
+    @GetMapping("/customer/products")
     public List<AllProductResponseDto> getAllProducts(Pageable pageable) {
         return productService.getAllProducts(pageable);
     }
