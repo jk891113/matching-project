@@ -2,6 +2,7 @@ package com.dbzz.matchingproject.config;
 
 import com.dbzz.matchingproject.jwt.JwtAuthFilter;
 import com.dbzz.matchingproject.jwt.JwtUtil;
+import com.dbzz.matchingproject.security.CustomAccessDeniedHandler;
 import com.dbzz.matchingproject.security.CustomAuthenticationEntryPoint;
 import com.dbzz.matchingproject.security.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class WebSecurityConfig {
     private final JwtUtil jwtUtil;
     private final UserDetailsServiceImpl userDetailsService;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -52,7 +54,7 @@ public class WebSecurityConfig {
                 .and().addFilterBefore(new JwtAuthFilter(jwtUtil, userDetailsService), UsernamePasswordAuthenticationFilter.class);
 
         http.exceptionHandling().authenticationEntryPoint(customAuthenticationEntryPoint);
-//        http.exceptionHandling().accessDeniedHandler(customAccessDeniedHandler);
+        http.exceptionHandling().accessDeniedHandler(customAccessDeniedHandler);
 
         return http.build();
     }
