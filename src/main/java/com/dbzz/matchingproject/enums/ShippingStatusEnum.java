@@ -1,5 +1,8 @@
 package com.dbzz.matchingproject.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum ShippingStatusEnum {
     DEFAULT(0, "주문 수락 대기"),
     ACCEPTED(1, "배송 준비중"),

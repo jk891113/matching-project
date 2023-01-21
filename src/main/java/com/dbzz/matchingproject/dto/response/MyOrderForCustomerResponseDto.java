@@ -16,6 +16,7 @@ public class MyOrderForCustomerResponseDto {
     private String customerId;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+    private int totalAmount;
     private String shippingStatus;
     private ShippingInfoResponseDto shippingInfo;
     private List<OrderItemResponseDto> orderItemList = new ArrayList<>();
@@ -25,8 +26,9 @@ public class MyOrderForCustomerResponseDto {
         this.customerId = order.getCustomerId();
         this.createdAt = order.getCreatedAt();
         this.modifiedAt = order.getModifiedAt();
+        this.totalAmount = order.getTotalAmount();
         this.shippingInfo = new ShippingInfoResponseDto(shippingInfo);
-        this.shippingStatus = order.getShippingStatus().toString();
+        this.shippingStatus = order.getShippingStatus().getMessage();
         List<OrderItemResponseDto> orderItemResponseDtos = order.getOrderItemList().stream()
                 .map(orderItem -> new OrderItemResponseDto(orderItem))
                 .collect(Collectors.toList());
