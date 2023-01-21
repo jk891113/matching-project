@@ -61,7 +61,7 @@ public class ProfileController {
     @PutMapping("/profiles")
     public ResponseEntity<StatusAndDataResponseDto> updateProfile(@RequestBody ProfileRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         ProfileResponseDto data = profileService.updateProfile(userDetails.getUserId(), requestDto);
-        StatusAndDataResponseDto responseDto = new StatusAndDataResponseDto(StatusEnum.OK, "프로필 조회 완료", data);
+        StatusAndDataResponseDto responseDto = new StatusAndDataResponseDto(StatusEnum.OK, "프로필 수정 완료", data);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType((new MediaType("application", "json", Charset.forName("UTF-8"))));
         return new ResponseEntity<>(responseDto, headers, HttpStatus.OK);
