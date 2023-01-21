@@ -8,13 +8,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
-
     List<Product> findByUserId(String userId, Pageable pageable);
-
     List<Product> findAllBy(Pageable pageable);
-
     Optional<Product> findByProductId(Long productId);
-
-
     List<Product> findByProductNameContaining(String keyword, Pageable pageable);
 }
