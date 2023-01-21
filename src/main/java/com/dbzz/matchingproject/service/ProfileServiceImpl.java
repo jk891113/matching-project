@@ -4,6 +4,7 @@ import com.dbzz.matchingproject.dto.request.CustomerProfileRequestDto;
 import com.dbzz.matchingproject.dto.request.ProfileRequestDto;
 import com.dbzz.matchingproject.dto.request.SellerProfileRequestDto;
 import com.dbzz.matchingproject.dto.response.CustomerProfileResponseDto;
+import com.dbzz.matchingproject.dto.response.PermissionResponseDto;
 import com.dbzz.matchingproject.dto.response.ProfileResponseDto;
 import com.dbzz.matchingproject.entity.Form;
 import com.dbzz.matchingproject.entity.Profile;
@@ -27,7 +28,6 @@ public class ProfileServiceImpl implements ProfileService {
     private final UserRepository userRepository;
     private final ProfileRepository profileRepository;
     private final FormRepository formRepository;
-    private final ShippingInfoRepository shippingInfoRepository;
 
     @Override
     public CustomerProfileResponseDto createCustomerProfile(String userId, CustomerProfileRequestDto requestDto) {
@@ -50,7 +50,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public void createSellerProfile(String userId, SellerProfileRequestDto requestDto) {
+    public PermissionResponseDto createSellerProfile(String userId, SellerProfileRequestDto requestDto) {
         userRepository.findByUserId(userId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 회원입니다.")
         );
@@ -60,6 +60,7 @@ public class ProfileServiceImpl implements ProfileService {
         if (foundForm.isPresent()) throw new IllegalArgumentException("판매자 요청은 한번만 가능합니다.");
         Form form = new Form(userId, requestDto.getIntro(), requestDto.getItem());
         formRepository.save(form);
+        return new PermissionResponseDto(form);
     }
 
     @Override
