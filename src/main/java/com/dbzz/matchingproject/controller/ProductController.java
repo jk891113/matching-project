@@ -74,7 +74,7 @@ public class ProductController {
     }
 
     //상품 검색
-    @GetMapping("/products/search")
+    @GetMapping("/search/products")
     public ResponseEntity<List<ProductResponseDto>> searchProduct(@RequestParam String keyword, @PageableDefault(size = 10, sort = "productId", direction = Sort.Direction.DESC) Pageable pageable) {
 
         List<ProductResponseDto> searchProducts = productService.getSearchProducts(keyword, pageable);

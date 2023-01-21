@@ -51,7 +51,8 @@ public class Order extends Timestamp {
     public void updateShippingStatus(Order order) {
         int min = 3;
         for (int i = 0; i < order.getOrderItemList().size(); i++) {
-            if (order.getOrderItemList().get(i).getShippingStatus().ordinal() < min) min = order.getOrderItemList().get(i).getShippingStatus().ordinal();
+            if (order.getOrderItemList().get(i).getShippingStatus().ordinal() < min)
+                min = order.getOrderItemList().get(i).getShippingStatus().ordinal();
         }
         if (min == 0) return;
         if (min == 1) this.shippingStatus = ShippingStatusEnum.ACCEPTED;

@@ -49,6 +49,9 @@ public class WebSecurityConfig {
 
         http.authorizeHttpRequests().requestMatchers("/users/signup").permitAll()
                 .requestMatchers("/users/signin").permitAll()
+                .requestMatchers("/customers/**").hasRole("CUSTOMER")
+                .requestMatchers("/sellers/**").hasRole("SELLER")
+                .requestMatchers("/products/**").hasRole("SELLER")
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and().addFilterBefore(new JwtAuthFilter(jwtUtil, userDetailsService), UsernamePasswordAuthenticationFilter.class);

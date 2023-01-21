@@ -27,27 +27,27 @@ public class OrderController {
         return orderService.createOrder(productId, quantity, shippingInfoId, userDetails.getUserId());
     }
 
-    @GetMapping("/orders/customers/{orderId}")
+    @GetMapping("/customers/orders/{orderId}")
     public MyOrderForCustomerResponseDto getOrderForCustomer(@PathVariable long orderId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return orderService.getOrderForCustomer(orderId, userDetails.getUserId());
     }
 
-    @GetMapping("/orders/customers")
+    @GetMapping("/customers/orders")
     public List<OrderForCustomerResponseDto> getAllOrderForCustomer(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return orderService.getAllOrderForCustomer(userDetails.getUserId());
     }
 
-    @GetMapping("/orders/sellers/{orderId}")
+    @GetMapping("/sellers/orders/{orderId}")
     public MyOrderForSellerResponseDto getOrderForSeller(@PathVariable long orderId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return orderService.getOrderForSeller(orderId, userDetails.getUserId());
     }
 
-    @GetMapping("/orders/sellers")
+    @GetMapping("/sellers/orders")
     public List<OrderForSellerResponseDto> getAllOrderForSeller(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return orderService.getAllOrderForSeller(userDetails.getUserId());
     }
 
-    @PutMapping("/orders/{orderId}")
+    @PutMapping("/sellers/orders/{orderId}")
     public MyOrderForSellerResponseDto acceptOrder(@PathVariable long orderId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return orderService.acceptOrder(orderId, userDetails.getUserId());
     }
