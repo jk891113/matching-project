@@ -1,5 +1,8 @@
 package com.dbzz.matchingproject.jwt;
 
+import com.dbzz.matchingproject.common.RedisDao;
+import com.dbzz.matchingproject.enums.JwtEnum;
+import com.dbzz.matchingproject.enums.UserRoleEnum;
 import com.dbzz.matchingproject.security.SecurityExceptionDto;
 import com.dbzz.matchingproject.security.UserDetailsServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,11 +31,20 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token = jwtUtil.resolveToken(request);
+        String token = jwtUtil.resolveToken(request, JwtUtil.AUTHORIZATION_HEADER);
         if (token != null) {
-            if (!jwtUtil.validateToken(token)){
+            if (jwtUtil.validateToken(token) == JwtEnum.DENIED){
                 jwtExceptionHandler(response, "Token Error", HttpStatus.UNAUTHORIZED.value());
                 return;
+                // Access Token 만료
+            } else if (jwtUtil.validateToken(token) == JwtEnum.EXPIRED) {
+                String refresh = jwtUtil.resolveToken(request, JwtUtil.REFRESH_HEADER);
+                if (jwtUtil.validateToken(refresh) == JwtEnum.ACCESS) {
+                    Claims claims = jwtUtil.getUserInfoFromToken(refresh);
+                    token = jwtUtil.createToken(claims.getSubject(), UserRoleEnum.valueOf(claims.get("auth").toString()));
+                    response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
+                }
+//                else if (jwtUtil.validateToken(refresh) == JwtEnum.EXPIRED)
             }
             Claims info = jwtUtil.getUserInfoFromToken(token);
             setAuthentication(info.getSubject());

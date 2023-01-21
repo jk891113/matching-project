@@ -1,5 +1,6 @@
 package com.dbzz.matchingproject.controller;
 
+import com.dbzz.matchingproject.common.RedisDao;
 import com.dbzz.matchingproject.dto.request.LoginRequestDto;
 import com.dbzz.matchingproject.dto.request.SellerAuthRequestDto;
 import com.dbzz.matchingproject.dto.request.SignupRequestDto;
@@ -24,6 +25,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.Charset;
+import java.time.Duration;
 import java.util.List;
 
 @RestController
@@ -31,6 +33,7 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
     private final JwtUtil jwtUtil;
+    private final RedisDao redisDao;
 
     @PostMapping("/users/signup")
     public ResponseEntity<StatusResponseDto> signup(@RequestBody @Valid SignupRequestDto requestDto) {
@@ -46,8 +49,13 @@ public class UserController {
         StatusResponseDto responseDto = new StatusResponseDto(StatusEnum.OK, "로그인 완료");
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType((new MediaType("application", "json", Charset.forName("UTF-8"))));
+
         AuthenticatedUserInfoDto userInfoDto = userService.signin(requestDto);
-        response.addHeader(jwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(userInfoDto.getUsername(), userInfoDto.getRole()));
+        String refreshToken = jwtUtil.createRefreshToken(userInfoDto.getUsername(), userInfoDto.getRole());
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(userInfoDto.getUsername(), userInfoDto.getRole()));
+        response.addHeader(JwtUtil.REFRESH_HEADER, refreshToken);
+        redisDao.setValues(refreshToken, userInfoDto.getUsername(), Duration.ofMinutes(3));
+
         return new ResponseEntity<>(responseDto, headers, HttpStatus.OK);
     }
 
