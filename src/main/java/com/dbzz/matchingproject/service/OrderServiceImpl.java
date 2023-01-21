@@ -56,10 +56,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional(readOnly = true)
-    public MyOrderForCustomerResponseDto getOrderForCustomer(long orderId) {
+    public MyOrderForCustomerResponseDto getOrderForCustomer(long orderId, String userId) {
         Order order = orderRepository.findByOrderId(orderId).orElseThrow(
                 () -> new IllegalArgumentException("해당 주문이 존재하지 않습니다.")
         );
+        if (!order.getCustomerId().equals(userId)) throw new IllegalArgumentException("본인의 주문 정보만 조회 가능합니다.");
         ShippingInfo shippingInfo = shippingInfoRepository.findByShippingInfoId(order.getShippingInfoId()).orElseThrow(
                 () -> new IllegalArgumentException("배송정보가 존재하지 않습니다.")
         );

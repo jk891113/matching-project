@@ -29,7 +29,7 @@ public class OrderController {
 
     @GetMapping("/orders/customers/{orderId}")
     public MyOrderForCustomerResponseDto getOrderForCustomer(@PathVariable long orderId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return orderService.getOrderForCustomer(orderId);
+        return orderService.getOrderForCustomer(orderId, userDetails.getUserId());
     }
 
     @GetMapping("/orders/customers")
