@@ -39,7 +39,7 @@ public class ShippingInfoController {
 
     @DeleteMapping("/shippinginfo/{shippingInfoId}")
     public ResponseEntity<StatusResponseDto> deleteShippingInfo(@PathVariable long shippingInfoId) {
-        StatusResponseDto responseDto = new StatusResponseDto(StatusEnum.OK, "로그인 완료");
+        StatusResponseDto responseDto = new StatusResponseDto(StatusEnum.OK, "배송정보 삭제 완료");
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType((new MediaType("application", "json", Charset.forName("UTF-8"))));
         shippingInfoService.deleteShippingInfo(shippingInfoId);
