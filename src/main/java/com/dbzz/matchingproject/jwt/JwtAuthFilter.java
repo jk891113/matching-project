@@ -39,7 +39,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 //                String refresh = jwtUtil.resolveToken(request, JwtUtil.REFRESH_HEADER);
 //                String refresh = jwtUtil.getRefreshTokenFromRedis(jwtUtil.getRedisKey(token));
                 String refresh = jwtUtil.getRefreshTokenFromRedis(jwtUtil.getUserIdFromExpiredToken(token));
-//                System.out.println(refresh);
                 if (jwtUtil.validateToken(refresh) == JwtEnum.ACCESS) {
                     token = jwtUtil.reissueAccessToken(refresh);
                     response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);

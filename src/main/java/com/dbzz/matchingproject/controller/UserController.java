@@ -9,6 +9,7 @@ import com.dbzz.matchingproject.dto.response.StatusResponseDto;
 import com.dbzz.matchingproject.enums.StatusEnum;
 import com.dbzz.matchingproject.jwt.AuthenticatedUserInfoDto;
 import com.dbzz.matchingproject.jwt.JwtUtil;
+import com.dbzz.matchingproject.security.UserDetailsImpl;
 import com.dbzz.matchingproject.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,6 +20,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.Charset;
@@ -73,11 +75,13 @@ public class UserController {
         return userService.getAllSellers(pageable);
     }
 
-    @GetMapping("/users/signout")
-    public ResponseEntity<StatusResponseDto> signout(HttpServletRequest request){
+    @PostMapping("/users/signout")
+    public ResponseEntity<StatusResponseDto> signout(@AuthenticationPrincipal UserDetailsImpl userDetails, HttpServletResponse response){
         StatusResponseDto responseDto = new StatusResponseDto(StatusEnum.OK, "로그아웃 완료");
-        userService.signout(request);
-        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType((new MediaType("application", "json", Charset.forName("UTF-8"))));
+        redisDao.deleteValues(userDetails.getUserId());
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, null);
+        return new ResponseEntity<>(responseDto, headers, HttpStatus.OK);
     }
-
 }

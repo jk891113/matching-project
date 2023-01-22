@@ -28,7 +28,7 @@ public class JwtUtil {
     public static final String REFRESH_HEADER = "Refresh";
     public static final String AUTHORIZATION_KEY = "auth";
     private static final String BEARER_PREFIX = "Bearer ";
-    private static final long TOKEN_TIME = 10 * 1000L;
+    private static final long TOKEN_TIME = 60 * 1000L;
     private static final long REFRESH_TOKEN_TIME = 7 * 24 * 60 * 60 * 1000L;
 
     @Value("${jwt.secret.key}")
@@ -80,7 +80,6 @@ public class JwtUtil {
 
     public String getRefreshTokenFromRedis(String key) {
 //        String userId = this.getUserInfoFromToken(token).getSubject();
-//        System.out.println(redisDao.getValues(userId).toString());
         return redisDao.getValues(key).toString();
     }
 
@@ -119,11 +118,6 @@ public class JwtUtil {
         }
         return JwtEnum.DENIED;
     }
-
-//    public boolean isExpired(String token) {
-//        Date date = new Date();
-////        return this.getUserInfoFromToken(token).getExpiration() <  date;
-//    }
 
     // 토큰에서 사용자 정보 가져오기
     public Claims getUserInfoFromToken(String token) {
