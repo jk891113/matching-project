@@ -6,11 +6,13 @@ import com.dbzz.matchingproject.dto.request.SignupRequestDto;
 import com.dbzz.matchingproject.dto.response.ProfileResponseDto;
 import com.dbzz.matchingproject.dto.response.SellerListResponseDto;
 import com.dbzz.matchingproject.entity.Form;
+import com.dbzz.matchingproject.entity.Point;
 import com.dbzz.matchingproject.entity.Profile;
 import com.dbzz.matchingproject.entity.User;
 import com.dbzz.matchingproject.enums.UserRoleEnum;
 import com.dbzz.matchingproject.jwt.AuthenticatedUserInfoDto;
 import com.dbzz.matchingproject.repository.FormRepository;
+import com.dbzz.matchingproject.repository.PointRepository;
 import com.dbzz.matchingproject.repository.ProfileRepository;
 import com.dbzz.matchingproject.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,6 +32,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ProfileRepository profileRepository;
     private final FormRepository formRepository;
+    private final PointRepository pointRepository;
     private final PasswordEncoder passwordEncoder;
 
     private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
@@ -53,7 +56,9 @@ public class UserServiceImpl implements UserService {
             role = UserRoleEnum.ADMIN;
         }
         User user = new User(userId, password, role);
+        Point point = new Point(userId, 5000);
         userRepository.save(user);
+        pointRepository.save(point);
     }
 
     @Override
