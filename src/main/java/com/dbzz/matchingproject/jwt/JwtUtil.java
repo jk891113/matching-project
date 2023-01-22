@@ -1,5 +1,6 @@
 package com.dbzz.matchingproject.jwt;
 
+import com.dbzz.matchingproject.common.RedisDao;
 import com.dbzz.matchingproject.enums.JwtEnum;
 import com.dbzz.matchingproject.enums.UserRoleEnum;
 import io.jsonwebtoken.*;
@@ -21,11 +22,13 @@ import java.util.Date;
 @Component
 @RequiredArgsConstructor
 public class JwtUtil {
+    private final RedisDao redisDao;
+
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String REFRESH_HEADER = "Refresh";
     public static final String AUTHORIZATION_KEY = "auth";
     private static final String BEARER_PREFIX = "Bearer ";
-    private static final long TOKEN_TIME = 60 * 60 * 10L;
+    private static final long TOKEN_TIME = 10 * 1000L;
     private static final long REFRESH_TOKEN_TIME = 7 * 24 * 60 * 60 * 1000L;
 
     @Value("${jwt.secret.key}")
@@ -66,8 +69,7 @@ public class JwtUtil {
     public String createRefreshToken(String username, UserRoleEnum role) {
         Date date = new Date();
 
-        return BEARER_PREFIX +
-                Jwts.builder()
+        return Jwts.builder()
                         .setSubject(username)
                         .claim(AUTHORIZATION_KEY, role)
                         .setExpiration(new Date(date.getTime() + REFRESH_TOKEN_TIME))
@@ -76,13 +78,37 @@ public class JwtUtil {
                         .compact();
     }
 
+    public String getRefreshTokenFromRedis(String key) {
+//        String userId = this.getUserInfoFromToken(token).getSubject();
+//        System.out.println(redisDao.getValues(userId).toString());
+        return redisDao.getValues(key).toString();
+    }
+
+    public String reissueAccessToken(String refreshToken) {
+        Claims claims = this.getUserInfoFromToken(refreshToken);
+        return this.createToken(claims.getSubject(), UserRoleEnum.valueOf(claims.get("auth").toString()));
+    }
+
+    public String getRedisKey(String token) {
+        return token.substring(token.length() - 8);
+    }
+
+    public String getUserIdFromExpiredToken(String token) {
+        try {
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+        } catch (ExpiredJwtException e) {
+            return e.getClaims().getSubject();
+        }
+        return null;
+    }
+
     // 토큰 검증
     public JwtEnum validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return JwtEnum.ACCESS;
         } catch (ExpiredJwtException e) {
-            log.info("Expired JWT token, 만료된 JWT token 입니다.");
+//            log.info("Expired JWT token, 만료된 JWT token 입니다.");
             return JwtEnum.EXPIRED;
         } catch (SecurityException | MalformedJwtException e) {
             log.info("Invalid JWT signature, 유효하지 않는 JWT 서명 입니다.");
@@ -93,6 +119,11 @@ public class JwtUtil {
         }
         return JwtEnum.DENIED;
     }
+
+//    public boolean isExpired(String token) {
+//        Date date = new Date();
+////        return this.getUserInfoFromToken(token).getExpiration() <  date;
+//    }
 
     // 토큰에서 사용자 정보 가져오기
     public Claims getUserInfoFromToken(String token) {

@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,15 +37,16 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             if (jwtUtil.validateToken(token) == JwtEnum.DENIED){
                 jwtExceptionHandler(response, "Token Error", HttpStatus.UNAUTHORIZED.value());
                 return;
-                // Access Token 만료
+            // Access Token 만료
             } else if (jwtUtil.validateToken(token) == JwtEnum.EXPIRED) {
-                String refresh = jwtUtil.resolveToken(request, JwtUtil.REFRESH_HEADER);
+//                String refresh = jwtUtil.resolveToken(request, JwtUtil.REFRESH_HEADER);
+//                String refresh = jwtUtil.getRefreshTokenFromRedis(jwtUtil.getRedisKey(token));
+                String refresh = jwtUtil.getRefreshTokenFromRedis(jwtUtil.getUserIdFromExpiredToken(token));
+//                System.out.println(refresh);
                 if (jwtUtil.validateToken(refresh) == JwtEnum.ACCESS) {
-                    Claims claims = jwtUtil.getUserInfoFromToken(refresh);
-                    token = jwtUtil.createToken(claims.getSubject(), UserRoleEnum.valueOf(claims.get("auth").toString()));
+                    token = jwtUtil.reissueAccessToken(refresh);
                     response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
                 }
-//                else if (jwtUtil.validateToken(refresh) == JwtEnum.EXPIRED)
             }
             Claims info = jwtUtil.getUserInfoFromToken(token);
             setAuthentication(info.getSubject());

@@ -51,10 +51,13 @@ public class UserController {
         headers.setContentType((new MediaType("application", "json", Charset.forName("UTF-8"))));
 
         AuthenticatedUserInfoDto userInfoDto = userService.signin(requestDto);
+        String accessToken = jwtUtil.createToken(userInfoDto.getUsername(), userInfoDto.getRole());
         String refreshToken = jwtUtil.createRefreshToken(userInfoDto.getUsername(), userInfoDto.getRole());
-        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(userInfoDto.getUsername(), userInfoDto.getRole()));
-        response.addHeader(JwtUtil.REFRESH_HEADER, refreshToken);
-        redisDao.setValues(refreshToken, userInfoDto.getUsername(), Duration.ofMinutes(3));
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, accessToken);
+//        response.addHeader(JwtUtil.REFRESH_HEADER, refreshToken);
+//        redisDao.setValues(refreshToken, userInfoDto.getUsername(), Duration.ofMinutes(10));
+//        redisDao.setValues(accessToken.substring(accessToken.length() - 8), refreshToken, Duration.ofMinutes(10));
+        redisDao.setValues(userInfoDto.getUsername(), refreshToken, Duration.ofMinutes(10));
 
         return new ResponseEntity<>(responseDto, headers, HttpStatus.OK);
     }
