@@ -1,13 +1,10 @@
 package com.dbzz.matchingproject.service;
 
-import com.dbzz.matchingproject.dto.request.OrderItemRequestDto;
-import com.dbzz.matchingproject.dto.request.ShippingInfoRequestDto;
 import com.dbzz.matchingproject.dto.response.*;
 import com.dbzz.matchingproject.entity.Order;
 import com.dbzz.matchingproject.entity.OrderItem;
 import com.dbzz.matchingproject.entity.Product;
 import com.dbzz.matchingproject.entity.ShippingInfo;
-import com.dbzz.matchingproject.enums.ShippingStatusEnum;
 import com.dbzz.matchingproject.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

@@ -1,8 +1,6 @@
 package com.dbzz.matchingproject.jwt;
 
-import com.dbzz.matchingproject.common.RedisDao;
 import com.dbzz.matchingproject.enums.JwtEnum;
-import com.dbzz.matchingproject.enums.UserRoleEnum;
 import com.dbzz.matchingproject.security.SecurityExceptionDto;
 import com.dbzz.matchingproject.security.UserDetailsServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;

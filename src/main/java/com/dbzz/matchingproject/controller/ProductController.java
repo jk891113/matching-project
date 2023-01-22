@@ -9,7 +9,6 @@ import com.dbzz.matchingproject.enums.StatusEnum;
 import com.dbzz.matchingproject.jwt.JwtUtil;
 import com.dbzz.matchingproject.security.UserDetailsImpl;
 import com.dbzz.matchingproject.service.ProductService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;

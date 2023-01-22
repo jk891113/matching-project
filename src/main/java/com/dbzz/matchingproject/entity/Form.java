@@ -1,13 +1,10 @@
 package com.dbzz.matchingproject.entity;
 
-import com.dbzz.matchingproject.dto.request.SellerProfileRequestDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.sql.Time;
 
 @Entity(name = "forms")
 @Getter

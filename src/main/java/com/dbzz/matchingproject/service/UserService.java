@@ -3,13 +3,10 @@ package com.dbzz.matchingproject.service;
 import com.dbzz.matchingproject.dto.request.LoginRequestDto;
 import com.dbzz.matchingproject.dto.request.SellerAuthRequestDto;
 import com.dbzz.matchingproject.dto.request.SignupRequestDto;
-import com.dbzz.matchingproject.dto.response.ProfileResponseDto;
 import com.dbzz.matchingproject.dto.response.SellerListResponseDto;
-import com.dbzz.matchingproject.dto.response.StatusResponseDto;
 import com.dbzz.matchingproject.jwt.AuthenticatedUserInfoDto;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 

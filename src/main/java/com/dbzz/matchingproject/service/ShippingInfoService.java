@@ -2,8 +2,6 @@ package com.dbzz.matchingproject.service;
 
 import com.dbzz.matchingproject.dto.request.ShippingInfoRequestDto;
 import com.dbzz.matchingproject.dto.response.ShippingInfoResponseDto;
-import com.dbzz.matchingproject.dto.response.StatusResponseDto;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 

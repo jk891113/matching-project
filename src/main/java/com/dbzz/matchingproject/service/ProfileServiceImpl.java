@@ -12,7 +12,6 @@ import com.dbzz.matchingproject.entity.User;
 import com.dbzz.matchingproject.enums.UserRoleEnum;
 import com.dbzz.matchingproject.repository.FormRepository;
 import com.dbzz.matchingproject.repository.ProfileRepository;
-import com.dbzz.matchingproject.repository.ShippingInfoRepository;
 import com.dbzz.matchingproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

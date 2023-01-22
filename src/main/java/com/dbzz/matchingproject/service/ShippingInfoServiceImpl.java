@@ -2,12 +2,10 @@ package com.dbzz.matchingproject.service;
 
 import com.dbzz.matchingproject.dto.request.ShippingInfoRequestDto;
 import com.dbzz.matchingproject.dto.response.ShippingInfoResponseDto;
-import com.dbzz.matchingproject.dto.response.StatusResponseDto;
 import com.dbzz.matchingproject.entity.ShippingInfo;
 import com.dbzz.matchingproject.repository.ShippingInfoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

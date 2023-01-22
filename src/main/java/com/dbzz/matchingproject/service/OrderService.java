@@ -1,7 +1,5 @@
 package com.dbzz.matchingproject.service;
 
-import com.dbzz.matchingproject.dto.request.OrderItemRequestDto;
-import com.dbzz.matchingproject.dto.request.ShippingInfoRequestDto;
 import com.dbzz.matchingproject.dto.response.*;
 
 import java.util.List;
