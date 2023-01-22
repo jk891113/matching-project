@@ -24,11 +24,14 @@ public class Product extends Timestamp {
 
     private String productInfo;
 
-    public Product(String userId, String productName, int price, String productInfo) {
+    private double point;
+
+    public Product(String userId, String productName, int price, String productInfo, double point) {
         this.userId = userId;
         this.productName = productName;
         this.price = price;
         this.productInfo = productInfo;
+        this.point = point;
     }
 
     public void update(UpdateProductRequestDto requestDto) {

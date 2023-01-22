@@ -11,11 +11,13 @@ public class AllProductResponseDto {
     private String productName;
     private int price;
     private String productInfo;
+    private double point;
 
     public AllProductResponseDto(Product product) {
         this.userId = product.getUserId();
         this.productName = product.getProductName();
         this.price = product.getPrice();
         this.productInfo = product.getProductInfo();
+        this.point = product.getPoint();
     }
 }
