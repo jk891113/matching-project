@@ -8,6 +8,8 @@ import com.dbzz.matchingproject.enums.StatusEnum;
 import com.dbzz.matchingproject.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,14 +24,14 @@ public class AdminController {
 
     // 페이징
     @GetMapping("/admin/customer-list")
-    public List<UserResponseDto> getAllCustomers(Pageable pageable) {
-        return adminService.getAllCustomers(pageable);
+    public List<UserResponseDto> getAllCustomers(@RequestParam int page) {
+        return adminService.getAllCustomers(page);
     }
 
     // 페이징
     @GetMapping("/admin/seller-list")
-    public List<SellerListResponseDto> getAllSellers(Pageable pageable) {
-        return adminService.getAllSellers(pageable);
+    public List<SellerListResponseDto> getAllSellers(@RequestParam int page) {
+        return adminService.getAllSellers(page);
     }
 
     @GetMapping("/admin/permission")

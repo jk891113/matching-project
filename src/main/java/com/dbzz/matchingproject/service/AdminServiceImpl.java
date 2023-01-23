@@ -12,7 +12,9 @@ import com.dbzz.matchingproject.repository.ProfileRepository;
 import com.dbzz.matchingproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +31,8 @@ public class AdminServiceImpl implements AdminService{
 
     @Override
     @Transactional(readOnly = true)
-    public List<UserResponseDto> getAllCustomers(Pageable pageable) {
+    public List<UserResponseDto> getAllCustomers(int page) {
+        Pageable pageable = PageRequest.of(page - 1, 5, Sort.by(Sort.Direction.DESC, "modifiedAt"));
         List<User> userList = userRepository.findAllByOrderByCreatedAtDesc(pageable);
         if (userList.isEmpty()) throw new IllegalArgumentException("회원 목록이 없습니다.");
         List<UserResponseDto> customerList = new ArrayList<>();
@@ -41,7 +44,8 @@ public class AdminServiceImpl implements AdminService{
 
     @Override
     @Transactional(readOnly = true)
-    public List<SellerListResponseDto> getAllSellers(Pageable pageable) {
+    public List<SellerListResponseDto> getAllSellers(int page) {
+        Pageable pageable = PageRequest.of(page - 1, 5, Sort.by(Sort.Direction.DESC, "modifiedAt"));
         List<User> userList = userRepository.findAllByRole(UserRoleEnum.SELLER, pageable);
         List<String> userIdList = new ArrayList<>();
         for(User user : userList){

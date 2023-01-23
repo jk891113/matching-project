@@ -6,9 +6,9 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface AdminService {
-    List<UserResponseDto> getAllCustomers(Pageable pageable);
+    List<UserResponseDto> getAllCustomers(int page);
 
-    List<SellerListResponseDto> getAllSellers(Pageable pageable);
+    List<SellerListResponseDto> getAllSellers(int page);
 
     List<PermissionResponseDto> getPermissionRequestForms();
 
