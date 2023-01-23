@@ -19,7 +19,7 @@ public interface UserService {
 
     void signout(HttpServletRequest request);
 
-    void sellerAuth(String userId, SellerAuthRequestDto requestDto);
+    void sellerAuth(String userId, SellerAuthRequestDto requestDto, String userDetails);
 
     List<SellerListResponseDto> getAllSellers(Pageable pageable);
 }

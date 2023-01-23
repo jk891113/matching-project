@@ -90,7 +90,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void sellerAuth(String userId, SellerAuthRequestDto requestDto) {
+    public void sellerAuth(String userId, SellerAuthRequestDto requestDto, String userDetails) {
         User user = userRepository.findByUserId(userId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 회원입니다.")
         );

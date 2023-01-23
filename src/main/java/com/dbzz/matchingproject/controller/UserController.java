@@ -11,7 +11,6 @@ import com.dbzz.matchingproject.jwt.AuthenticatedUserInfoDto;
 import com.dbzz.matchingproject.jwt.JwtUtil;
 import com.dbzz.matchingproject.security.UserDetailsImpl;
 import com.dbzz.matchingproject.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -62,9 +61,9 @@ public class UserController {
     }
 
     @PostMapping("/users/{userId}/seller-auth")
-    public ResponseEntity<StatusResponseDto> sellerAuth(@PathVariable String userId, @RequestBody SellerAuthRequestDto requestDto){
+    public ResponseEntity<StatusResponseDto> sellerAuth(@PathVariable String userId, @RequestBody SellerAuthRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         StatusResponseDto responseDto = new StatusResponseDto(StatusEnum.OK, "판매자 권한 요청 완료");
-        userService.sellerAuth(userId, requestDto);
+        userService.sellerAuth(userId, requestDto, userDetails.getUserId());
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
