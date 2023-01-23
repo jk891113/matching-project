@@ -80,6 +80,13 @@ public class ProductController {
         return new ResponseEntity<>(searchProducts,HttpStatus.OK);
     }
 
+//    @GetMapping("/search/products")
+//    public ResponseEntity<List<ProductResponseDto>> searchProduct(@RequestParam String keyword, @RequestParam int page) {
+//
+//        List<ProductResponseDto> searchProducts = productService.getSearchProducts(keyword, page);
+//        return new ResponseEntity<>(searchProducts,HttpStatus.OK);
+//    }
+
 
 
 }
