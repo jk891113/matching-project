@@ -20,6 +20,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final ShippingInfoRepository shippingInfoRepository;
     private final PointRepository pointRepository;
+    private final ChatRoomRepository chatRoomRepository;
 
 //    @Override
 //    @Transactional
@@ -52,29 +53,44 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public CreateOrderResponseDto createOrder(CreateOrderRequestDto requestDto, String userId) {
+        // Order 객체 미리 생성
         int totalAmount = 0;
         String sellerId = "";
         Order order = new Order();
         orderRepository.save(order);
 
+        // OrderItem 객체 생성, 저장
+        List<String> sellerIdList = new ArrayList<>();
         List<OrderItem> orderItemList = new ArrayList<>();
         for (int i = 0; i < requestDto.getProductId().size(); i++) {
             Product product = productRepository.findByProductId(requestDto.getProductId().get(i)).orElseThrow(
                     () -> new IllegalArgumentException("존재하지 않는 상품입니다.")
             );
             sellerId = product.getUserId();
+            sellerIdList.add(sellerId);
             int amount = product.getPrice() * requestDto.getQuantity().get(i);
             totalAmount += amount;
             OrderItem orderItem = new OrderItem(sellerId, product.getProductId(), requestDto.getQuantity().get(i), amount, order);
             orderItemList.add(orderItem);
             orderItemRepository.save(orderItem);
         }
+
+        // 배송정보, 포인트 체크
         ShippingInfo shippingInfo = shippingInfoRepository.findByShippingInfoId(requestDto.getShippingInfoId()).orElseThrow(
                 () -> new IllegalArgumentException("배송정보가 존재하지 않습니다.")
         );
         Point point = pointRepository.findByUserId(userId).orElseThrow(
                 () -> new IllegalArgumentException("포인트가 존재하지 않습니다.")
         );
+
+        // 대화방 생성
+        List<ChatRoom> chatRoomList = sellerIdList.stream()
+                .distinct()
+                .map(s -> new ChatRoom(order.getOrderId(), s, userId))
+                .collect(Collectors.toList());
+        chatRoomRepository.saveAll(chatRoomList);
+
+        // 포인트 차감, Order 객체 데이터 추가
         point.subtractPoint(requestDto.getPoint());
         order.putDatasInOrder(userId, sellerId, totalAmount - requestDto.getPoint(), requestDto.getShippingInfoId());
         orderRepository.save(order);
