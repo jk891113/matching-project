@@ -24,9 +24,8 @@ public class Point extends Timestamp {
         this.point = point;
     }
 
-    public void changePoint(AdminPointRequestDto requestDto) {
-        this.userId = requestDto.getUserId();
-        this.point = getPoint() + requestDto.getGivePoint();
+    public void changePoint(int givePoint) {
+        this.point += givePoint;
 
     }
 

@@ -32,7 +32,7 @@ public class PointServiceImpl implements PointService{
                 () -> new IllegalArgumentException("회원 목록이 없습니다.")
         );
 
-        point.changePoint(requestDto);
+        point.changePoint(requestDto.getGivePoint());
         pointRepository.save(point);
 
     }
