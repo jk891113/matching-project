@@ -3,6 +3,7 @@ package com.dbzz.matchingproject.service;
 import com.dbzz.matchingproject.dto.request.CreateOrderRequestDto;
 import com.dbzz.matchingproject.dto.response.*;
 import com.dbzz.matchingproject.entity.*;
+import com.dbzz.matchingproject.enums.ShippingStatusEnum;
 import com.dbzz.matchingproject.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -158,7 +159,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public void determineOrderItem(long orderItemId, String userId) {
+    public OrderItemResponseDto determineOrderItem(long orderItemId, String userId) {
         OrderItem orderItem = orderItemRepository.findByItemId(orderItemId).orElseThrow(
                 () -> new IllegalArgumentException("주문 상품이 존재하지 않습니다.")
         );
@@ -172,5 +173,10 @@ public class OrderServiceImpl implements OrderService {
                 () -> new IllegalArgumentException("주문 내역이 존재하지 않습니다.")
         );
         order.updateShippingStatus(order);
+        if (order.getShippingStatus() == ShippingStatusEnum.DETERMINED) {
+            List<ChatRoom> chatRoomList = chatRoomRepository.findAllByOrderId(order.getOrderId());
+            for (ChatRoom chatRoom : chatRoomList) chatRoom.turnChatRoomOff();
+        }
+        return new OrderItemResponseDto(orderItem);
     }
 }

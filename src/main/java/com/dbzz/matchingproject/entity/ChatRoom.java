@@ -23,11 +23,20 @@ public class ChatRoom extends Timestamp {
     private String customerId;
 
     @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
     private ChatRoomStatusEnum status = ChatRoomStatusEnum.ON;
 
     public ChatRoom(long orderId, String sellerId, String customerId) {
         this.orderId = orderId;
         this.sellerId = sellerId;
         this.customerId = customerId;
+    }
+
+    public boolean isOn() {
+        return this.status == ChatRoomStatusEnum.ON;
+    }
+
+    public void turnChatRoomOff() {
+        this.status = ChatRoomStatusEnum.OFF;
     }
 }

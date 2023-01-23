@@ -30,8 +30,11 @@ public class ChatServiceImpl implements ChatService {
         ChatRoom chatRoom = chatRoomRepository.findByOrderIdAndSellerId(orderItem.getOrder().getOrderId(), orderItem.getSellerId()).orElseThrow(
                 () -> new IllegalArgumentException("대화방이 존재하지 않습니다.")
         );
-        ChatMessage chatMessage = new ChatMessage(chatRoom.getRoomId(), userId, requestDto.getMessage());
-        chatMessageRepository.save(chatMessage);
+        if (chatRoom.isOn()) {
+            ChatMessage chatMessage = new ChatMessage(chatRoom.getRoomId(), userId, requestDto.getMessage());
+            chatMessageRepository.save(chatMessage);
+        } else throw new IllegalArgumentException("대화방이 종료 되었습니다.");
+
         List<ChatMessage> chatMessageList = chatMessageRepository.findAllByChatRoomId(chatRoom.getRoomId());
         return new ChatRoomResponseDto(chatRoom, chatMessageList);
     }
@@ -41,8 +44,11 @@ public class ChatServiceImpl implements ChatService {
         ChatRoom chatRoom = chatRoomRepository.findByOrderIdAndSellerId(orderId, userId).orElseThrow(
                 () -> new IllegalArgumentException("대화방이 존재하지 않습니다.")
         );
-        ChatMessage chatMessage = new ChatMessage(chatRoom.getRoomId(), userId, requestDto.getMessage());
-        chatMessageRepository.save(chatMessage);
+        if (chatRoom.isOn()) {
+            ChatMessage chatMessage = new ChatMessage(chatRoom.getRoomId(), userId, requestDto.getMessage());
+            chatMessageRepository.save(chatMessage);
+        } else throw new IllegalArgumentException("대화방이 종료 되었습니다.");
+
         List<ChatMessage> chatMessageList = chatMessageRepository.findAllByChatRoomId(chatRoom.getRoomId());
         return new ChatRoomResponseDto(chatRoom, chatMessageList);
     }
