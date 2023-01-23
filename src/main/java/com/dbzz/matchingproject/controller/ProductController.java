@@ -49,8 +49,8 @@ public class ProductController {
     // 페이징
     //나의 전체 판매상품 조회
     @GetMapping("/products/{userId}")
-    public ResponseEntity<StatusAndDataResponseDto> getAllProductByUserId(@PathVariable String userId, Pageable pageable) {
-        List<ProductResponseDto> data = productService.getAllProductByUserId(userId, pageable);
+    public ResponseEntity<StatusAndDataResponseDto> getAllProductByUserId(@PathVariable String userId, @RequestParam int page) {
+        List<ProductResponseDto> data = productService.getAllProductByUserId(userId, page);
         StatusAndDataResponseDto responseDto = new  StatusAndDataResponseDto(StatusEnum.OK, "나의 전체 판매상품 조회 완료", data);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType((new MediaType("application", "json", Charset.forName("UTF-8"))));
@@ -61,8 +61,8 @@ public class ProductController {
     // 페이징
     //전체 상품 조회(고객용)
     @GetMapping("/customer/products")
-    public ResponseEntity<StatusAndDataResponseDto> getAllProducts(Pageable pageable) {
-        List<AllProductResponseDto> data = productService.getAllProducts(pageable);
+    public ResponseEntity<StatusAndDataResponseDto> getAllProducts(@RequestParam int page) {
+        List<AllProductResponseDto> data = productService.getAllProducts(page);
         StatusAndDataResponseDto responseDto = new  StatusAndDataResponseDto(StatusEnum.OK, "전체 상품 조회 완료", data);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType((new MediaType("application", "json", Charset.forName("UTF-8"))));
