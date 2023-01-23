@@ -2,22 +2,22 @@ package com.dbzz.matchingproject.controller;
 
 import com.dbzz.matchingproject.dto.request.CreateProductRequestDto;
 import com.dbzz.matchingproject.dto.request.UpdateProductRequestDto;
-import com.dbzz.matchingproject.dto.response.AllProductResponseDto;
-import com.dbzz.matchingproject.dto.response.ProductResponseDto;
-import com.dbzz.matchingproject.dto.response.StatusResponseDto;
+import com.dbzz.matchingproject.dto.response.*;
 import com.dbzz.matchingproject.enums.StatusEnum;
-import com.dbzz.matchingproject.jwt.JwtUtil;
 import com.dbzz.matchingproject.security.UserDetailsImpl;
 import com.dbzz.matchingproject.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.charset.Charset;
 import java.util.List;
 
 
@@ -25,43 +25,58 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
-    private final JwtUtil jwtUtil;
 
     //판매상품 등록
     @PostMapping("/products")
-    public ResponseEntity<StatusResponseDto> createProductPage(@RequestBody CreateProductRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        StatusResponseDto responseDto = new StatusResponseDto(StatusEnum.OK, "상품 등록 완료");
-        productService.createProductPage(userDetails.getUserId(), requestDto);
-        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    public ResponseEntity<StatusAndDataResponseDto> createProductPage(@RequestBody CreateProductRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        ProductResponseDto data = productService.createProductPage(userDetails.getUserId(), requestDto);
+        StatusAndDataResponseDto responseDto = new  StatusAndDataResponseDto(StatusEnum.OK, "상품 등록 완료", data);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType((new MediaType("application", "json", Charset.forName("UTF-8"))));
+        return new ResponseEntity<>(responseDto, headers, HttpStatus.OK);
     }
 
     //나의 판매상품 조회
     @GetMapping("/products/my/{productId}")
-    public ProductResponseDto getProductByUserId(@PathVariable Long productId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return productService.getProductByUserId(userDetails.getUserId(), productId);
+    public ResponseEntity<StatusAndDataResponseDto> getProductByUserId(@PathVariable Long productId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        ProductResponseDto data = productService.getProductByUserId(userDetails.getUserId(), productId);
+        StatusAndDataResponseDto responseDto = new  StatusAndDataResponseDto(StatusEnum.OK, "상품 조회 완료", data);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType((new MediaType("application", "json", Charset.forName("UTF-8"))));
+        return new ResponseEntity<>(responseDto, headers, HttpStatus.OK);
     }
 
     // 페이징
     //나의 전체 판매상품 조회
     @GetMapping("/products/{userId}")
-    public List<ProductResponseDto> getAllProductByUserId(@PathVariable String userId, Pageable pageable) {
-        return productService.getAllProductByUserId(userId, pageable);
+    public ResponseEntity<StatusAndDataResponseDto> getAllProductByUserId(@PathVariable String userId, Pageable pageable) {
+        List<ProductResponseDto> data = productService.getAllProductByUserId(userId, pageable);
+        StatusAndDataResponseDto responseDto = new  StatusAndDataResponseDto(StatusEnum.OK, "나의 전체 판매상품 조회 완료", data);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType((new MediaType("application", "json", Charset.forName("UTF-8"))));
+        return new ResponseEntity<>(responseDto, headers, HttpStatus.OK);
     }
 
 
     // 페이징
     //전체 상품 조회(고객용)
     @GetMapping("/customer/products")
-    public List<AllProductResponseDto> getAllProducts(Pageable pageable) {
-        return productService.getAllProducts(pageable);
+    public ResponseEntity<StatusAndDataResponseDto> getAllProducts(Pageable pageable) {
+        List<AllProductResponseDto> data = productService.getAllProducts(pageable);
+        StatusAndDataResponseDto responseDto = new  StatusAndDataResponseDto(StatusEnum.OK, "전체 상품 조회 완료", data);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType((new MediaType("application", "json", Charset.forName("UTF-8"))));
+        return new ResponseEntity<>(responseDto, headers, HttpStatus.OK);
     }
 
     //판매상품 수정
     @PutMapping("/products/{productId}")
-    public ResponseEntity<StatusResponseDto> updateProduct(@PathVariable Long productId, @RequestBody UpdateProductRequestDto requestDto) {
-        StatusResponseDto responseDto = new StatusResponseDto(StatusEnum.OK, "상품 수정 완료");
-        productService.updateProduct(productId, requestDto);
-        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    public ResponseEntity<StatusAndDataResponseDto> updateProduct(@PathVariable Long productId, @RequestBody UpdateProductRequestDto requestDto) {
+        ProductResponseDto data = productService.updateProduct(productId, requestDto);
+        StatusAndDataResponseDto responseDto = new StatusAndDataResponseDto(StatusEnum.OK, "상품 수정 완료", data);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType((new MediaType("application", "json", Charset.forName("UTF-8"))));
+        return new ResponseEntity<>(responseDto, headers, HttpStatus.OK);
     }
 
     //판매상품 삭제

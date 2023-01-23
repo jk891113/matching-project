@@ -11,7 +11,7 @@ import java.util.List;
 public interface ProductService {
 
     //판매상품 등록
-    void createProductPage(String userId, CreateProductRequestDto requestDto);
+    ProductResponseDto createProductPage(String userId, CreateProductRequestDto requestDto);
 
     //나의 판매상품 조회
     ProductResponseDto getProductByUserId(String userId, Long productId);

@@ -9,10 +9,8 @@ import com.dbzz.matchingproject.repository.ProductRepository;
 import com.dbzz.matchingproject.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,13 +26,14 @@ public class ProductServiceImpl implements ProductService {
 
     //판매상품 등록
     @Override
-    public void createProductPage(String userId, CreateProductRequestDto requestDto) {
+    public ProductResponseDto createProductPage(String userId, CreateProductRequestDto requestDto) {
         userRepository.findByUserId(userId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 회원입니다.")
         );
 
         Product product = new Product(userId, requestDto.getProductName(), requestDto.getPrice(), requestDto.getProductInfo(), (int) (requestDto.getPrice()*0.01));
         productRepository.save(product);
+        return new ProductResponseDto(product);
     }
 
     //나의 판매상품 조회
