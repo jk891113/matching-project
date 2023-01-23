@@ -39,9 +39,6 @@ public class UserServiceImpl implements UserService {
         String userId = requestDto.getUserId();
         String password = passwordEncoder.encode(requestDto.getPassword());
 
-//        String userId = requestDto.getUserId();
-//        String password = requestDto.getPassword();
-
         Optional<User> found = userRepository.findByUserId(requestDto.getUserId());
         if (found.isPresent()) {
             throw new IllegalArgumentException("중복된 아이디가 존재합니다.");
@@ -64,9 +61,6 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByUserId(requestDto.getUserId()).orElseThrow(
                 () -> new IllegalArgumentException("등록된 아이디가 없습니다.")
         );
-//        if (!user.getPassword().equals(requestDto.getPassword())) {
-//            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-//        }
         if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }

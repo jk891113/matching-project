@@ -25,6 +25,7 @@ public class MatchingProjectApplication {
                                   ProductRepository productRepository,
                                   FormRepository formRepository,
                                   ShippingInfoRepository shippingInfoRepository,
+                                  PointRepository pointRepository,
                                   PasswordEncoder passwordEncoder) {
 
         return (args) -> {
@@ -39,6 +40,17 @@ public class MatchingProjectApplication {
             userRepository.save(new User("seller4", passwordEncoder.encode("1234?5678"), UserRoleEnum.SELLER));
             userRepository.save(new User("seller5", passwordEncoder.encode("1234?5678"), UserRoleEnum.SELLER));
             userRepository.save(new User("admin", passwordEncoder.encode("1234?5678"), UserRoleEnum.ADMIN));
+
+            pointRepository.save(new Point("customer1", 5000));
+            pointRepository.save(new Point("customer2", 5000));
+            pointRepository.save(new Point("customer3", 5000));
+            pointRepository.save(new Point("customer4", 5000));
+            pointRepository.save(new Point("customer5", 5000));
+            pointRepository.save(new Point("seller1", 5000));
+            pointRepository.save(new Point("seller2", 5000));
+            pointRepository.save(new Point("seller3", 5000));
+            pointRepository.save(new Point("seller4", 5000));
+            pointRepository.save(new Point("seller5", 5000));
 
             profileRepository.save(new Profile("customer1", "고객1"));
             profileRepository.save(new Profile("customer2", "고객2"));

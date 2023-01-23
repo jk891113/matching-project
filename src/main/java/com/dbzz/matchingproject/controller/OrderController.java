@@ -1,5 +1,6 @@
 package com.dbzz.matchingproject.controller;
 
+import com.dbzz.matchingproject.dto.request.CreateOrderRequestDto;
 import com.dbzz.matchingproject.dto.response.*;
 import com.dbzz.matchingproject.enums.StatusEnum;
 import com.dbzz.matchingproject.security.UserDetailsImpl;
@@ -20,12 +21,22 @@ import java.util.List;
 public class OrderController {
     private final OrderService orderService;
 
-    @PostMapping("/orders/{shippingInfoId}")
-    public ResponseEntity<StatusAndDataResponseDto> createOrder(@RequestParam List<Long> productId,
-                                              @RequestParam List<Integer> quantity,
-                                              @PathVariable long shippingInfoId,
-                                              @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        CreateOrderResponseDto data =  orderService.createOrder(productId, quantity, shippingInfoId, userDetails.getUserId());
+//    @PostMapping("/orders/{shippingInfoId}")
+//    public ResponseEntity<StatusAndDataResponseDto> createOrder(@RequestParam List<Long> productId,
+//                                              @RequestParam List<Integer> quantity,
+//                                              @PathVariable long shippingInfoId,
+//                                              @AuthenticationPrincipal UserDetailsImpl userDetails) {
+//        CreateOrderResponseDto data =  orderService.createOrder(productId, quantity, shippingInfoId, userDetails.getUserId());
+//        StatusAndDataResponseDto responseDto = new StatusAndDataResponseDto(StatusEnum.OK, "주문 등록 완료", data);
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType((new MediaType("application", "json", Charset.forName("UTF-8"))));
+//        return new ResponseEntity<>(responseDto, headers, HttpStatus.OK);
+//    }
+
+    @PostMapping("/orders")
+    public ResponseEntity<StatusAndDataResponseDto> createOrder(@RequestBody CreateOrderRequestDto requestDto,
+                                                                @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        CreateOrderResponseDto data =  orderService.createOrder(requestDto, userDetails.getUserId());
         StatusAndDataResponseDto responseDto = new StatusAndDataResponseDto(StatusEnum.OK, "주문 등록 완료", data);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType((new MediaType("application", "json", Charset.forName("UTF-8"))));
@@ -75,5 +86,10 @@ public class OrderController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType((new MediaType("application", "json", Charset.forName("UTF-8"))));
         return new ResponseEntity<>(responseDto, headers, HttpStatus.OK);
+    }
+
+    @PutMapping("/customers/orders/{orderItemId}")
+    public void determineOrderItem(@PathVariable long orderItemId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        orderService.determineOrderItem(orderItemId, userDetails.getUserId());
     }
 }

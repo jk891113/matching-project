@@ -1,10 +1,8 @@
 package com.dbzz.matchingproject.service;
 
+import com.dbzz.matchingproject.dto.request.CreateOrderRequestDto;
 import com.dbzz.matchingproject.dto.response.*;
-import com.dbzz.matchingproject.entity.Order;
-import com.dbzz.matchingproject.entity.OrderItem;
-import com.dbzz.matchingproject.entity.Product;
-import com.dbzz.matchingproject.entity.ShippingInfo;
+import com.dbzz.matchingproject.entity.*;
 import com.dbzz.matchingproject.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,31 +19,64 @@ public class OrderServiceImpl implements OrderService {
     private final OrderItemRepository orderItemRepository;
     private final OrderRepository orderRepository;
     private final ShippingInfoRepository shippingInfoRepository;
+    private final PointRepository pointRepository;
+
+//    @Override
+//    @Transactional
+//    public CreateOrderResponseDto createOrder(List<Long> productId, List<Integer> quantity, long shippingInfoId, String userId) {
+//        int totalAmount = 0;
+//        String sellerId = "";
+//        Order order = new Order();
+//        orderRepository.save(order);
+//
+//        List<OrderItem> orderItemList = new ArrayList<>();
+//        for (int i = 0; i < productId.size(); i++) {
+//            Product product = productRepository.findByProductId(productId.get(i)).orElseThrow(
+//                    () -> new IllegalArgumentException("존재하지 않는 상품입니다.")
+//            );
+//            sellerId = product.getUserId();
+//            int amount = product.getPrice() * quantity.get(i);
+//            totalAmount += amount;
+//            OrderItem orderItem = new OrderItem(sellerId, product.getProductId(), quantity.get(i), amount, order);
+//            orderItemList.add(orderItem);
+//            orderItemRepository.save(orderItem);
+//        }
+//        ShippingInfo shippingInfo = shippingInfoRepository.findByShippingInfoId(shippingInfoId).orElseThrow(
+//                () -> new IllegalArgumentException("배송정보가 존재하지 않습니다.")
+//        );
+//        order.putDatasInOrder(userId, sellerId, totalAmount, shippingInfoId);
+//        orderRepository.save(order);
+//        return new CreateOrderResponseDto(order, orderItemList, shippingInfo);
+//    }
 
     @Override
     @Transactional
-    public CreateOrderResponseDto createOrder(List<Long> productId, List<Integer> quantity, long shippingInfoId, String userId) {
+    public CreateOrderResponseDto createOrder(CreateOrderRequestDto requestDto, String userId) {
         int totalAmount = 0;
         String sellerId = "";
         Order order = new Order();
         orderRepository.save(order);
 
         List<OrderItem> orderItemList = new ArrayList<>();
-        for (int i = 0; i < productId.size(); i++) {
-            Product product = productRepository.findByProductId(productId.get(i)).orElseThrow(
+        for (int i = 0; i < requestDto.getProductId().size(); i++) {
+            Product product = productRepository.findByProductId(requestDto.getProductId().get(i)).orElseThrow(
                     () -> new IllegalArgumentException("존재하지 않는 상품입니다.")
             );
             sellerId = product.getUserId();
-            int amount = product.getPrice() * quantity.get(i);
+            int amount = product.getPrice() * requestDto.getQuantity().get(i);
             totalAmount += amount;
-            OrderItem orderItem = new OrderItem(sellerId, product.getProductId(), quantity.get(i), amount, order);
+            OrderItem orderItem = new OrderItem(sellerId, product.getProductId(), requestDto.getQuantity().get(i), amount, order);
             orderItemList.add(orderItem);
             orderItemRepository.save(orderItem);
         }
-        ShippingInfo shippingInfo = shippingInfoRepository.findByShippingInfoId(shippingInfoId).orElseThrow(
+        ShippingInfo shippingInfo = shippingInfoRepository.findByShippingInfoId(requestDto.getShippingInfoId()).orElseThrow(
                 () -> new IllegalArgumentException("배송정보가 존재하지 않습니다.")
         );
-        order.putDatasInOrder(userId, sellerId, totalAmount, shippingInfoId);
+        Point point = pointRepository.findByUserId(userId).orElseThrow(
+                () -> new IllegalArgumentException("포인트가 존재하지 않습니다.")
+        );
+        point.subtractPoint(requestDto.getPoint());
+        order.putDatasInOrder(userId, sellerId, totalAmount - requestDto.getPoint(), requestDto.getShippingInfoId());
         orderRepository.save(order);
         return new CreateOrderResponseDto(order, orderItemList, shippingInfo);
     }
@@ -107,5 +138,23 @@ public class OrderServiceImpl implements OrderService {
         }
         order.updateShippingStatus(order);
         return getOrderForSeller(orderId, sellerId);
+    }
+
+    @Override
+    @Transactional
+    public void determineOrderItem(long orderItemId, String userId) {
+        OrderItem orderItem = orderItemRepository.findByItemId(orderItemId).orElseThrow(
+                () -> new IllegalArgumentException("주문 상품이 존재하지 않습니다.")
+        );
+        orderItem.determineOrderItem();
+        Point point = pointRepository.findByUserId(userId).orElseThrow(
+                () -> new IllegalArgumentException("포인트가 존재하지 않습니다.")
+        );
+        point.savingPoint(orderItem.getAmount());
+        pointRepository.save(point);
+        Order order = orderRepository.findByOrderId(orderItem.getOrder().getOrderId()).orElseThrow(
+                () -> new IllegalArgumentException("주문 내역이 존재하지 않습니다.")
+        );
+        order.updateShippingStatus(order);
     }
 }
