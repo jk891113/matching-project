@@ -16,7 +16,9 @@ import com.dbzz.matchingproject.repository.ProfileRepository;
 import com.dbzz.matchingproject.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -100,7 +102,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<SellerListResponseDto> getAllSellers(Pageable pageable) {
+    public List<SellerListResponseDto> getAllSellers(int page) {
+        Pageable pageable = PageRequest.of(page - 1, 5, Sort.by(Sort.Direction.DESC, "modifiedAt"));
         List<User> userList = userRepository.findAllByRole(UserRoleEnum.SELLER, pageable);
         List<String> userIdList = new ArrayList<>();
         for (User user : userList) {

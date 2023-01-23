@@ -21,5 +21,5 @@ public interface UserService {
 
     void sellerAuth(String userId, SellerAuthRequestDto requestDto, String userDetails);
 
-    List<SellerListResponseDto> getAllSellers(Pageable pageable);
+    List<SellerListResponseDto> getAllSellers(int page);
 }

@@ -5,6 +5,7 @@ import com.dbzz.matchingproject.dto.request.LoginRequestDto;
 import com.dbzz.matchingproject.dto.request.SellerAuthRequestDto;
 import com.dbzz.matchingproject.dto.request.SignupRequestDto;
 import com.dbzz.matchingproject.dto.response.SellerListResponseDto;
+import com.dbzz.matchingproject.dto.response.StatusAndDataResponseDto;
 import com.dbzz.matchingproject.dto.response.StatusResponseDto;
 import com.dbzz.matchingproject.enums.StatusEnum;
 import com.dbzz.matchingproject.jwt.AuthenticatedUserInfoDto;
@@ -67,12 +68,16 @@ public class UserController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-
     // 페이징
     @GetMapping("/users/seller-list")
-    public List<SellerListResponseDto> getAllSellers(Pageable pageable) {
-        return userService.getAllSellers(pageable);
+    public ResponseEntity<StatusAndDataResponseDto> getAllSellers(@RequestParam int page) {
+        List<SellerListResponseDto> data = userService.getAllSellers(page);
+        StatusAndDataResponseDto responseDto = new StatusAndDataResponseDto(StatusEnum.OK, "판매자 조회 완료", data);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType((new MediaType("application", "json", Charset.forName("UTF-8"))));
+        return new ResponseEntity<>(responseDto, headers, HttpStatus.OK);
     }
+
 
     @PostMapping("/users/signout")
     public ResponseEntity<StatusResponseDto> signout(@AuthenticationPrincipal UserDetailsImpl userDetails, HttpServletResponse response){
