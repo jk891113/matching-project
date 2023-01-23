@@ -29,4 +29,13 @@ public class Point extends Timestamp {
         this.point = getPoint() + requestDto.getGivePoint();
 
     }
+
+    public void subtractPoint(int point) {
+        if (this.point < point) throw new IllegalArgumentException("포인트 잔액이 부족합니다.");
+        this.point -= point;
+    }
+
+    public void savingPoint(int amount) {
+        this.point += (int) (amount * 0.01);
+    }
 }

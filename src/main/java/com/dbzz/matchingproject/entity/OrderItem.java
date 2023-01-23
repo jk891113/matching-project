@@ -51,4 +51,10 @@ public class OrderItem extends Timestamp {
                 this.shippingStatus = ShippingStatusEnum.COMPLETED;
         }
     }
+
+    public void determineOrderItem() {
+        if (this.getShippingStatus() != ShippingStatusEnum.COMPLETED)
+            throw new IllegalArgumentException("배송 완료된 상품만 주문 확정 가능합니다.");
+        else this.shippingStatus = ShippingStatusEnum.DETERMINED;
+    }
 }

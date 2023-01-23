@@ -7,7 +7,8 @@ public enum ShippingStatusEnum {
     DEFAULT(0, "주문 수락 대기"),
     ACCEPTED(1, "배송 준비중"),
     SHIPPING(2, "배송중"),
-    COMPLETED(3, "배송 완료");
+    COMPLETED(3, "배송 완료"),
+    DETERMINED(4, "구매 확정");
 
     int statusCode;
     String message;

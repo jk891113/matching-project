@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity(name = "orders")
 @Getter
@@ -49,7 +50,7 @@ public class Order extends Timestamp {
     }
 
     public void updateShippingStatus(Order order) {
-        int min = 3;
+        int min = 4;
         for (int i = 0; i < order.getOrderItemList().size(); i++) {
             if (order.getOrderItemList().get(i).getShippingStatus().ordinal() < min)
                 min = order.getOrderItemList().get(i).getShippingStatus().ordinal();
@@ -58,5 +59,10 @@ public class Order extends Timestamp {
         if (min == 1) this.shippingStatus = ShippingStatusEnum.ACCEPTED;
         if (min == 2) this.shippingStatus = ShippingStatusEnum.SHIPPING;
         if (min == 3) this.shippingStatus = ShippingStatusEnum.COMPLETED;
+        if (min == 4) this.shippingStatus = ShippingStatusEnum.DETERMINED;
+    }
+
+    public boolean isCompleted() {
+        return this.getShippingStatus() == ShippingStatusEnum.COMPLETED;
     }
 }
