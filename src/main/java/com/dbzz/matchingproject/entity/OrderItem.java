@@ -4,7 +4,6 @@ import com.dbzz.matchingproject.enums.ShippingStatusEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 
 @Entity(name = "order_items")
 @Getter
@@ -13,9 +12,6 @@ public class OrderItem extends Timestamp {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long itemId;
-
-//    @Column(nullable = false)
-//    private long orderId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
@@ -46,12 +42,13 @@ public class OrderItem extends Timestamp {
     }
 
     public void acceptOrder(ShippingStatusEnum shippingStatus, String sellerId) {
-        if (this.getSellerId().equals(sellerId) && shippingStatus.equals(ShippingStatusEnum.DEFAULT)) {
-            this.shippingStatus = ShippingStatusEnum.ACCEPTED;
-        } else if (this.getSellerId().equals(sellerId) && shippingStatus.equals(ShippingStatusEnum.ACCEPTED)) {
-            this.shippingStatus = ShippingStatusEnum.SHIPPING;
-        } else if (this.getSellerId().equals(sellerId) && shippingStatus.equals(ShippingStatusEnum.SHIPPING)) {
-            this.shippingStatus = ShippingStatusEnum.COMPLETED;
+        if (this.getSellerId().equals(sellerId)) {
+            if (shippingStatus.equals(ShippingStatusEnum.DEFAULT))
+                this.shippingStatus = ShippingStatusEnum.ACCEPTED;
+            else if (shippingStatus.equals(ShippingStatusEnum.ACCEPTED))
+                this.shippingStatus = ShippingStatusEnum.SHIPPING;
+            else if (shippingStatus.equals(ShippingStatusEnum.SHIPPING))
+                this.shippingStatus = ShippingStatusEnum.COMPLETED;
         }
     }
 }

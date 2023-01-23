@@ -2,6 +2,8 @@ package com.dbzz.matchingproject.config;
 
 import com.dbzz.matchingproject.jwt.JwtAuthFilter;
 import com.dbzz.matchingproject.jwt.JwtUtil;
+import com.dbzz.matchingproject.security.CustomAccessDeniedHandler;
+import com.dbzz.matchingproject.security.CustomAuthenticationEntryPoint;
 import com.dbzz.matchingproject.security.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -24,6 +26,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig {
     private final JwtUtil jwtUtil;
     private final UserDetailsServiceImpl userDetailsService;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -45,11 +49,15 @@ public class WebSecurityConfig {
 
         http.authorizeHttpRequests().requestMatchers("/users/signup").permitAll()
                 .requestMatchers("/users/signin").permitAll()
+                .requestMatchers("/customers/**").hasRole("CUSTOMER")
+                .requestMatchers("/sellers/**").hasRole("SELLER")
+                .requestMatchers("/products/**").hasRole("SELLER")
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and().addFilterBefore(new JwtAuthFilter(jwtUtil, userDetailsService), UsernamePasswordAuthenticationFilter.class);
 
-//        http.exceptionHandling().authenticationEntryPoint(customAuthenticationEntryPoint);
+        http.exceptionHandling().authenticationEntryPoint(customAuthenticationEntryPoint);
+        http.exceptionHandling().accessDeniedHandler(customAccessDeniedHandler);
 
         return http.build();
     }

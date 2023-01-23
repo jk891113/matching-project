@@ -6,17 +6,11 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class ShippingInfoResponseDto {
-    private long shippingInfoId;
-    private String userId;
-    private String nameAs;
+public class ShippingInfoForOrderResponseDto {
     private String address;
     private String phoneNumber;
 
-    public ShippingInfoResponseDto(ShippingInfo shippingInfo) {
-        this.shippingInfoId = shippingInfo.getShippingInfoId();
-        this.userId = shippingInfo.getUserId();
-        this.nameAs = shippingInfo.getNameAs();
+    public ShippingInfoForOrderResponseDto(ShippingInfo shippingInfo) {
         this.address = shippingInfo.getAddress();
         this.phoneNumber = shippingInfo.getPhoneNumber();
     }

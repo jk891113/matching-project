@@ -1,8 +1,7 @@
 package com.dbzz.matchingproject.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import com.dbzz.matchingproject.dto.request.ShippingInfoRequestDto;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,8 +10,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ShippingInfo extends Timestamp {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long shippingInfoId;
+
     @Column(nullable = false)
     private String userId;
+
+    @Column(nullable = false)
+    private String nameAs;
 
     @Column(nullable = false)
     private String address;
@@ -20,9 +25,16 @@ public class ShippingInfo extends Timestamp {
     @Column(nullable = false)
     private String phoneNumber;
 
-    public ShippingInfo(String userId, String address, String phoneNumber) {
+    public ShippingInfo(String userId, String nameAs, String address, String phoneNumber) {
         this.userId = userId;
+        this.nameAs = nameAs;
         this.address = address;
         this.phoneNumber = phoneNumber;
+    }
+
+    public void updateShippingInfo(ShippingInfoRequestDto requestDto) {
+        this.nameAs = requestDto.getNameAs();
+        this.address = requestDto.getAddress();
+        this.phoneNumber = requestDto.getPhoneNumber();
     }
 }

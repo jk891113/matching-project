@@ -1,14 +1,8 @@
 package com.dbzz.matchingproject;
 
-import com.dbzz.matchingproject.entity.Form;
-import com.dbzz.matchingproject.entity.Product;
-import com.dbzz.matchingproject.entity.Profile;
-import com.dbzz.matchingproject.entity.User;
+import com.dbzz.matchingproject.entity.*;
 import com.dbzz.matchingproject.enums.UserRoleEnum;
-import com.dbzz.matchingproject.repository.FormRepository;
-import com.dbzz.matchingproject.repository.ProductRepository;
-import com.dbzz.matchingproject.repository.ProfileRepository;
-import com.dbzz.matchingproject.repository.UserRepository;
+import com.dbzz.matchingproject.repository.*;
 import com.dbzz.matchingproject.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -30,8 +24,8 @@ public class MatchingProjectApplication {
                                   ProfileRepository profileRepository,
                                   ProductRepository productRepository,
                                   FormRepository formRepository,
-                                  PasswordEncoder passwordEncoder,
-                                  UserService userService) {
+                                  ShippingInfoRepository shippingInfoRepository,
+                                  PasswordEncoder passwordEncoder) {
 
         return (args) -> {
             userRepository.save(new User("customer1", passwordEncoder.encode("1234?5678"), UserRoleEnum.CUSTOMER));
@@ -77,6 +71,18 @@ public class MatchingProjectApplication {
 
             formRepository.save(new Form("customer1", "고객1", "악세사리"));
             formRepository.save(new Form("customer2", "고객2", "잡화"));
+
+            shippingInfoRepository.save(new ShippingInfo("customer1", "집", "서울", "010-1234-1234"));
+            shippingInfoRepository.save(new ShippingInfo("customer1", "회사", "성남", "010-1234-1234"));
+            shippingInfoRepository.save(new ShippingInfo("customer2", "집", "강원", "010-1234-1234"));
+            shippingInfoRepository.save(new ShippingInfo("customer2", "회사", "평양", "010-1234-1234"));
+            shippingInfoRepository.save(new ShippingInfo("customer3", "집", "인천", "010-1234-1234"));
+            shippingInfoRepository.save(new ShippingInfo("customer3", "회사", "일산", "010-1234-1234"));
+            shippingInfoRepository.save(new ShippingInfo("customer4", "집", "과천", "010-1234-1234"));
+            shippingInfoRepository.save(new ShippingInfo("customer4", "회사", "안양", "010-1234-1234"));
+            shippingInfoRepository.save(new ShippingInfo("customer5", "집", "용인", "010-1234-1234"));
+            shippingInfoRepository.save(new ShippingInfo("customer5", "회사", "하남", "010-1234-1234"));
+
         };
     }
 

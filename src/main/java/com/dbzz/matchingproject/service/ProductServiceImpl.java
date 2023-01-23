@@ -9,8 +9,10 @@ import com.dbzz.matchingproject.repository.ProductRepository;
 import com.dbzz.matchingproject.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -96,4 +98,12 @@ public class ProductServiceImpl implements ProductService {
         List<ProductResponseDto> allProductsList = list.stream().map(product -> new ProductResponseDto(product)).collect(Collectors.toList());
         return allProductsList;
     }
+
+//    public List<ProductResponseDto> getSearchProducts(String keyword, int page) {
+//        Pageable pageable = PageRequest.of(page - 1, 5, Sort.by(Sort.Direction.DESC, "modifiedAt"));
+//        List<Product> list = productRepository.findByProductNameContaining(keyword, pageable);
+//
+//        List<ProductResponseDto> allProductsList = list.stream().map(product -> new ProductResponseDto(product)).collect(Collectors.toList());
+//        return allProductsList;
+//    }
 }

@@ -9,7 +9,6 @@ import com.dbzz.matchingproject.enums.StatusEnum;
 import com.dbzz.matchingproject.jwt.JwtUtil;
 import com.dbzz.matchingproject.security.UserDetailsImpl;
 import com.dbzz.matchingproject.service.ProductService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -37,7 +36,7 @@ public class ProductController {
     }
 
     //나의 판매상품 조회
-    @GetMapping("/products/{productId}")
+    @GetMapping("/products/my/{productId}")
     public ProductResponseDto getProductByUserId(@PathVariable Long productId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return productService.getProductByUserId(userDetails.getUserId(), productId);
     }
@@ -52,7 +51,7 @@ public class ProductController {
 
     // 페이징
     //전체 상품 조회(고객용)
-    @GetMapping("/products")
+    @GetMapping("/customer/products")
     public List<AllProductResponseDto> getAllProducts(Pageable pageable) {
         return productService.getAllProducts(pageable);
     }
@@ -74,12 +73,19 @@ public class ProductController {
     }
 
     //상품 검색
-    @GetMapping("/products/search")
+    @GetMapping("/search/products")
     public ResponseEntity<List<ProductResponseDto>> searchProduct(@RequestParam String keyword, @PageableDefault(size = 10, sort = "productId", direction = Sort.Direction.DESC) Pageable pageable) {
 
         List<ProductResponseDto> searchProducts = productService.getSearchProducts(keyword, pageable);
         return new ResponseEntity<>(searchProducts,HttpStatus.OK);
     }
+
+//    @GetMapping("/search/products")
+//    public ResponseEntity<List<ProductResponseDto>> searchProduct(@RequestParam String keyword, @RequestParam int page) {
+//
+//        List<ProductResponseDto> searchProducts = productService.getSearchProducts(keyword, page);
+//        return new ResponseEntity<>(searchProducts,HttpStatus.OK);
+//    }
 
 
 

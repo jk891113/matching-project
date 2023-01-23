@@ -26,6 +26,9 @@ public class Order extends Timestamp {
     private List<OrderItem> orderItemList = new ArrayList<>();
 
     @Column(nullable = false)
+    private long shippingInfoId;
+
+    @Column(nullable = false)
     private int totalAmount = 0;
 
     @Column(nullable = false)
@@ -38,16 +41,18 @@ public class Order extends Timestamp {
         this.totalAmount = totalAmount;
     }
 
-    public void putDatasInOrder(String customerId, String sellerId, int totalAmount) {
+    public void putDatasInOrder(String customerId, String sellerId, int totalAmount, long shippingInfoId) {
         this.customerId = customerId;
         this.sellerId = sellerId;
         this.totalAmount = totalAmount;
+        this.shippingInfoId = shippingInfoId;
     }
 
     public void updateShippingStatus(Order order) {
         int min = 3;
         for (int i = 0; i < order.getOrderItemList().size(); i++) {
-            if (order.getOrderItemList().get(i).getShippingStatus().ordinal() < min) min = order.getOrderItemList().get(i).getShippingStatus().ordinal();
+            if (order.getOrderItemList().get(i).getShippingStatus().ordinal() < min)
+                min = order.getOrderItemList().get(i).getShippingStatus().ordinal();
         }
         if (min == 0) return;
         if (min == 1) this.shippingStatus = ShippingStatusEnum.ACCEPTED;

@@ -4,6 +4,7 @@ import com.dbzz.matchingproject.dto.request.CustomerProfileRequestDto;
 import com.dbzz.matchingproject.dto.request.ProfileRequestDto;
 import com.dbzz.matchingproject.dto.request.SellerProfileRequestDto;
 import com.dbzz.matchingproject.dto.response.CustomerProfileResponseDto;
+import com.dbzz.matchingproject.dto.response.PermissionResponseDto;
 import com.dbzz.matchingproject.dto.response.ProfileResponseDto;
 import com.dbzz.matchingproject.entity.Form;
 import com.dbzz.matchingproject.entity.Profile;
@@ -17,7 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @Slf4j
@@ -35,7 +35,7 @@ public class ProfileServiceImpl implements ProfileService {
                 () -> new IllegalArgumentException("존재하지 않는 회원입니다.")
         );
         // 입력한 아이디의 회원의 프로필이 존재하는지 확인
-        Optional<Profile> found =  profileRepository.findByUserId(userId);
+        Optional<Profile> found = profileRepository.findByUserId(userId);
         if (found.isPresent()) throw new IllegalArgumentException("프로필이 존재합니다.");
         // Dto 의 image 값이 null 이면 이미지를 제외하고 객체 생성
         Profile profile;
@@ -49,14 +49,17 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public void createSellerProfile(String userId, SellerProfileRequestDto requestDto) {
+    public PermissionResponseDto createSellerProfile(String userId, SellerProfileRequestDto requestDto) {
         userRepository.findByUserId(userId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 회원입니다.")
         );
         Optional<Profile> found = profileRepository.findByUserId(userId);
         if (found.isEmpty()) throw new IllegalArgumentException("고객 프로필부터 작성해 주세요.");
+        Optional<Form> foundForm = formRepository.findByUserId(userId);
+        if (foundForm.isPresent()) throw new IllegalArgumentException("판매자 요청은 한번만 가능합니다.");
         Form form = new Form(userId, requestDto.getIntro(), requestDto.getItem());
         formRepository.save(form);
+        return new PermissionResponseDto(form);
     }
 
     @Override
