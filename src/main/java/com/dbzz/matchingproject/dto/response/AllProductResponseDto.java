@@ -11,7 +11,7 @@ public class AllProductResponseDto {
     private String productName;
     private int price;
     private String productInfo;
-    private double point;
+    private int point;
 
     public AllProductResponseDto(Product product) {
         this.userId = product.getUserId();

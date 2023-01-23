@@ -24,9 +24,9 @@ public class Product extends Timestamp {
 
     private String productInfo;
 
-    private double point;
+    private int point;
 
-    public Product(String userId, String productName, int price, String productInfo, double point) {
+    public Product(String userId, String productName, int price, String productInfo, int point) {
         this.userId = userId;
         this.productName = productName;
         this.price = price;

@@ -31,7 +31,7 @@ public class ProductServiceImpl implements ProductService {
                 () -> new IllegalArgumentException("존재하지 않는 회원입니다.")
         );
 
-        Product product = new Product(userId, requestDto.getProductName(), requestDto.getPrice(), requestDto.getProductInfo(), requestDto.getPrice()*0.01);
+        Product product = new Product(userId, requestDto.getProductName(), requestDto.getPrice(), requestDto.getProductInfo(), (int) (requestDto.getPrice()*0.01));
         productRepository.save(product);
     }
 
