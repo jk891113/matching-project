@@ -5,6 +5,9 @@ import com.dbzz.matchingproject.dto.response.*;
 import com.dbzz.matchingproject.entity.*;
 import com.dbzz.matchingproject.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -115,8 +118,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderForSellerResponseDto> getAllOrderForSeller(String sellerId) {
-        List<Long> orderIdList = orderItemRepository.findAllBySellerId(sellerId).stream()
+    public List<OrderForSellerResponseDto> getAllOrderForSeller(String sellerId, int page) {
+        Pageable pageable = PageRequest.of(page - 1, 5, Sort.by(Sort.Direction.DESC, "modifiedAt"));
+        List<Long> orderIdList = orderItemRepository.findAllBySellerId(sellerId, pageable).stream()
                 .map(orderItem -> orderItem.getOrder().getOrderId())
                 .collect(Collectors.toList());
         List<OrderForSellerResponseDto> responseDtos = orderRepository.findAllByOrderIdIn(orderIdList).stream()

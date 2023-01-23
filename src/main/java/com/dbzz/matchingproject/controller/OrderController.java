@@ -71,8 +71,8 @@ public class OrderController {
     }
 
     @GetMapping("/sellers/orders")
-    public ResponseEntity<StatusAndDataResponseDto> getAllOrderForSeller(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        List<OrderForSellerResponseDto> data = orderService.getAllOrderForSeller(userDetails.getUserId());
+    public ResponseEntity<StatusAndDataResponseDto> getAllOrderForSeller(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestParam int page) {
+        List<OrderForSellerResponseDto> data = orderService.getAllOrderForSeller(userDetails.getUserId(), page);
         StatusAndDataResponseDto responseDto = new StatusAndDataResponseDto(StatusEnum.OK, "주문 조회 완료", data);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType((new MediaType("application", "json", Charset.forName("UTF-8"))));
