@@ -1,6 +1,7 @@
 package com.dbzz.matchingproject.service;
 
 import com.dbzz.matchingproject.dto.request.CreateProductRequestDto;
+import com.dbzz.matchingproject.dto.request.LoginRequestDto;
 import com.dbzz.matchingproject.dto.request.UpdateProductRequestDto;
 import com.dbzz.matchingproject.dto.response.AllProductResponseDto;
 import com.dbzz.matchingproject.dto.response.ProductResponseDto;
@@ -59,7 +60,9 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductResponseDto> getAllProductByUserId(String userId, int page) {
         Pageable pageable = PageRequest.of(page - 1, 5, Sort.by(Sort.Direction.DESC, "modifiedAt"));
         List<Product> list = productRepository.findByUserId(userId, pageable);
-        List<ProductResponseDto> allProductByUserIdList = list.stream().map(product -> new ProductResponseDto(product)).collect(Collectors.toList());
+        List<ProductResponseDto> allProductByUserIdList = list.stream()
+                .filter(product -> product.getUserId().equals(userId))
+                .map(product -> new ProductResponseDto(product)).collect(Collectors.toList());
         return allProductByUserIdList;
     }
 

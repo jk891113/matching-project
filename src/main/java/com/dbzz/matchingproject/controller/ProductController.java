@@ -48,9 +48,9 @@ public class ProductController {
 
     // 페이징
     //나의 전체 판매상품 조회
-    @GetMapping("/products/{userId}")
-    public ResponseEntity<StatusAndDataResponseDto> getAllProductByUserId(@PathVariable String userId, @RequestParam int page) {
-        List<ProductResponseDto> data = productService.getAllProductByUserId(userId, page);
+    @GetMapping("/products")
+    public ResponseEntity<StatusAndDataResponseDto> getAllProductByUserId(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestParam int page) {
+        List<ProductResponseDto> data = productService.getAllProductByUserId(userDetails.getUserId(), page);
         StatusAndDataResponseDto responseDto = new  StatusAndDataResponseDto(StatusEnum.OK, "나의 전체 판매상품 조회 완료", data);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType((new MediaType("application", "json", Charset.forName("UTF-8"))));
