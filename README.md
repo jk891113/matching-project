@@ -3,10 +3,10 @@
 ## 매칭 서비스 프로젝트
 
 ___
-[![My Skills](https://skillicons.dev/icons?i=java,spring,idea,git,github)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=java,spring,gradle,hibernate,redis,idea,git,github)](https://skillicons.dev)
 ___
 
-### 버전 정보
+### 개발 환경
 - JDK : 17
 - Spring Boot : 3.0.1
 
@@ -103,38 +103,58 @@ ___
 - 성능개선 : 기능을 개선해서 검색 및 페이징 쿼리 수행시간을 단축시켜 보세요.
 </details>
 
+---
+
 ## API 명세서
-### User API
+<details>
+<summary>
+User API
+</summary>
 
-| 기능           | Method | URL             | Request                                                                                   | Response                                                                                                                                                            | Request Header             | Response Header                                                    |
-|--------------|------|-----------------|-------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------|--------------------------------------------------------------------|
-| 회원가입         | POST | /users/signup   | {<br/>"userId" : "string",<br/>"password" : "string",<br/>"adminToken" : "string"<br/>}   | {<br/>"status": "OK",<br/>"message": "회원가입 완료"<br/>}                                                                                                                |                            |                                                                    |
-| 로그인          | POST | /users/signin   | {<br/>"userId" : "string",<br/>"password" : "string"<br/>}                                | {<br/>"status": "OK",<br/>"message": "로그인 완료"<br/>}                                                                                                                 |                            | {<br/>"accessToken" : "string"<br/>"refreshToken" : "string"<br/>} |
-| 로그아웃         | POST | /users/signout  |                                                                                           | {<br/>"status": "OK",<br/>"message": "로그아웃 완료",<br/>}                                                                                                               | Authorization : Bearer JWT |                                                                    |
-| 전체 판매자 목록 조회 | POST | /users/signout  |                                                                                           | {<br/>"status": "OK",<br/>"message": "판매자 조회 완료"<br/>"data": [<br/>{<br/>"userId": "String",<br/>"nickname": “String”,<br/>"item": "String"<br/>}<br/>]<br/>}       | Authorization : Bearer JWT |                                                                    |
-| 판매자 권한 요청    | POST | /users/signout  | {<br/>"intro" : "string",<br/>"item" : "string"<br/>}                                     | {<br/>"status": "OK",<br/>"message": "판매자 권한 요청 완료"<br/>}                                                                                                           | Authorization : Bearer JWT |                                                                    |
+| 기능           | Method | URL            | Request                                                                                 | Response                                                                                                                                                      | Request Header             | Response Header                                                    |
+|--------------|--------|----------------|-----------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------|--------------------------------------------------------------------|
+| 회원가입         | POST   | /users/signup  | {<br/>"userId" : "string",<br/>"password" : "string",<br/>"adminToken" : "string"<br/>} | {<br/>"status": "OK",<br/>"message": "회원가입 완료"<br/>}                                                                                                          |                            |                                                                    |
+| 로그인          | POST   | /users/signin  | {<br/>"userId" : "string",<br/>"password" : "string"<br/>}                              | {<br/>"status": "OK",<br/>"message": "로그인 완료"<br/>}                                                                                                           |                            | {<br/>"accessToken" : "string"<br/>"refreshToken" : "string"<br/>} |
+| 로그아웃         | POST   | /users/signout |                                                                                         | {<br/>"status": "OK",<br/>"message": "로그아웃 완료",<br/>}                                                                                                         | Authorization : Bearer JWT |                                                                    |
+| 전체 판매자 목록 조회 | POST   | /users/signout |                                                                                         | {<br/>"status": "OK",<br/>"message": "판매자 조회 완료"<br/>"data": [<br/>{<br/>"userId": "String",<br/>"nickname": “String”,<br/>"item": "String"<br/>}<br/>]<br/>} | Authorization : Bearer JWT |                                                                    |
+| 판매자 권한 요청    | POST   | /users/signout | {<br/>"intro" : "string",<br/>"item" : "string"<br/>}                                   | {<br/>"status": "OK",<br/>"message": "판매자 권한 요청 완료"<br/>}                                                                                                     | Authorization : Bearer JWT |                                                                    |
 
-### Admin API
+</details>
 
-| 기능                  | Method | URL                                | Request | Response                                                                                                                                                                                                                                     | Request Header              | Response Header |
-|---------------------|-----|------------------------------------|---------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------|--------------|
-| 판매자 등록 요청 목록 조회     | GET | /admin/permission                  |         | {<br/>"status": "OK",<br/>"message": "판매자 등록 요청 목록 조회 완료",<br/>"data": [<br/>{<br/>"userId": "String",<br/>"intro": "String",<br/>"item": "String",<br/>"createdAt": "LocalDateTime",<br/>"modifiedAt": "LocalDateTime"<br/>}<br/>]<br/>}    | Authorization : Bearer JWT |              |
-| 판매자 권한 승인           | PUT | /admin/users/{userId}/permission   |         | {<br/>"status": "OK",<br/>"message": "판매자 권한 승인 완료"<br/>}                                                                                                                                                                                    | Authorization : Bearer JWT |              |
-| 판매자 권한 삭제           | PUT | /admin/sellers/{userId}/permission |         | {<br/>"status": "OK",<br/>"message": "판매자 권한 회수 완료"<br/>}                                                                                                                                                                                    | Authorization : Bearer JWT |              |
-| 고객 목록 조회            | GET | /admin/customer-list?page=int      |         | {<br/>"status": "OK",<br/>"message": "고객 조회 완료",<br/>"data": [<br/>{<br/>"userId": "String",<br/>"createdAt": "LocalDateTime”,<br/>"role": “String"<br/>}<br/>]<br/>}                                                                        | Authorization : Bearer JWT |              |
-| 판매자 목록 조회           | GET | /admin/seller-list?page=int        |         | {<br/>"status": "OK",<br/>"message": "판매자 조회 완료",<br/>"data": [<br/>{<br/>"userId": "String",<br/>"nickname": "String",<br/>"item": "String"<br/>}<br/>]<br/>}                                                                               | Authorization : Bearer JWT |              |
+<details>
+<summary>
+Admin API
+</summary>
 
-### Profile API
+| 기능              | Method | URL                                | Request | Response                                                                                                                                                                                                                                  | Request Header             | Response Header |
+|-----------------|--------|------------------------------------|---------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------|-----------------|
+| 판매자 등록 요청 목록 조회 | GET    | /admin/permission                  |         | {<br/>"status": "OK",<br/>"message": "판매자 등록 요청 목록 조회 완료",<br/>"data": [<br/>{<br/>"userId": "String",<br/>"intro": "String",<br/>"item": "String",<br/>"createdAt": "LocalDateTime",<br/>"modifiedAt": "LocalDateTime"<br/>}<br/>]<br/>} | Authorization : Bearer JWT |                 |
+| 판매자 권한 승인       | PUT    | /admin/users/{userId}/permission   |         | {<br/>"status": "OK",<br/>"message": "판매자 권한 승인 완료"<br/>}                                                                                                                                                                                 | Authorization : Bearer JWT |                 |
+| 판매자 권한 삭제       | PUT    | /admin/sellers/{userId}/permission |         | {<br/>"status": "OK",<br/>"message": "판매자 권한 회수 완료"<br/>}                                                                                                                                                                                 | Authorization : Bearer JWT |                 |
+| 고객 목록 조회        | GET    | /admin/customer-list?page=int      |         | {<br/>"status": "OK",<br/>"message": "고객 조회 완료",<br/>"data": [<br/>{<br/>"userId": "String",<br/>"createdAt": "LocalDateTime”,<br/>"role": “String"<br/>}<br/>]<br/>}                                                                     | Authorization : Bearer JWT |                 |
+| 판매자 목록 조회       | GET    | /admin/seller-list?page=int        |         | {<br/>"status": "OK",<br/>"message": "판매자 조회 완료",<br/>"data": [<br/>{<br/>"userId": "String",<br/>"nickname": "String",<br/>"item": "String"<br/>}<br/>]<br/>}                                                                            | Authorization : Bearer JWT |                 |
 
-| 기능            | Method | URL | Request                                                                                                          | Response                                                                                                                                                                                                                             | Request Header             | Response Header |
-|---------------|--------|-----|------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------|-----------------|
-| 프로필 작성        | POST   | /profiles/customers    | {<br/>"nickname" : “String”,<br/>”image” : “String”<br/>}                                                        | {<br/>"status": "OK",<br/>"message": "프로필 작성 완료",<br/>"data": [<br/>{<br/>"userId": "String",<br/>"nickname": "String",<br/>"intro": "String",<br/>"image": "String"<br/>}<br/>]<br/>}                                               | Authorization : Bearer JWT |                 |
-| 판매자 권한 승인 요청  | POST   | /profiles/sellers    | { <br/>”intro” : “String”,<br/>”item” : “String”<br/>}                                                           | {<br/>"status": "OK",<br/>"message": "판매 권한 요청 완료”,<br/>"data": [<br/>{<br/>"userId": "String",<br/>"intro": "String",<br/>"item": "String",<br/>”createdAt” : “LocalDateTime”,<br/>”modifiedAt” : “LocalDateTime”<br/>}<br/>]<br/>} | Authorization : Bearer JWT |                 |
-| 고객 본인 프로필 조회  | GET    | /profiles/customers    |                                                                                                                  | {<br/>"status": "OK",<br/>"message": "프로필 조회 완료”,<br/>"data": [<br/>{<br/>”userId” : “String”,<br/>”nickname” : “String”,<br/>”image” : “String”<br/>}<br/>]<br/>}                                                                   | Authorization : Bearer JWT |                 |
-| 판매자 본인 프로필 조회 | GET    | /profiles/sellers    |                                                                                                                  | {<br/>"status": "OK",<br/>"message": "프로필 조회 완료”,<br/>"data": [<br/>{<br/>”userId” : “String”,<br/>”nickname” : “String”,<br/>”image” : “String”,<br/>”intro” : “String”,<br/>”item” : “String”<br/>}<br/>]<br/>}                    | Authorization : Bearer JWT |                 |
-| 프로필 수정        | PUT    | /profiles    | {<br/>"nickname" : “String”,<br/>”image” : “String”,<br/>”intro” : “String”,<br/>”item” : “String”<br/>}         | {<br/>"status": "OK",<br/>"message": "프로필 수정 완료”,<br/>"data": [<br/>{<br/> ”userId” : “String”,<br/>”nickname” : “String”,<br/>”image” : “String”,<br/>”intro” : “String”,<br/>”item” : “String”<br/>}<br/>]<br/>}                   | Authorization : Bearer JWT |                 |
+</details>
 
-### ShippingInfo API
+<details>
+<summary>
+Profile API
+</summary>
+
+| 기능            | Method | URL                 | Request                                                                                                  | Response                                                                                                                                                                                                                             | Request Header             | Response Header |
+|---------------|--------|---------------------|----------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------|-----------------|
+| 프로필 작성        | POST   | /profiles/customers | {<br/>"nickname" : “String”,<br/>”image” : “String”<br/>}                                                | {<br/>"status": "OK",<br/>"message": "프로필 작성 완료",<br/>"data": [<br/>{<br/>"userId": "String",<br/>"nickname": "String",<br/>"intro": "String",<br/>"image": "String"<br/>}<br/>]<br/>}                                               | Authorization : Bearer JWT |                 |
+| 판매자 권한 승인 요청  | POST   | /profiles/sellers   | { <br/>”intro” : “String”,<br/>”item” : “String”<br/>}                                                   | {<br/>"status": "OK",<br/>"message": "판매 권한 요청 완료”,<br/>"data": [<br/>{<br/>"userId": "String",<br/>"intro": "String",<br/>"item": "String",<br/>”createdAt” : “LocalDateTime”,<br/>”modifiedAt” : “LocalDateTime”<br/>}<br/>]<br/>} | Authorization : Bearer JWT |                 |
+| 고객 본인 프로필 조회  | GET    | /profiles/customers |                                                                                                          | {<br/>"status": "OK",<br/>"message": "프로필 조회 완료”,<br/>"data": [<br/>{<br/>”userId” : “String”,<br/>”nickname” : “String”,<br/>”image” : “String”<br/>}<br/>]<br/>}                                                                   | Authorization : Bearer JWT |                 |
+| 판매자 본인 프로필 조회 | GET    | /profiles/sellers   |                                                                                                          | {<br/>"status": "OK",<br/>"message": "프로필 조회 완료”,<br/>"data": [<br/>{<br/>”userId” : “String”,<br/>”nickname” : “String”,<br/>”image” : “String”,<br/>”intro” : “String”,<br/>”item” : “String”<br/>}<br/>]<br/>}                    | Authorization : Bearer JWT |                 |
+| 프로필 수정        | PUT    | /profiles           | {<br/>"nickname" : “String”,<br/>”image” : “String”,<br/>”intro” : “String”,<br/>”item” : “String”<br/>} | {<br/>"status": "OK",<br/>"message": "프로필 수정 완료”,<br/>"data": [<br/>{<br/> ”userId” : “String”,<br/>”nickname” : “String”,<br/>”image” : “String”,<br/>”intro” : “String”,<br/>”item” : “String”<br/>}<br/>]<br/>}                   | Authorization : Bearer JWT |                 |
+
+</details>
+
+<details>
+<summary>
+ShippingInfo API
+</summary>
 
 | 기능       | Method | URL                             | Request                                                                                    | Response                                                                                                                                                                                                                        | Request Header             | Response Header |
 |----------|--------|---------------------------------|--------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------|-----------------|
@@ -143,7 +163,12 @@ ___
 | 배송정보 수정  | PUT    | /shippinginfo/{shipingInfoId}   | {<br/>”nameAs” : “String”,<br/>”address” : “String”,<br/> ”phoneNumber” : “String”<br/>}   | {<br/>"status": "OK",<br/>"message": "배송정보 수정 완료”,<br/>"data": [<br/>{<br/>"”shippingInfoId” : long,<br/>”userId” : “String”,<br/>”nameAs” : “String”,<br/>”address” : “String”,<br/>”phoneNumber” : “String”<br/>}<br/>]<br/>} | Authorization : Bearer JWT |                 |
 | 배송정보 삭제  | DELETE | /shippinginfo/{shipingInfoId}   |                                                                                            | {<br/>"status": "OK",<br/>”msg”: “배송정보 삭제완료”<br/>}                                                                                                                                                                              | Authorization : Bearer JWT |                 |
 
-### Product API
+</details>
+
+<details>
+<summary>
+Product API
+</summary>
 
 | 기능                  | Method | URL                         | Request                                                                               | Response                                                                                                                                                                                                    | Request Header             | Response Header |
 |---------------------|--------|-----------------------------|---------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------|-----------------|
@@ -154,37 +179,69 @@ ___
 | 판매상품 수정             | PUT    | /products/{productId}       | {<br/>”productName” : “string”,<br/>”price” : int,<br/>”productInfo” : “string”<br/>} | {<br/>"status": "OK",<br/>”msg” : “판매상품 수정 완료”,<br/>"data": [<br/>{<br/>”productId” : “String”,<br/>”productName” : “ String ”,<br/>”price” : int,<br/>”productInfo”: “String”<br/>}<br/>]<br/>}            | Authorization : Bearer JWT |                 |
 | 판매상품 삭제             | DELETE | /products/{productId}       |                                                                                       | {<br/>"status": "OK",<br/>”msg” : “판매상품 삭제 완료”<br/>}                                                                                                                                                        | Authorization : Bearer JWT |                 |
 
-### Order API
+</details>
 
-| 기능          | Method | URL                             | Request                                                                                               | Response                                                                                                                                                                                                                                                                                                                                                   | Request Header             | Response Header |
-|-------------|--------|---------------------------------|-------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------|-----------------|
-| 주문 요청폼           | POST   | /orders                         | {<br/>”productId” : List<Long>,<br/>”quantity” : List<Integer>,<br/>”shippingInfoId” : long,<br/>"point" : int<br/>} | {<br/>"status": "OK",<br/>"message": "주문 등록 완료",<br/>"data": [<br/>{<br/>"orderId": "String",<br/>”customerId” : “String”,<br/>"createdAt": "LocalDateTime",<br/>"modifiedAt": "LocalDateTime",<br/>”totalAmount” : int,<br/>”shippingStatus” : “String”,<br/>”shippingInfo” : “String”,<br/>”orderItemList” : List(OrderItemRespinseDto)<br/>}<br/>]<br/>}| Authorization : Bearer JWT |                 |
-| 고객 주문 목록 조회(1개)  | GET    | /customers/orders/{orderId}     |                                                                                                       | {<br/>"status": "OK",<br/>"message": "주문 조회 완료",<br/>"data": [<br/>{<br/>"orderId": "String",<br/>”customerId” : “String”,<br/>"createdAt": "LocalDateTime",<br/>"modifiedAt": "LocalDateTime",<br/>”totalAmount” : int,<br/>”shippingStatus” : “String”,<br/>”shippingInfo” : ShippingInfoResponseDto,<br/>”orderItemList” : List(OrderItemRespinseDto)<br/>}<br/>]<br/>} | Authorization : Bearer JWT |                 |
-| 고객 주문 목록 조회(전체)  | GET    | /customers/orders               |                                                                                                       | {<br/>"status": "OK",<br/>"message": "주문 조회 완료",<br/>"data": [<br/>{<br/>"orderId": "String",<br/>”customerId” : “String”,<br/>"createdAt": "LocalDateTime",<br/>"modifiedAt": "LocalDateTime",<br/>”totalAmount” : int,<br/>”shippingStatus” : “String”,<br/>”orderItemList” : List(OrderItemRespinseDto)<br/>}<br/>]<br/>}                               | Authorization : Bearer JWT |                 |
-| 판매자 주문 목록 조회(1개) | GET    | /sellers/orders/{orderId}       |                                                                                                       | {<br/>"status": "OK",<br/>"message": "주문 조회 완료",<br/>"data": [<br/>{<br/>"orderId": "String",<br/>”customerId” : “String”,<br/>"createdAt": "LocalDateTime",<br/>"modifiedAt": "LocalDateTime",<br/>”totalAmount” : int,<br/>”shippingStatus” : ShippingInfoResponseDto,<br/>”orderItemList” : List(OrderItemRespinseDto)<br/>}<br/>]<br/>}                | Authorization : Bearer JWT |                 |
-| 판매자 주문 목록 조회(전체) | GET    | /sellers/orders                 |                                                                                                       | {<br/>"status": "OK",<br/>"message": "주문 조회 완료",<br/>"data": [<br/>{<br/>"orderId": "String",<br/>”customerId” : “String”,<br/>"createdAt": "LocalDateTime",<br/>"modifiedAt": "LocalDateTime",<br/>”totalAmount” : int,<br/>”shippingStatus” : “String”,<br/>”orderItemList” : List(OrderItemRespinseDto)<br/>}<br/>]<br/>}                               | Authorization : Bearer JWT |                 |
-| 주문 처리 (수락, 완료)   | PUT    | /sellers/orders/{orderId}       | {<br/>”shippingStatus” : “string”<br/>}                                                                 | {<br/>"status": "OK",<br/>"message": "주문 처리 완료",<br/>"data": [<br/>{<br/>"orderId": "String",<br/>”customerId” : “String”,<br/>"createdAt": "LocalDateTime",<br/>"modifiedAt": "LocalDateTime",<br/>”totalAmount” : int,<br/>”shippingStatus” : “String”,<br/>”shippingInfo” : “String”<br/>}<br/>]<br/>}                                                  | Authorization : Bearer JWT |                 |
-| 구매 확정            | PUT    | /customers/orders/{orderItemId} |                                                                                                       | {<br/>”status” : “OK”,<br/>”message” : “구매 확정 완료”,<br/>”data” : [<br/>{<br/>”itemId” : long,<br/>”productId” : long,<br/>”quantity” : int,<br/>”amount” : int,<br/>”shippingStatus” : "String"<br/>}<br/>]<br/>}                                                                                                                                             | Authorization : Bearer JWT |                 |
+<details>
+<summary>
+Order API
+</summary>
 
-### Point API
+| 기능               | Method | URL                             | Request                                                                                                              | Response                                                                                                                                                                                                                                                                                                                                                                   | Request Header             | Response Header |
+|------------------|--------|---------------------------------|----------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------|-----------------|
+| 주문 요청폼           | POST   | /orders                         | {<br/>”productId” : List<Long>,<br/>”quantity” : List<Integer>,<br/>”shippingInfoId” : long,<br/>"point" : int<br/>} | {<br/>"status": "OK",<br/>"message": "주문 등록 완료",<br/>"data": [<br/>{<br/>"orderId": "String",<br/>”customerId” : “String”,<br/>"createdAt": "LocalDateTime",<br/>"modifiedAt": "LocalDateTime",<br/>”totalAmount” : int,<br/>”shippingStatus” : “String”,<br/>”shippingInfo” : “String”,<br/>”orderItemList” : List(OrderItemRespinseDto)<br/>}<br/>]<br/>}                | Authorization : Bearer JWT |                 |
+| 고객 주문 목록 조회(1개)  | GET    | /customers/orders/{orderId}     |                                                                                                                      | {<br/>"status": "OK",<br/>"message": "주문 조회 완료",<br/>"data": [<br/>{<br/>"orderId": "String",<br/>”customerId” : “String”,<br/>"createdAt": "LocalDateTime",<br/>"modifiedAt": "LocalDateTime",<br/>”totalAmount” : int,<br/>”shippingStatus” : “String”,<br/>”shippingInfo” : ShippingInfoResponseDto,<br/>”orderItemList” : List(OrderItemRespinseDto)<br/>}<br/>]<br/>} | Authorization : Bearer JWT |                 |
+| 고객 주문 목록 조회(전체)  | GET    | /customers/orders               |                                                                                                                      | {<br/>"status": "OK",<br/>"message": "주문 조회 완료",<br/>"data": [<br/>{<br/>"orderId": "String",<br/>”customerId” : “String”,<br/>"createdAt": "LocalDateTime",<br/>"modifiedAt": "LocalDateTime",<br/>”totalAmount” : int,<br/>”shippingStatus” : “String”,<br/>”orderItemList” : List(OrderItemRespinseDto)<br/>}<br/>]<br/>}                                               | Authorization : Bearer JWT |                 |
+| 판매자 주문 목록 조회(1개) | GET    | /sellers/orders/{orderId}       |                                                                                                                      | {<br/>"status": "OK",<br/>"message": "주문 조회 완료",<br/>"data": [<br/>{<br/>"orderId": "String",<br/>”customerId” : “String”,<br/>"createdAt": "LocalDateTime",<br/>"modifiedAt": "LocalDateTime",<br/>”totalAmount” : int,<br/>”shippingStatus” : ShippingInfoResponseDto,<br/>”orderItemList” : List(OrderItemRespinseDto)<br/>}<br/>]<br/>}                                | Authorization : Bearer JWT |                 |
+| 판매자 주문 목록 조회(전체) | GET    | /sellers/orders                 |                                                                                                                      | {<br/>"status": "OK",<br/>"message": "주문 조회 완료",<br/>"data": [<br/>{<br/>"orderId": "String",<br/>”customerId” : “String”,<br/>"createdAt": "LocalDateTime",<br/>"modifiedAt": "LocalDateTime",<br/>”totalAmount” : int,<br/>”shippingStatus” : “String”,<br/>”orderItemList” : List(OrderItemRespinseDto)<br/>}<br/>]<br/>}                                               | Authorization : Bearer JWT |                 |
+| 주문 처리 (수락, 완료)   | PUT    | /sellers/orders/{orderId}       | {<br/>”shippingStatus” : “string”<br/>}                                                                              | {<br/>"status": "OK",<br/>"message": "주문 처리 완료",<br/>"data": [<br/>{<br/>"orderId": "String",<br/>”customerId” : “String”,<br/>"createdAt": "LocalDateTime",<br/>"modifiedAt": "LocalDateTime",<br/>”totalAmount” : int,<br/>”shippingStatus” : “String”,<br/>”shippingInfo” : “String”<br/>}<br/>]<br/>}                                                                  | Authorization : Bearer JWT |                 |
+| 구매 확정            | PUT    | /customers/orders/{orderItemId} |                                                                                                                      | {<br/>”status” : “OK”,<br/>”message” : “구매 확정 완료”,<br/>”data” : [<br/>{<br/>”itemId” : long,<br/>”productId” : long,<br/>”quantity” : int,<br/>”amount” : int,<br/>”shippingStatus” : "String"<br/>}<br/>]<br/>}                                                                                                                                                           | Authorization : Bearer JWT |                 |
 
-| 기능         | Method | URL           | Request                                    | Response                                                                                                                                                                                            | Request Header             | Response Header |
-|------------|--------|---------------|--------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------|-----------------|
-| 나의 포인트 조회  | GET    | /points       |                                            | {<br/>"status": "OK",<br/>"message": "나의 포인트 조회 완료”,<br/>"data": [<br/>{<br/>”userId”: “String”,<br/>”point” : int,<br/>”createdAt” : “Timestamp”,<br/>”modifiedAt” : “Timestamp”<br/>}<br/>]<br/>} | Authorization : Bearer JWT |                |
+</details>
+
+<details>
+<summary>
+Point API
+</summary>
+
+| 기능         | Method | URL           | Request                                                | Response                                                                                                                                                                                            | Request Header             | Response Header |
+|------------|--------|---------------|--------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------|-----------------|
+| 나의 포인트 조회  | GET    | /points       |                                                        | {<br/>"status": "OK",<br/>"message": "나의 포인트 조회 완료”,<br/>"data": [<br/>{<br/>”userId”: “String”,<br/>”point” : int,<br/>”createdAt” : “Timestamp”,<br/>”modifiedAt” : “Timestamp”<br/>}<br/>]<br/>} | Authorization : Bearer JWT |                 |
 | 어드민 포인트 지급 | PUT    | /admin/points | {<br/>”userId” : “String”,<br/>”givePoint” : int<br/>} | {<br/>"status": "OK",<br/>"message": "포인트 지급이 완료되었습니다.”<br/>}                                                                                                                                       | Authorization : Bearer JWT |                 |
 
-### Chat API
+</details>
 
-| 기능             | Method | URL | Request | Response                                                                                                                                                                                                                                                                                                     | Request Header                                           | Response Header |
-|----------------|--------|-----|---------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|-----------------|
-| 고객용 대화 메세지 작성  | POST   | /customers/chatmessages/{orderItemId}    | {<br/>”message” : String<br/>}        | {<br/>”chatRoomId” : long,<br/>”sellerId” : String,<br/>”customerId” : String,<br/>”messageResponseDtoList” : List(ChatMessageResponseDto) : [<br/>{<br/>”userId” : String,<br/>”message” : String,<br/>”createAt” : LocalDateTime<br/>}<br/>]<br/>}                                                         | Authorization : Bearer JWT                               |                 |
-| 판매자용 대화 메세지 작성 | POST   | /sellers/chatmessages/{orderId}    | {<br/>”message” : String<br/>}        | {<br/>”chatRoomId” : long,<br/>”sellerId” : String,<br/>”customerId” : String,<br/>”messageResponseDtoList” : List(ChatMessageResponseDto) : [<br/>{<br/>”userId” : String,<br/>”message” : String,<br/>”createAt” : LocalDateTime<br/>}<br/>]<br/>}                                                         | Authorization : Bearer JWT                               |                 |
-| 대화방 조회         | GET    | /chatrooms/{roomId}    |         | {<br/>”chatRoomId” : long,<br/>”sellerId” : String,<br/>”customerId” : String,<br/>”messageResponseDtoList” : List(ChatMessageResponseDto) : [<br/>{<br/>”userId” : String,<br/>”message” : String,<br/>”createAt” : LocalDateTime<br/>}<br/>]<br/>}                                                         | Authorization : Bearer JWT                               |                 |
+<details>
+<summary>
+Chat API
+</summary>
 
+| 기능             | Method | URL                                   | Request                        | Response                                                                                                                                                                                                                                             | Request Header             | Response Header |
+|----------------|--------|---------------------------------------|--------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------|-----------------|
+| 고객용 대화 메세지 작성  | POST   | /customers/chatmessages/{orderItemId} | {<br/>”message” : String<br/>} | {<br/>”chatRoomId” : long,<br/>”sellerId” : String,<br/>”customerId” : String,<br/>”messageResponseDtoList” : List(ChatMessageResponseDto) : [<br/>{<br/>”userId” : String,<br/>”message” : String,<br/>”createAt” : LocalDateTime<br/>}<br/>]<br/>} | Authorization : Bearer JWT |                 |
+| 판매자용 대화 메세지 작성 | POST   | /sellers/chatmessages/{orderId}       | {<br/>”message” : String<br/>} | {<br/>”chatRoomId” : long,<br/>”sellerId” : String,<br/>”customerId” : String,<br/>”messageResponseDtoList” : List(ChatMessageResponseDto) : [<br/>{<br/>”userId” : String,<br/>”message” : String,<br/>”createAt” : LocalDateTime<br/>}<br/>]<br/>} | Authorization : Bearer JWT |                 |
+| 대화방 조회         | GET    | /chatrooms/{roomId}                   |                                | {<br/>”chatRoomId” : long,<br/>”sellerId” : String,<br/>”customerId” : String,<br/>”messageResponseDtoList” : List(ChatMessageResponseDto) : [<br/>{<br/>”userId” : String,<br/>”message” : String,<br/>”createAt” : LocalDateTime<br/>}<br/>]<br/>} | Authorization : Bearer JWT |                 |
+
+</details>
+
+---
 ## ERD
+
+<details>
+<summary>열기</summary>
 
 ![img.png](img.png)
 
+</details>
+
+---
+
 ## Sequence Diagram
 
+<details>
+<summary>열기</summary>
+
 ![img_1.png](img_1.png)
+
+</details>
+
+---
