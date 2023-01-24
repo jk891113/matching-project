@@ -17,10 +17,10 @@ public interface ProductService {
     ProductResponseDto getProductByUserId(String userId, Long productId);
 
     //나의 전체 판매상품 조회
-    List<ProductResponseDto> getAllProductByUserId(String userId, Pageable pageable);
+    List<ProductResponseDto> getAllProductByUserId(String userId, int page);
 
     //전체 상품 조회(고객용)
-    List<AllProductResponseDto> getAllProducts(Pageable pageable);
+    List<AllProductResponseDto> getAllProducts(int page);
 
     //판매상품 수정
     ProductResponseDto updateProduct(Long productId, UpdateProductRequestDto requestDto);

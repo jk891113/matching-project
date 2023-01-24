@@ -16,7 +16,7 @@ public interface OrderService {
 
     MyOrderForSellerResponseDto getOrderForSeller(long orderId, String sellerId);
 
-    List<OrderForSellerResponseDto> getAllOrderForSeller(String sellerId);
+    List<OrderForSellerResponseDto> getAllOrderForSeller(String sellerId, int page);
 
     MyOrderForSellerResponseDto acceptOrder(long orderId, String sellerId);
 

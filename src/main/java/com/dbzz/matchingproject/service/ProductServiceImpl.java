@@ -1,6 +1,7 @@
 package com.dbzz.matchingproject.service;
 
 import com.dbzz.matchingproject.dto.request.CreateProductRequestDto;
+import com.dbzz.matchingproject.dto.request.LoginRequestDto;
 import com.dbzz.matchingproject.dto.request.UpdateProductRequestDto;
 import com.dbzz.matchingproject.dto.response.AllProductResponseDto;
 import com.dbzz.matchingproject.dto.response.ProductResponseDto;
@@ -9,8 +10,10 @@ import com.dbzz.matchingproject.repository.ProductRepository;
 import com.dbzz.matchingproject.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -54,15 +57,19 @@ public class ProductServiceImpl implements ProductService {
 
     //나의 전체 판매상품 조회
     @Override
-    public List<ProductResponseDto> getAllProductByUserId(String userId, Pageable pageable) {
+    public List<ProductResponseDto> getAllProductByUserId(String userId, int page) {
+        Pageable pageable = PageRequest.of(page - 1, 5, Sort.by(Sort.Direction.DESC, "modifiedAt"));
         List<Product> list = productRepository.findByUserId(userId, pageable);
-        List<ProductResponseDto> allProductByUserIdList = list.stream().map(product -> new ProductResponseDto(product)).collect(Collectors.toList());
+        List<ProductResponseDto> allProductByUserIdList = list.stream()
+                .filter(product -> product.getUserId().equals(userId))
+                .map(product -> new ProductResponseDto(product)).collect(Collectors.toList());
         return allProductByUserIdList;
     }
 
     //전체 상품 조회(고객용)
     @Override
-    public List<AllProductResponseDto> getAllProducts(Pageable pageable) {
+    public List<AllProductResponseDto> getAllProducts(int page) {
+        Pageable pageable = PageRequest.of(page - 1, 5, Sort.by(Sort.Direction.DESC, "modifiedAt"));
         List<Product> list = productRepository.findAllBy(pageable);
         List<AllProductResponseDto> allProductsList = list.stream().map(product -> new AllProductResponseDto(product)).collect(Collectors.toList());
         return allProductsList;
