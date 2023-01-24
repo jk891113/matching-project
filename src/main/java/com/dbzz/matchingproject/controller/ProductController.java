@@ -60,7 +60,7 @@ public class ProductController {
 
     // 페이징
     //전체 상품 조회(고객용)
-    @GetMapping("/customer/products")
+    @GetMapping("/customers/products")
     public ResponseEntity<StatusAndDataResponseDto> getAllProducts(Pageable pageable) {
         List<AllProductResponseDto> data = productService.getAllProducts(pageable);
         StatusAndDataResponseDto responseDto = new  StatusAndDataResponseDto(StatusEnum.OK, "전체 상품 조회 완료", data);
