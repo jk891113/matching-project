@@ -45,7 +45,7 @@ public class UserController {
 
     @PostMapping("/users/signin")
     public ResponseEntity<StatusResponseDto> signin(@RequestBody LoginRequestDto requestDto, HttpServletResponse response) {
-        StatusResponseDto responseDto = new StatusResponseDto(StatusEnum.OK, "로그인 완료");
+        StatusResponseDto responseDto = new StatusResponseDto(StatusEnum.OK, requestDto.getUserId() + "님 환영합니다");
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType((new MediaType("application", "json", Charset.forName("UTF-8"))));
 

@@ -89,7 +89,11 @@ public class OrderController {
     }
 
     @PutMapping("/customers/orders/{orderItemId}")
-    public void determineOrderItem(@PathVariable long orderItemId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        orderService.determineOrderItem(orderItemId, userDetails.getUserId());
+    public ResponseEntity<StatusAndDataResponseDto> determineOrderItem(@PathVariable long orderItemId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        OrderItemResponseDto data = orderService.determineOrderItem(orderItemId, userDetails.getUserId());
+        StatusAndDataResponseDto responseDto = new StatusAndDataResponseDto(StatusEnum.OK, "구매 확정 완료", data);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType((new MediaType("application", "json", Charset.forName("UTF-8"))));
+        return new ResponseEntity<>(responseDto, headers, HttpStatus.OK);
     }
 }

@@ -27,7 +27,7 @@ public class PointController {
     private final PointService pointService;
 
     // 나의 포인트 조회
-    @GetMapping("/point")
+    @GetMapping("/points")
     public ResponseEntity<StatusAndDataResponseDto> getAllCustomers(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         PointResponseDto data = pointService.checkPoint(userDetails.getUserId());
         StatusAndDataResponseDto responseDto = new StatusAndDataResponseDto(StatusEnum.OK, "나의 포인트 조회 완료", data);
@@ -37,7 +37,7 @@ public class PointController {
     }
 
     // 어드민 포인트 지급
-    @PutMapping("/admin/point")
+    @PutMapping("/admin/points")
     public ResponseEntity<StatusResponseDto> givePoint(@RequestBody AdminPointRequestDto requestDto){
         StatusResponseDto responseDto = new StatusResponseDto(StatusEnum.OK, "포인트 지급이 완료되었습니다.");
         pointService.givePoint(requestDto);

@@ -20,5 +20,5 @@ public interface OrderService {
 
     MyOrderForSellerResponseDto acceptOrder(long orderId, String sellerId);
 
-    void determineOrderItem(long orderId, String userId);
+    OrderItemResponseDto determineOrderItem(long orderId, String userId);
 }
