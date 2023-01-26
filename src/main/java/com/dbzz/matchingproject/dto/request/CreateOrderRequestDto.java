@@ -6,8 +6,8 @@ import java.util.List;
 
 @Getter
 public class CreateOrderRequestDto {
-    private List<Long> productId;
-    private List<Integer> quantity;
+    private List<Long> productIdList;
+    private List<Integer> quantityList;
     private long shippingInfoId;
     private int point = 0;
 }

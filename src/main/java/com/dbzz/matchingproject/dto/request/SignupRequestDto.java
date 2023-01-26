@@ -2,9 +2,11 @@ package com.dbzz.matchingproject.dto.request;
 
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
 public class SignupRequestDto {
     @Size(min = 4, max = 15, message = "아이디는 4글자 이상, 15글자 이하로 작성하세요.")
     @Pattern(regexp = "^[a-z0-9]*$", message = "아이디 형식에 맞춰 작성하세요. 영문(소문자), 숫자만 작성 가능합니다.")

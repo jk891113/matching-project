@@ -67,15 +67,15 @@ public class OrderServiceImpl implements OrderService {
         // OrderItem 객체 생성, 저장
         List<String> sellerIdList = new ArrayList<>();
         List<OrderItem> orderItemList = new ArrayList<>();
-        for (int i = 0; i < requestDto.getProductId().size(); i++) {
-            Product product = productRepository.findByProductId(requestDto.getProductId().get(i)).orElseThrow(
+        for (int i = 0; i < requestDto.getProductIdList().size(); i++) {
+            Product product = productRepository.findByProductId(requestDto.getProductIdList().get(i)).orElseThrow(
                     () -> new IllegalArgumentException("존재하지 않는 상품입니다.")
             );
             sellerId = product.getUserId();
             sellerIdList.add(sellerId);
-            int amount = product.getPrice() * requestDto.getQuantity().get(i);
+            int amount = product.getPrice() * requestDto.getQuantityList().get(i);
             totalAmount += amount;
-            OrderItem orderItem = new OrderItem(sellerId, product.getProductId(), requestDto.getQuantity().get(i), amount, order);
+            OrderItem orderItem = new OrderItem(sellerId, product.getProductId(), requestDto.getQuantityList().get(i), amount, order);
             orderItemList.add(orderItem);
             orderItemRepository.save(orderItem);
         }
