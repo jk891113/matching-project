@@ -27,7 +27,7 @@ public class MatchingProjectApplication {
                                   PasswordEncoder passwordEncoder) {
 
         return (args) -> {
-//            userRepository.save(new User("customer1", passwordEncoder.encode("1234?5678"), UserRoleEnum.CUSTOMER));
+            userRepository.save(new User("customer1", passwordEncoder.encode("1234?5678"), UserRoleEnum.CUSTOMER));
             userRepository.save(new User("customer2", passwordEncoder.encode("1234?5678"), UserRoleEnum.CUSTOMER));
             userRepository.save(new User("customer3", passwordEncoder.encode("1234?5678"), UserRoleEnum.CUSTOMER));
             userRepository.save(new User("customer4", passwordEncoder.encode("1234?5678"), UserRoleEnum.CUSTOMER));
@@ -39,7 +39,7 @@ public class MatchingProjectApplication {
             userRepository.save(new User("seller5", passwordEncoder.encode("1234?5678"), UserRoleEnum.SELLER));
             userRepository.save(new User("admin", passwordEncoder.encode("1234?5678"), UserRoleEnum.ADMIN));
 
-//            pointRepository.save(new Point("customer1", 5000));
+            pointRepository.save(new Point("customer1", 5000));
             pointRepository.save(new Point("customer2", 5000));
             pointRepository.save(new Point("customer3", 5000));
             pointRepository.save(new Point("customer4", 5000));
@@ -50,7 +50,7 @@ public class MatchingProjectApplication {
             pointRepository.save(new Point("seller4", 5000));
             pointRepository.save(new Point("seller5", 5000));
 
-//            profileRepository.save(new Profile("customer1", "고객1"));
+            profileRepository.save(new Profile("customer1", "고객1"));
             profileRepository.save(new Profile("customer2", "고객2"));
             profileRepository.save(new Profile("customer3", "고객3"));
             profileRepository.save(new Profile("customer4", "고객4"));
@@ -79,7 +79,7 @@ public class MatchingProjectApplication {
             productRepository.save(new Product("seller5", "양말", 20000, "양말 입니다.", 200));
             productRepository.save(new Product("seller5", "남방", 20000, "남방 입니다.", 200));
 
-//            formRepository.save(new Form("customer1", "고객1", "악세사리"));
+            formRepository.save(new Form("customer1", "고객1", "악세사리"));
             formRepository.save(new Form("customer2", "고객2", "잡화"));
 
             shippingInfoRepository.save(new ShippingInfo("customer1", "집", "서울", "010-1234-1234"));

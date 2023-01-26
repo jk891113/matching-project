@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +21,15 @@ public class ChatServiceImpl implements ChatService {
     private final ChatMessageRepository chatMessageRepository;
     private final OrderItemRepository orderItemRepository;
     private final ChatRoomRepository chatRoomRepository;
+
+    @Override
+    public void createChatRoom(List<String> sellerIdList, long orderId, String customerId) {
+        List<ChatRoom> chatRoomList = sellerIdList.stream()
+                .distinct()
+                .map(s -> new ChatRoom(orderId, s, customerId))
+                .collect(Collectors.toList());
+        chatRoomRepository.saveAll(chatRoomList);
+    }
 
     @Override
     public ChatRoomResponseDto writeChatForCustomer(long orderItemId, ChatMessageRequestDto requestDto, String userId) {

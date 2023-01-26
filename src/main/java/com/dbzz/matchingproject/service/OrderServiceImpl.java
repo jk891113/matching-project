@@ -5,6 +5,7 @@ import com.dbzz.matchingproject.dto.response.*;
 import com.dbzz.matchingproject.entity.*;
 import com.dbzz.matchingproject.enums.ShippingStatusEnum;
 import com.dbzz.matchingproject.repository.*;
+import com.dbzz.matchingproject.service.interfaces.ChatService;
 import com.dbzz.matchingproject.service.interfaces.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -26,34 +27,7 @@ public class OrderServiceImpl implements OrderService {
     private final ShippingInfoRepository shippingInfoRepository;
     private final PointRepository pointRepository;
     private final ChatRoomRepository chatRoomRepository;
-
-//    @Override
-//    @Transactional
-//    public CreateOrderResponseDto createOrder(List<Long> productId, List<Integer> quantity, long shippingInfoId, String userId) {
-//        int totalAmount = 0;
-//        String sellerId = "";
-//        Order order = new Order();
-//        orderRepository.save(order);
-//
-//        List<OrderItem> orderItemList = new ArrayList<>();
-//        for (int i = 0; i < productId.size(); i++) {
-//            Product product = productRepository.findByProductId(productId.get(i)).orElseThrow(
-//                    () -> new IllegalArgumentException("존재하지 않는 상품입니다.")
-//            );
-//            sellerId = product.getUserId();
-//            int amount = product.getPrice() * quantity.get(i);
-//            totalAmount += amount;
-//            OrderItem orderItem = new OrderItem(sellerId, product.getProductId(), quantity.get(i), amount, order);
-//            orderItemList.add(orderItem);
-//            orderItemRepository.save(orderItem);
-//        }
-//        ShippingInfo shippingInfo = shippingInfoRepository.findByShippingInfoId(shippingInfoId).orElseThrow(
-//                () -> new IllegalArgumentException("배송정보가 존재하지 않습니다.")
-//        );
-//        order.putDatasInOrder(userId, sellerId, totalAmount, shippingInfoId);
-//        orderRepository.save(order);
-//        return new CreateOrderResponseDto(order, orderItemList, shippingInfo);
-//    }
+    private final ChatService chatService;
 
     @Override
     @Transactional
@@ -89,14 +63,12 @@ public class OrderServiceImpl implements OrderService {
         );
 
         // 대화방 생성
-        List<ChatRoom> chatRoomList = sellerIdList.stream()
-                .distinct()
-                .map(s -> new ChatRoom(order.getOrderId(), s, userId))
-                .collect(Collectors.toList());
-        chatRoomRepository.saveAll(chatRoomList);
+        long orderId = order.getOrderId();
+        chatService.createChatRoom(sellerIdList, orderId, userId);
 
         // 포인트 차감, Order 객체 데이터 추가
         point.subtractPoint(requestDto.getPoint());
+
         order.putDatasInOrder(userId, sellerId, totalAmount - requestDto.getPoint(), requestDto.getShippingInfoId());
         orderRepository.save(order);
         return new CreateOrderResponseDto(order, orderItemList, shippingInfo);
