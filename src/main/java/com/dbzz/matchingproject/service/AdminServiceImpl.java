@@ -10,6 +10,7 @@ import com.dbzz.matchingproject.enums.UserRoleEnum;
 import com.dbzz.matchingproject.repository.FormRepository;
 import com.dbzz.matchingproject.repository.ProfileRepository;
 import com.dbzz.matchingproject.repository.UserRepository;
+import com.dbzz.matchingproject.service.interfaces.AdminService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -24,7 +25,7 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class AdminServiceImpl implements AdminService{
+public class AdminServiceImpl implements AdminService {
     private final ProfileRepository profileRepository;
     private final UserRepository userRepository;
     private final FormRepository formRepository;

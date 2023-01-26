@@ -5,6 +5,7 @@ import com.dbzz.matchingproject.dto.response.*;
 import com.dbzz.matchingproject.entity.*;
 import com.dbzz.matchingproject.enums.ShippingStatusEnum;
 import com.dbzz.matchingproject.repository.*;
+import com.dbzz.matchingproject.service.interfaces.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

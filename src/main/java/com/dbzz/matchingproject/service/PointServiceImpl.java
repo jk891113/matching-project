@@ -4,6 +4,7 @@ import com.dbzz.matchingproject.dto.request.AdminPointRequestDto;
 import com.dbzz.matchingproject.dto.response.PointResponseDto;
 import com.dbzz.matchingproject.entity.Point;
 import com.dbzz.matchingproject.repository.PointRepository;
+import com.dbzz.matchingproject.service.interfaces.PointService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class PointServiceImpl implements PointService{
+public class PointServiceImpl implements PointService {
     private final PointRepository pointRepository;
 
     // 포인트 조회

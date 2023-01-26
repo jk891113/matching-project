@@ -6,7 +6,7 @@ import com.dbzz.matchingproject.dto.request.SellerProfileRequestDto;
 import com.dbzz.matchingproject.dto.response.*;
 import com.dbzz.matchingproject.enums.StatusEnum;
 import com.dbzz.matchingproject.security.UserDetailsImpl;
-import com.dbzz.matchingproject.service.ProfileService;
+import com.dbzz.matchingproject.service.interfaces.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

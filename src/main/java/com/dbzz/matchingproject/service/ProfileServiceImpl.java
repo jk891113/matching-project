@@ -13,6 +13,7 @@ import com.dbzz.matchingproject.enums.UserRoleEnum;
 import com.dbzz.matchingproject.repository.FormRepository;
 import com.dbzz.matchingproject.repository.ProfileRepository;
 import com.dbzz.matchingproject.repository.UserRepository;
+import com.dbzz.matchingproject.service.interfaces.ProfileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

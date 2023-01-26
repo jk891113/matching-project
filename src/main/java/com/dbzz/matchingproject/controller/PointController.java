@@ -4,10 +4,9 @@ import com.dbzz.matchingproject.dto.request.AdminPointRequestDto;
 import com.dbzz.matchingproject.dto.response.PointResponseDto;
 import com.dbzz.matchingproject.dto.response.StatusAndDataResponseDto;
 import com.dbzz.matchingproject.dto.response.StatusResponseDto;
-import com.dbzz.matchingproject.dto.response.UserResponseDto;
 import com.dbzz.matchingproject.enums.StatusEnum;
 import com.dbzz.matchingproject.security.UserDetailsImpl;
-import com.dbzz.matchingproject.service.PointService;
+import com.dbzz.matchingproject.service.interfaces.PointService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,7 +16,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.Charset;
-import java.util.List;
 
 
 @RestController

@@ -1,4 +1,4 @@
-package com.dbzz.matchingproject.service;
+package com.dbzz.matchingproject.service.interfaces;
 
 import com.dbzz.matchingproject.dto.request.CustomerProfileRequestDto;
 import com.dbzz.matchingproject.dto.request.ProfileRequestDto;

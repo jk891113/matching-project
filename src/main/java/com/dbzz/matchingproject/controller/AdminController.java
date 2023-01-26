@@ -2,11 +2,8 @@ package com.dbzz.matchingproject.controller;
 
 import com.dbzz.matchingproject.dto.response.*;
 import com.dbzz.matchingproject.enums.StatusEnum;
-import com.dbzz.matchingproject.service.AdminService;
+import com.dbzz.matchingproject.service.interfaces.AdminService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

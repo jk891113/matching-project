@@ -3,8 +3,6 @@ package com.dbzz.matchingproject;
 import com.dbzz.matchingproject.entity.*;
 import com.dbzz.matchingproject.enums.UserRoleEnum;
 import com.dbzz.matchingproject.repository.*;
-import com.dbzz.matchingproject.service.UserService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

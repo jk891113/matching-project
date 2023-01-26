@@ -1,4 +1,4 @@
-package com.dbzz.matchingproject.service;
+package com.dbzz.matchingproject.service.interfaces;
 
 import com.dbzz.matchingproject.dto.request.LoginRequestDto;
 import com.dbzz.matchingproject.dto.request.SellerAuthRequestDto;

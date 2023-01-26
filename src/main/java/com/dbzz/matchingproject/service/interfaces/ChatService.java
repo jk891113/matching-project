@@ -1,4 +1,4 @@
-package com.dbzz.matchingproject.service;
+package com.dbzz.matchingproject.service.interfaces;
 
 import com.dbzz.matchingproject.dto.request.ChatMessageRequestDto;
 import com.dbzz.matchingproject.dto.response.ChatRoomResponseDto;

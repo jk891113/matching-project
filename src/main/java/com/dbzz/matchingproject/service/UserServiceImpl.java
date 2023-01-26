@@ -14,6 +14,7 @@ import com.dbzz.matchingproject.repository.FormRepository;
 import com.dbzz.matchingproject.repository.PointRepository;
 import com.dbzz.matchingproject.repository.ProfileRepository;
 import com.dbzz.matchingproject.repository.UserRepository;
+import com.dbzz.matchingproject.service.interfaces.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;

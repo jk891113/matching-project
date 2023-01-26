@@ -5,7 +5,7 @@ import com.dbzz.matchingproject.dto.request.UpdateProductRequestDto;
 import com.dbzz.matchingproject.dto.response.*;
 import com.dbzz.matchingproject.enums.StatusEnum;
 import com.dbzz.matchingproject.security.UserDetailsImpl;
-import com.dbzz.matchingproject.service.ProductService;
+import com.dbzz.matchingproject.service.interfaces.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;

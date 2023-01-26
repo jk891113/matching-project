@@ -6,7 +6,7 @@ import com.dbzz.matchingproject.dto.response.StatusAndDataResponseDto;
 import com.dbzz.matchingproject.dto.response.StatusResponseDto;
 import com.dbzz.matchingproject.enums.StatusEnum;
 import com.dbzz.matchingproject.security.UserDetailsImpl;
-import com.dbzz.matchingproject.service.ShippingInfoService;
+import com.dbzz.matchingproject.service.interfaces.ShippingInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

@@ -4,6 +4,7 @@ import com.dbzz.matchingproject.dto.request.ShippingInfoRequestDto;
 import com.dbzz.matchingproject.dto.response.ShippingInfoResponseDto;
 import com.dbzz.matchingproject.entity.ShippingInfo;
 import com.dbzz.matchingproject.repository.ShippingInfoRepository;
+import com.dbzz.matchingproject.service.interfaces.ShippingInfoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

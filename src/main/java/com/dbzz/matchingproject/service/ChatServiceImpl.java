@@ -4,12 +4,11 @@ import com.dbzz.matchingproject.dto.request.ChatMessageRequestDto;
 import com.dbzz.matchingproject.dto.response.ChatRoomResponseDto;
 import com.dbzz.matchingproject.entity.ChatMessage;
 import com.dbzz.matchingproject.entity.ChatRoom;
-import com.dbzz.matchingproject.entity.Order;
 import com.dbzz.matchingproject.entity.OrderItem;
 import com.dbzz.matchingproject.repository.ChatMessageRepository;
 import com.dbzz.matchingproject.repository.ChatRoomRepository;
 import com.dbzz.matchingproject.repository.OrderItemRepository;
-import com.dbzz.matchingproject.repository.OrderRepository;
+import com.dbzz.matchingproject.service.interfaces.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

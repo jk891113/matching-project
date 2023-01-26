@@ -4,7 +4,7 @@ import com.dbzz.matchingproject.dto.request.CreateOrderRequestDto;
 import com.dbzz.matchingproject.dto.response.*;
 import com.dbzz.matchingproject.enums.StatusEnum;
 import com.dbzz.matchingproject.security.UserDetailsImpl;
-import com.dbzz.matchingproject.service.OrderService;
+import com.dbzz.matchingproject.service.interfaces.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
